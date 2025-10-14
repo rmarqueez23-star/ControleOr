@@ -6,6 +6,26 @@
     <title>Dashboard Financeiro Pessoal - Visão Geral</title>
 
     <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Estilo para a célula editável no Dark Mode */
+        [contenteditable="true"]:focus {
+            background-color: var(--bg-hover);
+            outline: 1px solid var(--neon-teal);
+            border-radius: 2px;
+            padding: 2px 4px;
+        }
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none; 
+            position: fixed; 
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+    </style>
 </head>
 <body class="bg-bg-main text-text-light font-sans antialiased">
 
@@ -28,17 +48,27 @@
     <main class="dashboard-content p-8">
 
         <h1 class="text-3xl font-bold text-text-light mb-6">Dashboard Financeiro</h1>
-        <div class="flex gap-4 mb-8">
-            <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200" onclick="window.location.href='lancamentos.html';">+ Nova Transação</button>
-            <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200" onclick="openImportModal()">&#x2191; Importar Dados</button> 
+        
+        <div class="flex items-center gap-4 mb-8">
+            <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange" onclick="window.location.href='lancamentos.html';">+ Nova Transação</button>
+            
+            <div class="flex items-center space-x-2 text-text-dim text-sm">
+                <label for="month-select">Visualizando:</label>
+                
+                <select id="month-select" class="p-2 border border-border-default rounded bg-bg-surface focus:ring-brand-primary focus:border-brand-primary cursor-pointer text-text-light" onchange="refreshUI()">
+                    </select>
+                
+                <select id="year-select" class="p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary cursor-pointer" onchange="refreshUI()">
+                    </select>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             <div class="lg:col-span-2 space-y-8">
                 
-                <section id="resumo-mensal" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default">
-                    <h2 class="text-xl font-semibold text-text-light mb-4">Resumo de Janeiro 2025</h2>
+                <section id="resumo-mensal" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default hover:border-brand-primary transition duration-200">
+                    <h2 class="text-xl font-semibold text-text-light mb-4">Resumo Mensal</h2>
                     <div class="flex flex-wrap justify-between text-center gap-4">
                         <div class="flex-1 min-w-[120px]">
                             <p class="text-status-success font-bold text-lg" id="receita-programada">R$ 0,00</p>
@@ -97,7 +127,7 @@
                             </tr>
                         </thead>
                         <tbody id="table-despesas-tbody">
-                            <tr class="font-semibold text-status-error border-b border-border-default">
+                            <tr class="font-semibold text-status-error border-b border-border-default hover:bg-bg-hover transition duration-200">
                                 <td class="py-2">Despesas Fixas (Exemplo Estático)</td>
                                 <td class="py-2">R$ 4.000,00</td>
                                 <td class="py-2">-</td>
@@ -107,14 +137,14 @@
                     </table>
                 </section>
                 
-                <section id="grafico-saldo" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default">
+                <section id="grafico-saldo" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default hover:shadow-neon-glow-teal hover:border-neon-teal transition duration-200">
                     <h2 class="text-xl font-semibold text-text-light mb-4">Balanço Mensal Projetado (Próx. 12 Meses)</h2>
                     
                     <div id="balance-chart-container" class="flex justify-around items-end h-64 p-2 border-b border-border-default">
                         </div>
                     <div id="chart-legend" class="flex justify-center gap-8 mt-4 text-sm text-text-dim">
-                        <span class="flex items-center"><span class="w-3 h-3 bg-status-success rounded-full mr-2"></span> Receita</span>
-                        <span class="flex items-center"><span class="w-3 h-3 bg-status-error rounded-full mr-2"></span> Despesa</span>
+                        <span class="flex items-center text-status-success"><span class="w-3 h-3 bg-status-success rounded-full mr-2"></span> Receita</span>
+                        <span class="flex items-center text-status-error"><span class="w-3 h-3 bg-status-error rounded-full mr-2"></span> Despesa</span>
                     </div>
                 </section>
 
@@ -122,7 +152,7 @@
             
             <div class="lg:col-span-1 space-y-8">
                 
-                <section id="metas-resumo" class="bg-bg-card p-4 rounded-lg shadow-smooth border border-border-default">
+                <section id="metas-resumo" class="bg-bg-card p-4 rounded-lg shadow-smooth border border-border-default hover:shadow-neon-glow-teal hover:border-neon-teal transition duration-200">
                     <div class="flex justify-between items-center mb-3">
                         <h2 class="text-lg font-semibold text-text-light m-0">Minhas Metas Financeiras</h2>
                         <a href="metas.html" class="text-brand-primary text-sm hover:text-opacity-80 transition duration-200">Gerenciar ></a>
@@ -131,7 +161,7 @@
                         </div>
                 </section>
 
-                <section id="investimentos-resumo" class="bg-bg-card p-4 rounded-lg shadow-smooth border border-border-default">
+                <section id="investimentos-resumo" class="bg-bg-card p-4 rounded-lg shadow-smooth border border-border-default hover:shadow-neon-glow-teal hover:border-neon-teal transition duration-200">
                     <div class="flex justify-between items-center mb-3">
                         <h2 class="text-lg font-semibold text-text-light m-0">Resumo da Carteira (Custo)</h2>
                         <a href="investimentos.html" class="text-brand-primary text-sm hover:text-opacity-80 transition duration-200">Ver Carteira ></a>
@@ -144,7 +174,7 @@
                         </div>
                 </section>
                 
-                <section id="investimento-kpi" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default text-center">
+                <section id="investimento-kpi" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default text-center hover:shadow-neon-glow-orange hover:border-brand-primary transition duration-200">
                     <h3 class="text-text-dim text-sm mb-1">Gastos Planejados (Investimento) do Mês</h3>
                     <p class="text-brand-primary font-extrabold text-3xl">R$ 1.500,00</p>
                 </section>
@@ -154,7 +184,7 @@
         
         <section id="investimentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mt-8">
             <h2 class="text-xl font-semibold text-text-light mb-4">Monitoramento de Investimentos</h2>
-            <p class="text-text-dim text-center py-4">Para gerenciar e visualizar detalhes da carteira, acesse a <a href="investimentos.html" class="text-brand-primary underline">Aba Investimentos</a>.</p>
+            <p class="text-text-dim text-center py-4">Para gerenciar e visualizar detalhes da carteira, acesse a <a href="investimentos.html" class="text-brand-primary underline hover:text-opacity-80">Aba Investimentos</a>.</p>
             
             <table class="w-full text-sm text-text-light">
                 <thead>
@@ -168,7 +198,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b border-border-default text-text-dim">
+                    <tr class="border-b border-border-default text-text-dim hover:bg-bg-hover transition duration-200">
                         <td class="py-2">☐</td>
                         <td class="py-2">Banco XYZ - Renda Fixa</td>
                         <td class="py-2">Tesouro Nacional</td>
@@ -181,34 +211,6 @@
         </section>
 
     </main>
-
-    <div id="import-modal" class="modal-overlay">
-        <div class="bg-bg-card p-8 rounded-lg shadow-smooth border border-border-default w-full max-w-md">
-            <h2 class="text-xl font-semibold text-brand-primary mb-4">Importar Extratos Bancários</h2>
-            <p class="text-text-dim mb-6">Faça o upload de seus arquivos para automatizar o cadastro de transações.</p>
-
-            <form>
-                <div class="mb-4">
-                    <label class="block text-text-dim mb-1">Instituição Financeira:</label>
-                    <select class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary">
-                        <option>Selecione</option>
-                        <option>Nubank</option>
-                        <option>Itaú</option>
-                    </select>
-                </div>
-                
-                <div class="mb-6">
-                    <label class="block text-text-dim mb-1">Upload de Arquivo (CSV, OFX):</label>
-                    <input type="file" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary">
-                </div>
-                
-                <div class="flex justify-end gap-3">
-                    <button type="button" onclick="closeImportModal()" class="py-2 px-4 rounded border border-neutral-mid bg-bg-surface text-text-light hover:bg-bg-hover transition duration-200">Cancelar</button>
-                    <button type="submit" class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200">Salvar</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <script>
         const API_BASE_URL = 'http://localhost:3000/api/transacoes';
@@ -223,17 +225,63 @@
                 currency: 'BRL',
             }).format(amount);
         };
+        
+        // Nomes dos meses para o seletor
+        const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
         // Funções de controle dos Modais
         function openManualEntryModal() {
             window.location.href = 'lancamentos.html';
         }
         function closeImportModal() {
-            document.getElementById('import-modal').style.display = 'none';
+            // Não faz nada, pois o modal foi removido
         }
         function openImportModal() {
-            document.getElementById('import-modal').style.display = 'flex';
+            alert("A funcionalidade de Importar Dados foi desativada neste protótipo.");
         }
+
+
+        // ======================================================
+        // FUNÇÕES DE FILTRO E INICIALIZAÇÃO
+        // ======================================================
+
+        // 1. Preenche os seletores de Mês e Ano
+        function initializeFilters() {
+            const monthSelect = document.getElementById('month-select');
+            const yearSelect = document.getElementById('year-select');
+            const now = new Date();
+            const currentMonth = now.getMonth() + 1; // 1 a 12
+            const currentYear = now.getFullYear();
+
+            // Preenche os meses
+            monthSelect.innerHTML = monthNames.map((name, index) => 
+                `<option value="${index + 1}" ${index + 1 === currentMonth ? 'selected' : ''}>${name}</option>`
+            ).join('');
+
+            // Preenche os anos (últimos 5 anos e próximos 5)
+            yearSelect.innerHTML = '';
+            for (let year = currentYear - 5; year <= currentYear + 5; year++) {
+                const isCurrent = year === currentYear ? 'selected' : '';
+                yearSelect.innerHTML += `<option value="${year}" ${isCurrent}>${year}</option>`;
+            }
+        }
+
+        // 2. Obtém os parâmetros de data selecionados
+        function getFilterParams() {
+            const month = document.getElementById('month-select').value;
+            const year = document.getElementById('year-select').value;
+            return `mes=${month}&ano=${year}`;
+        }
+        
+        // 3. Atualiza o Título do Resumo com o Mês/Ano Selecionado
+        function updateSummaryTitle(month, year) {
+            const monthIndex = parseInt(month) - 1;
+            const titleElement = document.querySelector('#resumo-mensal h2');
+            if (titleElement) {
+                titleElement.textContent = `Resumo de ${monthNames[monthIndex]} ${year}`;
+            }
+        }
+
 
         // ======================================================
         // FUNÇÕES DE TRANSAÇÕES E CRUD
@@ -306,11 +354,13 @@
 
 
         // ======================================================
-        // FUNÇÕES DE CARREGAMENTO DE DADOS (READ)
+        // FUNÇÕES DE CARREGAMENTO DE DADOS (READ COM FILTRO)
         // ======================================================
 
         function loadSummary() {
-            fetch(API_RESUMO_URL)
+            const params = getFilterParams();
+            
+            fetch(`${API_RESUMO_URL}?${params}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('receita-programada').textContent = formatCurrency(data.receitaProgramada);
@@ -326,14 +376,16 @@
         }
 
         function loadTransactionsTable() {
-            fetch(API_BASE_URL)
+            const params = getFilterParams();
+            
+            fetch(`${API_BASE_URL}?${params}`)
                 .then(response => response.json())
                 .then(transactions => {
                     const tbodyReceitas = document.getElementById('table-receitas-tbody');
                     const tbodyDespesas = document.getElementById('table-despesas-tbody');
                     
                     tbodyReceitas.innerHTML = ''; 
-                    const staticRowHtml = `<tr class="font-semibold text-status-error border-b border-border-default"><td class="py-2">Despesas Fixas (Exemplo Estático)</td><td class="py-2">R$ 4.000,00</td><td class="py-2">-</td><td class="py-2">-</td></tr>`;
+                    const staticRowHtml = `<tr class="font-semibold text-status-error border-b border-border-default hover:bg-bg-hover transition duration-200"><td class="py-2">Despesas Fixas (Exemplo Estático)</td><td class="py-2">R$ 4.000,00</td><td class="py-2">-</td><td class="py-2">-</td></tr>`;
                     tbodyDespesas.innerHTML = staticRowHtml; 
 
                     transactions.forEach(t => {
@@ -360,7 +412,12 @@
                 });
         }
         
+        // FUNÇÕES DE RESUMO (loadGoalsSummary, loadInvestmentSummary, loadBalanceChart)
+        // ... (Mantidas, mas elas JÁ chamam as rotas que não precisam de filtro de mês/ano, exceto o BalanceChart que só precisa da média geral)
+        // Se você quiser que o Balanço Mensal use a média do mês selecionado, a rota API precisa ser modificada para aceitar o filtro.
+
         function loadGoalsSummary() {
+            // Metas não são filtradas por mês
             fetch(API_METAS_URL)
                 .then(response => response.json())
                 .then(goals => {
@@ -378,17 +435,21 @@
                         const percent = (goal.valor_arrecadado / goal.valor_total) * 100;
                         const percentDisplay = Math.min(100, percent).toFixed(0); 
                         const isComplete = percent >= 100;
-                        const statusColor = isComplete ? 'text-status-success' : 'text-brand-secondary';
-                        const progressColor = isComplete ? 'bg-status-success' : 'bg-brand-secondary';
+                        
+                        const titleColor = isComplete ? 'text-status-success' : 'text-neon-teal';
+                        const progressColor = isComplete ? 'bg-status-success' : 'bg-neon-teal';
+                        const progressBarClass = isComplete 
+                            ? 'neon-progress-bar-static' 
+                            : 'neon-progress-bar-animated'; 
 
                         const cardHtml = `
                             <div class="py-3 border-b border-border-default last:border-b-0">
                                 <div class="flex justify-between items-center mb-1">
-                                    <span class="font-semibold ${statusColor} text-sm">${goal.titulo}</span>
+                                    <span class="font-semibold ${titleColor} text-sm">${goal.titulo}</span>
                                     <span class="text-text-dim text-sm font-semibold">${percentDisplay}%</span>
                                 </div>
                                 <div class="w-full bg-border-default rounded-full h-1.5">
-                                    <div class="${progressColor} h-1.5 rounded-full transition-all duration-500" style="width: ${percentDisplay}%;"></div>
+                                    <div class="${progressColor} h-1.5 rounded-full transition-all duration-500 ${progressBarClass}" style="width: ${percentDisplay}%;"></div>
                                 </div>
                             </div>
                         `;
@@ -406,6 +467,7 @@
         }
         
         function loadInvestmentSummary() {
+            // Investimentos não são filtrados por mês
             fetch(API_CARTEIRA_URL)
                 .then(response => response.json())
                 .then(data => {
@@ -437,6 +499,7 @@
         }
         
         function loadBalanceChart() {
+            // Gráfico usa média GERAL, não precisa de filtro de mês
             fetch(API_BALANCO_URL)
                 .then(response => response.json())
                 .then(data => {
@@ -466,10 +529,11 @@
                         tooltip.textContent = formatCurrency(balanco);
                         tooltip.className = `absolute -top-5 text-xs font-bold ${balancoClass}`;
                         
+                        // Barra de Progresso com Brilho Neon Simulado
                         column.innerHTML = `
                             <div class="flex h-full items-end gap-0.5 w-full mb-1">
-                                <div class="bg-status-error w-1/2 rounded-t-sm" style="height: ${heightDespesa}px;"></div>
-                                <div class="bg-status-success w-1/2 rounded-t-sm" style="height: ${heightReceita}px;"></div>
+                                <div class="bg-status-error w-1/2 rounded-t-sm shadow-neon-glow-teal" style="height: ${heightDespesa}px;"></div>
+                                <div class="bg-status-success w-1/2 rounded-t-sm shadow-neon-glow-teal" style="height: ${heightReceita}px;"></div>
                             </div>
                             <span class="text-xs text-text-dim">${item.mes}</span>
                         `;
@@ -487,15 +551,28 @@
 
         // Função de atualização geral da interface
         function refreshUI() {
+            // Leitura do filtro
+            const month = document.getElementById('month-select').value;
+            const year = document.getElementById('year-select').value;
+            
+            // Atualiza o título
+            updateSummaryTitle(month, year);
+            
+            // Carrega os dados filtrados
             loadSummary();
             loadTransactionsTable();
+            
+            // Carrega dados não filtrados
             loadGoalsSummary(); 
             loadInvestmentSummary(); 
             loadBalanceChart();
         }
 
         // Ação Inicial
-        window.onload = refreshUI;
+        window.onload = function() {
+            initializeFilters(); // Primeiro, preenche os seletores
+            refreshUI();         // Depois, carrega os dados
+        };
     </script>
 </body>
 </html>
