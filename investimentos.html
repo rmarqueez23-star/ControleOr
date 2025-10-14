@@ -8,97 +8,112 @@
     
     <style>
         .portfolio-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr; /* Gráfico de um lado, tabela do outro */
-            gap: 30px;
+            /* Usando classes do Tailwind para o layout de grid */
+            @apply grid grid-cols-1 md:grid-cols-3 gap-8; 
+        }
+        .portfolio-left {
+            /* Coluna para resumo e distribuição (2/3 no desktop) */
+            @apply md:col-span-1 space-y-8;
+        }
+        .portfolio-right {
+             /* Coluna para tabela detalhada (2/3 no desktop) */
+            @apply md:col-span-2;
         }
         .distribuicao-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px dashed var(--neutral-light-gray);
+            @apply flex justify-between py-2 border-b border-border-default last:border-b-0;
         }
     </style>
 </head>
-<body>
+<body class="bg-bg-main text-text-light font-sans antialiased">
 
-    <header class="top-bar">
-        <div class="logo">omeuplannerfinanceiro</div>
-        <nav class="main-nav">
-            <a href="index.html">Dashboard</a>
-            <a href="metas.html">Metas</a> 
-            <a href="#lancamentos">Lançamentos</a> 
-            <a href="investimentos.html" style="color: var(--primary-orange);">Investimentos</a> </nav>
-        <div class="user-actions">
-            <span class="icon">&#x2699;</span>
-            <div class="profile-icon"></div>
+    <header class="sticky top-0 z-10 flex items-center justify-between border-b border-border-default bg-bg-card px-8 py-4 shadow-smooth">
+        <div class="logo">
+            omeuplannerfinanceiro
+        </div>
+        <nav class="main-nav hidden md:flex space-x-8">
+            <a href="index.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Dashboard</a>
+            <a href="lancamentos.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Lançamentos</a> 
+            <a href="metas.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Metas</a>
+            <a href="investimentos.html" class="text-brand-primary font-semibold hover:text-opacity-80 transition duration-200">Investimentos</a> 
+        </nav>
+        <div class="flex items-center space-x-4">
+            <span class="icon text-text-light cursor-pointer hover:text-brand-primary transition duration-200">&#x2699;</span>
+            <div class="w-8 h-8 bg-neutral-mid rounded-full cursor-pointer"></div>
         </div>
     </header>
 
-    <main class="dashboard-content">
-        <h1>Minha Carteira de Investimentos</h1>
+    <main class="dashboard-content p-8 bg-bg-main">
+        <h1 class="text-3xl font-bold text-text-light mb-6">Minha Carteira de Investimentos</h1>
         
-        <button class="btn-primary" onclick="openAtivoModal('new')" style="margin-bottom: 20px;">+ Adicionar Novo Ativo</button>
+        <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 mb-8" onclick="openAtivoModal('new')">+ Adicionar Novo Ativo</button>
 
-        <section class="portfolio-grid" style="margin-bottom: 30px;">
+        <section class="portfolio-grid">
             
-            <div class="card" id="carteira-resumo-card">
-                <h2 style="margin-bottom: 10px;">Visão Geral da Carteira</h2>
-                <p class="light-text">Patrimônio Total Investido (Custo):</p>
-                <p class="kpi-value positive" id="total-patrimonio">R$ 0,00</p>
-                
-                <h3 style="margin-top: 30px;">Distribuição por Classe de Ativo</h3>
-                
-                <div class="chart-placeholder" style="height: 150px; margin-bottom: 20px;">
-                    [Gráfico de Distribuição (Simulado)]
+            <div class="portfolio-left">
+                <div class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default space-y-4" id="carteira-resumo-card">
+                    <h2 class="text-xl font-semibold text-text-light m-0">Visão Geral da Carteira</h2>
+                    
+                    <div class="border-b border-border-default pb-4">
+                        <p class="text-text-dim text-sm">Patrimônio Total Investido (Custo):</p>
+                        <p class="text-status-success font-extrabold text-3xl mt-1" id="total-patrimonio">R$ 0,00</p>
+                    </div>
+                    
+                    <h3 class="text-text-light font-semibold m-0">Distribuição por Classe de Ativo</h3>
+                    
+                    <div class="bg-bg-surface h-36 rounded-lg flex items-center justify-center text-text-dim border border-border-default">
+                        [Gráfico de Distribuição (Simulado)]
+                    </div>
+
+                    <div id="distribuicao-container" class="pt-2">
+                        </div>
                 </div>
 
-                <div id="distribuicao-container">
-                    </div>
+                <section id="investimento-kpi-bottom" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default text-center">
+                    <h3 class="text-text-dim text-sm mb-1">Gastos Planejados (Investimento) do Mês</h3>
+                    <p class="text-brand-primary font-extrabold text-3xl">R$ 1.500,00</p>
+                </section>
             </div>
 
-            <div class="card">
-                <h2>Ativos em Carteira</h2>
-                <table id="table-ativos">
-                    <thead>
-                        <tr>
-                            <th>Produto</th>
-                            <th>Tipo</th>
-                            <th>Qtd</th>
-                            <th>Custo Médio</th>
-                            <th>Custo Total</th>
-                            <th>Vencimento</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        </tbody>
-                </table>
+
+            <div class="portfolio-right bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default">
+                <h2 class="text-xl font-semibold text-text-light mb-4">Detalhes dos Ativos em Carteira</h2>
+                
+                <div class="overflow-x-auto">
+                    <table id="table-ativos" class="w-full text-sm text-text-light whitespace-nowrap">
+                        <thead>
+                            <tr class="border-b-2 border-border-default text-text-dim">
+                                <th class="py-3 px-2 text-left">Produto</th>
+                                <th class="py-3 px-2 text-left">Tipo</th>
+                                <th class="py-3 px-2 text-left">Qtd</th>
+                                <th class="py-3 px-2 text-right">Custo Médio</th>
+                                <th class="py-3 px-2 text-right">Custo Total</th>
+                                <th class="py-3 px-2 text-left">Vencimento</th>
+                                <th class="py-3 px-2 text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
             </div>
         </section>
-
-        <section id="investimento-kpi-bottom" class="card text-center">
-            <h3 class="light-text">Gastos Planejados (Investimento) do Mês</h3>
-            <p class="kpi-value orange-text">R$ 1.500,00</p>
-        </section>
-
     </main>
 
     <div id="ativo-modal" class="modal-overlay">
-        <div class="modal-content card" style="width: 450px;">
-            <h2 class="orange-text" id="ativo-modal-title">Adicionar Novo Ativo</h2>
+        <div class="bg-bg-card p-8 rounded-lg shadow-smooth border border-border-default w-full max-w-md">
+            <h2 class="text-xl font-semibold text-brand-primary mb-4" id="ativo-modal-title">Adicionar Novo Ativo</h2>
             
             <form id="ativo-form">
                 <input type="hidden" id="ativo-id" name="id">
                 
-                <div class="form-group">
-                    <label>Produto (Ex: BOVA11, CDB):</label>
-                    <input type="text" id="ativo-produto" name="produto" class="input-field" required>
+                <div class="mb-4">
+                    <label class="block text-text-dim mb-1">Produto (Ex: BOVA11, CDB):</label>
+                    <input type="text" id="ativo-produto" name="produto" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary" required>
                 </div>
 
-                <div class="form-group">
-                    <label>Tipo de Ativo:</label>
-                    <select id="ativo-tipo" name="tipo_ativo" class="input-field" required>
+                <div class="mb-4">
+                    <label class="block text-text-dim mb-1">Tipo de Ativo:</label>
+                    <select id="ativo-tipo" name="tipo_ativo" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary" required>
                         <option value="Ações">Ações</option>
                         <option value="FIIs">FIIs (Fundos Imobiliários)</option>
                         <option value="Renda Fixa">Renda Fixa (CDB, Tesouro)</option>
@@ -106,30 +121,30 @@
                     </select>
                 </div>
                 
-                <div style="display: flex; gap: 20px;">
-                    <div class="form-group" style="flex: 1;">
-                        <label>Quantidade:</label>
-                        <input type="number" id="ativo-quantidade" name="quantidade" class="input-field" step="any" required>
+                <div class="flex gap-4 mb-4">
+                    <div class="w-1/2">
+                        <label class="block text-text-dim mb-1">Quantidade:</label>
+                        <input type="number" id="ativo-quantidade" name="quantidade" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary" step="any" required>
                     </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label>Custo Médio (R$/unidade):</label>
-                        <input type="number" id="ativo-custo" name="custo_medio" class="input-field" step="0.01" required>
+                    <div class="w-1/2">
+                        <label class="block text-text-dim mb-1">Custo Médio (R$/unidade):</label>
+                        <input type="number" id="ativo-custo" name="custo_medio" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary" step="0.01" required>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Instituição Financeira:</label>
-                    <input type="text" id="ativo-instituicao" name="instituicao" class="input-field">
+                <div class="mb-4">
+                    <label class="block text-text-dim mb-1">Instituição Financeira:</label>
+                    <input type="text" id="ativo-instituicao" name="instituicao" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary">
                 </div>
                 
-                <div class="form-group">
-                    <label>Vencimento (Opcional - para Renda Fixa):</label>
-                    <input type="date" id="ativo-vencimento" name="vencimento" class="input-field">
+                <div class="mb-6">
+                    <label class="block text-text-dim mb-1">Vencimento (Opcional - Renda Fixa):</label>
+                    <input type="date" id="ativo-vencimento" name="vencimento" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary">
                 </div>
 
-                <div class="modal-actions">
-                    <button type="button" onclick="closeAtivoModal()" class="btn-secondary">Cancelar</button>
-                    <button type="submit" class="btn-primary" id="ativo-submit-btn">Salvar Ativo</button>
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeAtivoModal()" class="py-2 px-4 rounded border border-neutral-mid bg-bg-surface text-text-light hover:bg-bg-hover transition duration-200">Cancelar</button>
+                    <button type="submit" class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200" id="ativo-submit-btn">Salvar Ativo</button>
                 </div>
             </form>
         </div>
@@ -164,8 +179,7 @@
                 title.textContent = 'Adicionar Novo Ativo';
                 modal.style.display = 'flex';
             }
-            // A edição completa via modal PUT/GET não está implementada aqui para simplificar, 
-            // mas seguiria a mesma lógica do modal de Metas.
+            // Edição via modal (PUT) não está implementada para simplificar o protótipo.
         }
 
         function closeAtivoModal() {
@@ -184,7 +198,7 @@
             .then(response => {
                 if (!response.ok) throw new Error('Falha na exclusão.');
                 alert('Ativo excluído com sucesso!');
-                loadPortfolio(); // Atualiza toda a carteira
+                loadPortfolio(); 
             })
             .catch(error => {
                 console.error('Erro ao excluir ativo:', error);
@@ -203,22 +217,24 @@
                     container.innerHTML = '';
                     
                     if (data.distribuicao.length === 0) {
-                        container.innerHTML = '<p class="light-text">Nenhum investimento cadastrado.</p>';
+                        container.innerHTML = '<p class="text-text-dim">Nenhum investimento cadastrado.</p>';
                         return;
                     }
 
                     data.distribuicao.forEach(item => {
+                        const percentualTexto = item.percentual.toFixed(1);
+
                         container.innerHTML += `
                             <div class="distribuicao-item">
-                                <span>${item.tipo}</span>
-                                <span class="bold">${item.percentual.toFixed(2)}% (${formatCurrency(item.valor)})</span>
+                                <span class="text-text-dim">${item.tipo}</span>
+                                <span class="font-semibold">${percentualTexto}% (${formatCurrency(item.valor)})</span>
                             </div>
                         `;
                     });
                 })
                 .catch(error => {
                     console.error('Erro ao carregar consolidado:', error);
-                    document.getElementById('total-patrimonio').textContent = 'Erro ao carregar';
+                    document.getElementById('total-patrimonio').textContent = 'R$ Erro';
                 });
         }
         
@@ -231,7 +247,7 @@
                     tbody.innerHTML = ''; 
 
                     if (ativos.length === 0) {
-                         tbody.innerHTML = '<tr><td colspan="7" class="light-text text-center">Nenhum ativo cadastrado.</td></tr>';
+                         tbody.innerHTML = '<tr><td colspan="7" class="text-text-dim text-center py-4">Nenhum ativo cadastrado.</td></tr>';
                         return;
                     }
 
@@ -239,15 +255,15 @@
                         const custoTotal = a.quantidade * a.custo_medio;
                         
                         tbody.innerHTML += `
-                            <tr>
-                                <td>${a.produto}</td>
-                                <td>${a.tipo_ativo}</td>
-                                <td>${a.quantidade.toFixed(a.tipo_ativo === 'Renda Fixa' ? 0 : 2)}</td>
-                                <td>${formatCurrency(a.custo_medio)}</td>
-                                <td class="bold">${formatCurrency(custoTotal)}</td>
-                                <td>${a.vencimento ? a.vencimento : '-'}</td>
-                                <td>
-                                    <span class="icon-action" style="cursor:pointer;" onclick="deleteAtivo(${a.id})">&#x2715;</span>
+                            <tr class="border-b border-border-default hover:bg-bg-hover transition duration-200">
+                                <td class="py-2 px-2 font-semibold">${a.produto}</td>
+                                <td class="py-2 px-2 text-text-dim">${a.tipo_ativo}</td>
+                                <td class="py-2 px-2">${a.quantidade.toFixed(a.tipo_ativo === 'Renda Fixa' ? 0 : 2)}</td>
+                                <td class="py-2 px-2 text-right text-text-dim">${formatCurrency(a.custo_medio)}</td>
+                                <td class="py-2 px-2 text-right font-bold text-status-success">${formatCurrency(custoTotal)}</td>
+                                <td class="py-2 px-2 text-text-dim">${a.vencimento ? a.vencimento : '-'}</td>
+                                <td class="py-2 px-2 text-center">
+                                    <span class="text-text-dim cursor-pointer hover:text-status-error transition duration-200" onclick="deleteAtivo(${a.id})">&#x2715;</span>
                                 </td>
                             </tr>
                         `;

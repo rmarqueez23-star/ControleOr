@@ -1,0 +1,121 @@
+/* input.css */
+
+/* ====================================================== */
+/* 1. DIRETIVAS DO TAILWIND (CRUCIAL)                     */
+/* ====================================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* ====================================================== */
+/* 2. VARIÁVEIS E BASE GERAL (PRESERVADO)               */
+/* ====================================================== */
+
+:root {
+    /* Paleta de Cores (Mapeadas no tailwind.config.js) */
+    --primary-orange: #FF8C00;     
+    --secondary-teal: #008080;     
+    --neutral-white: #FFFFFF;
+    --neutral-light-gray: #F5F5F5; 
+    --neutral-mid-gray: #CCCCCC;   
+    --neutral-dark-gray: #E0E0E0;  
+    --text-dark: #333333;          
+    --text-light: #E0E0E0;         
+    --status-positive: #28a745;    
+    --status-negative: #dc3545;    
+    /* Variável usada na animação para manter o brilho consistente */
+    --neon-teal: #00FFFF;
+}
+
+/* Base global - Garante o uso da fonte e box-sizing */
+body {
+    font-family: var(--font-family-sans);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ====================================================== */
+/* 3. DEFINIÇÃO DE ANIMAÇÃO NEON (DENTRO DO ARQUIVO CSS)  */
+/* O Tailwind irá processar e incluir estes keyframes.    */
+/* ====================================================== */
+
+@keyframes neon-pulse {
+    0%, 100% {
+        box-shadow: 0 0 6px var(--secondary-teal);
+    }
+    50% {
+        /* Brilho mais forte no meio do ciclo */
+        box-shadow: 0 0 10px var(--secondary-teal), 0 0 20px rgba(0, 255, 255, 0.4);
+    }
+}
+
+
+/* ====================================================== */
+/* 4. COMPONENTES CUSTOMIZADOS E ESSENCIAIS (@layer components) */
+/* (Estes estilos são processados para funcionar no Dark Mode)  */
+/* ====================================================== */
+
+@layer components {
+    /* Logo */
+    .logo { 
+        color: var(--primary-orange);
+        font-size: 24px; 
+        font-weight: 900; 
+    }
+
+    /* BARRA DE PROGRESSO ANIMADA (Metas.html) */
+    .neon-progress-bar-animated {
+        /* Fundo já é definido no HTML (bg-brand-secondary) */
+        box-shadow: 0 0 6px var(--secondary-teal);
+        animation: neon-pulse 2s ease-in-out infinite; 
+    }
+
+    /* BARRA DE PROGRESSO ESTÁTICA (Metas Concluídas) */
+    .neon-progress-bar-static {
+        box-shadow: 0 0 4px var(--status-positive);
+    }
+
+    /* Estilo de Card para Metas (Aplicado diretamente no metas.html) */
+    .neon-card-base {
+        /* Este gradiente customizado é mantido aqui para o efeito visual */
+        background: linear-gradient(145deg, #1e1e1e, #1a1a1a);
+    }
+
+    /* Ícones de Ação (Apenas define a cor base/hover se o HTML não o fizer) */
+    .neon-icon-action {
+        color: var(--text-light); /* Cor base */
+        transition: color 0.2s;
+    }
+}
+
+
+/* ====================================================== */
+/* 5. ESTILOS GERAIS DE TABELA (Para legibilidade)        */
+/* ====================================================== */
+
+@layer base {
+    /* Estilos de Tabela para legibilidade no Dark Mode */
+    table {
+        @apply border-collapse w-full text-left text-sm;
+    }
+    thead {
+        @apply border-b-2 border-border-default;
+    }
+    th { 
+        @apply py-2 px-1 text-text-dim;
+    }
+    td { 
+        @apply py-3 px-1 border-b border-border-default;
+    }
+    tbody tr:last-child td {
+        @apply border-b-0;
+    }
+    
+    /* Estilo para edição em linha */
+    [contenteditable="true"]:focus {
+        @apply bg-bg-hover outline-none border border-brand-primary rounded-sm p-0.5;
+    }
+}

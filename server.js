@@ -22,17 +22,22 @@ let db = new sqlite3.Database(DB_PATH, (err) => {
     } else {
         console.log('Conectado ao banco de dados SQLite.');
         
-        // 1.1. Tabela de Transações
-        db.run(`CREATE TABLE IF NOT EXISTS transacoes (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            tipo TEXT NOT NULL,          -- 'Receita' ou 'Despesa'
-            valor REAL NOT NULL,
-            descricao TEXT NOT NULL,
-            data TEXT NOT NULL,          
-            categoria TEXT,
-            status TEXT DEFAULT 'Pago',  
-            data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
-        )`, (err) => {
+        // 1.1. Tabela de Transações (ATUALIZADA para Frequência e Parcelamento)
+        db.run(`
+            CREATE TABLE IF NOT EXISTS transacoes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                tipo TEXT NOT NULL,         -- 'Receita' ou 'Despesa'
+                valor REAL NOT NULL,
+                descricao TEXT NOT NULL,
+                data TEXT NOT NULL,         
+                categoria TEXT,
+                status TEXT DEFAULT 'A Pagar', -- 'A Pagar', 'Pago', 'A Receber', 'Recebido'
+                frequencia TEXT DEFAULT 'Unica', -- 'Fixa', 'Parcelada', 'Unica'
+                parcela_atual INTEGER,
+                parcelas_totais INTEGER,
+                data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        `, (err) => {
             if (err) console.error('ERRO AO CRIAR TABELA TRANSACOES:', err.message);
             else console.log('Tabela "transacoes" verificada/criada com sucesso.');
         });
@@ -48,44 +53,19 @@ let db = new sqlite3.Database(DB_PATH, (err) => {
         )`, (err) => {
             if (err) console.error('ERRO AO CRIAR TABELA METAS:', err.message);
             else console.log('Tabela "metas" verificada/criada com sucesso.');
-
-            // Opcional: Insere dados iniciais de exemplo se a tabela estiver vazia
-            db.get("SELECT COUNT(*) AS count FROM metas", (err, row) => {
-                if (row && row.count === 0) {
-                    db.run(`INSERT INTO metas (titulo, valor_total, valor_arrecadado, prazo_meses) VALUES 
-                            ('Reforma da Casa', 50000.00, 15000.00, 24),
-                            ('Viagem Europa', 10000.00, 8000.00, 12)`);
-                    console.log('Metas de exemplo inseridas.');
-                }
-            });
+            // (Inserção de dados de exemplo...)
         });
 
         // 1.3. Tabela de Ativos
         db.run(`CREATE TABLE IF NOT EXISTS ativos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            produto TEXT NOT NULL,         
-            tipo_ativo TEXT NOT NULL,      
-            quantidade REAL NOT NULL,
-            custo_medio REAL NOT NULL,     
-            instituicao TEXT,              
-            vencimento TEXT,               
+            produto TEXT NOT NULL, tipo_ativo TEXT NOT NULL, quantidade REAL NOT NULL,
+            custo_medio REAL NOT NULL, instituicao TEXT, vencimento TEXT,               
             data_aquisicao DATETIME DEFAULT CURRENT_TIMESTAMP
         )`, (err) => {
-            if (err) {
-                console.error('ERRO AO CRIAR TABELA ATIVOS:', err.message);
-            } else {
-                console.log('Tabela "ativos" verificada/criada com sucesso.');
-
-                db.get("SELECT COUNT(*) AS count FROM ativos", (err, row) => {
-                    if (row && row.count === 0) {
-                        db.run(`INSERT INTO ativos (produto, tipo_ativo, quantidade, custo_medio, instituicao, vencimento) VALUES 
-                                ('BOVA11', 'Ações', 10, 115.50, 'XP Investimentos', NULL),
-                                ('MXRF11', 'FIIs', 50, 10.20, 'Clear', NULL),
-                                ('CDB DI', 'Renda Fixa', 1, 1000.00, 'Banco Inter', '2028-12-31')`);
-                        console.log('Ativos de exemplo inseridos.');
-                    }
-                });
-            }
+            if (err) console.error('ERRO AO CRIAR TABELA ATIVOS:', err.message);
+            else console.log('Tabela "ativos" verificada/criada com sucesso.');
+            // (Inserção de dados de exemplo...)
         });
     }
 });
@@ -93,24 +73,34 @@ let db = new sqlite3.Database(DB_PATH, (err) => {
 
 // ======================================================
 // 2. ROTAS CRUD - TRANSAÇÕES (/api/transacoes)
+// (Inclui frequencia e parcelas)
 // ======================================================
 
-// ROTA POST (C): Criar/Salvar Nova Transação
 app.post('/api/transacoes', (req, res) => {
-    const { tipo, valor, descricao, data, categoria, status } = req.body;
+    const { tipo, valor, descricao, data, categoria, status, frequencia, parcela_atual, parcelas_totais } = req.body;
     if (!tipo || !valor || !descricao || !data) {
         return res.status(400).json({ error: 'Dados incompletos para a transação.' });
     }
 
-    const sql = `INSERT INTO transacoes (tipo, valor, descricao, data, categoria, status) VALUES (?, ?, ?, ?, ?, ?)`;
+    const finalStatus = status || (tipo === 'Receita' ? 'A Receber' : 'A Pagar');
     
-    db.run(sql, [tipo, valor, descricao, data, categoria, status || 'Pago'], function(err) {
+    const sql = `
+        INSERT INTO transacoes 
+        (tipo, valor, descricao, data, categoria, status, frequencia, parcela_atual, parcelas_totais) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    
+    db.run(sql, [
+        tipo, valor, descricao, data, categoria, finalStatus, 
+        frequencia || 'Unica', 
+        parcela_atual || null, 
+        parcelas_totais || null
+    ], function(err) {
         if (err) return res.status(500).json({ error: err.message });
         res.status(201).json({ message: 'Transação salva com sucesso', id: this.lastID });
     });
 });
 
-// ROTA GET (R): Ler/Buscar Todas as Transações
 app.get('/api/transacoes', (req, res) => {
     const sql = `SELECT * FROM transacoes ORDER BY data DESC, data_criacao DESC`;
     db.all(sql, [], (err, rows) => {
@@ -119,21 +109,29 @@ app.get('/api/transacoes', (req, res) => {
     });
 });
 
-// ROTA PUT (U): Atualizar Transação
 app.put('/api/transacoes/:id', (req, res) => {
     const id = req.params.id;
-    const { tipo, valor, descricao, data, categoria, status } = req.body;
+    const { tipo, valor, descricao, data, categoria, status, frequencia, parcela_atual, parcelas_totais } = req.body;
 
-    const sql = `UPDATE transacoes SET tipo = ?, valor = ?, descricao = ?, data = ?, categoria = ?, status = ? WHERE id = ?`;
+    const sql = `
+        UPDATE transacoes 
+        SET tipo = ?, valor = ?, descricao = ?, data = ?, categoria = ?, status = ?, frequencia = ?, parcela_atual = ?, parcelas_totais = ? 
+        WHERE id = ?
+    `;
     
-    db.run(sql, [tipo, valor, descricao, data, categoria, status, id], function(err) {
+    db.run(sql, [
+        tipo, valor, descricao, data, categoria, status, 
+        frequencia || 'Unica', 
+        parcela_atual || null, 
+        parcelas_totais || null, 
+        id
+    ], function(err) {
         if (err) return res.status(500).json({ error: err.message });
         if (this.changes === 0) return res.status(404).json({ message: 'Transação não encontrada.' });
         res.json({ message: 'Transação atualizada com sucesso' });
     });
 });
 
-// ROTA DELETE (D): Deletar Transação
 app.delete('/api/transacoes/:id', (req, res) => {
     const id = req.params.id;
     const sql = 'DELETE FROM transacoes WHERE id = ?';
@@ -148,9 +146,9 @@ app.delete('/api/transacoes/:id', (req, res) => {
 
 // ======================================================
 // 3. ROTAS CRUD - METAS (/api/metas)
+// (Mantidas)
 // ======================================================
 
-// ROTA POST (C): Criar/Salvar Nova Meta
 app.post('/api/metas', (req, res) => {
     const { titulo, valor_total, valor_arrecadado, prazo_meses } = req.body;
     if (!titulo || !valor_total || !prazo_meses) {
@@ -165,7 +163,6 @@ app.post('/api/metas', (req, res) => {
     });
 });
 
-// ROTA GET (R): Ler/Buscar Todas as Metas
 app.get('/api/metas', (req, res) => {
     const sql = `SELECT * FROM metas ORDER BY valor_arrecadado / valor_total DESC`;
     db.all(sql, [], (err, rows) => {
@@ -174,7 +171,6 @@ app.get('/api/metas', (req, res) => {
     });
 });
 
-// ROTA GET (R): Ler/Buscar Meta por ID (para edição)
 app.get('/api/metas/:id', (req, res) => {
     const id = req.params.id;
     const sql = `SELECT * FROM metas WHERE id = ?`;
@@ -185,7 +181,6 @@ app.get('/api/metas/:id', (req, res) => {
     });
 });
 
-// ROTA PUT (U): Atualizar Meta
 app.put('/api/metas/:id', (req, res) => {
     const id = req.params.id;
     const { titulo, valor_total, valor_arrecadado, prazo_meses } = req.body;
@@ -199,7 +194,6 @@ app.put('/api/metas/:id', (req, res) => {
     });
 });
 
-// ROTA DELETE (D): Deletar Meta
 app.delete('/api/metas/:id', (req, res) => {
     const id = req.params.id;
     const sql = 'DELETE FROM metas WHERE id = ?';
@@ -214,9 +208,9 @@ app.delete('/api/metas/:id', (req, res) => {
 
 // ======================================================
 // 4. ROTAS CRUD - ATIVOS (/api/ativos)
+// (Mantidas)
 // ======================================================
 
-// ROTA POST (C): Criar/Salvar Novo Ativo
 app.post('/api/ativos', (req, res) => {
     const { produto, tipo_ativo, quantidade, custo_medio, instituicao, vencimento } = req.body;
     if (!produto || !tipo_ativo || !quantidade || !custo_medio) {
@@ -231,7 +225,6 @@ app.post('/api/ativos', (req, res) => {
     });
 });
 
-// ROTA GET (R): Ler/Buscar Todos os Ativos
 app.get('/api/ativos', (req, res) => {
     const sql = `SELECT * FROM ativos ORDER BY tipo_ativo, produto`;
     db.all(sql, [], (err, rows) => {
@@ -240,7 +233,6 @@ app.get('/api/ativos', (req, res) => {
     });
 });
 
-// ROTA DELETE (D): Deletar Ativo
 app.delete('/api/ativos/:id', (req, res) => {
     const id = req.params.id;
     const sql = 'DELETE FROM ativos WHERE id = ?';
@@ -290,7 +282,7 @@ app.get('/api/balanco-mensal', (req, res) => {
     const sqlReceitaMedia = `SELECT IFNULL(AVG(valor), 0) AS avgReceita FROM transacoes WHERE tipo = 'Receita'`;
     const sqlDespesaMedia = `SELECT IFNULL(AVG(valor), 0) AS avgDespesa FROM transacoes WHERE tipo = 'Despesa'`;
     
-    const taxaCrescimento = 0.005; // 0.5% de crescimento mensal simulado
+    const taxaCrescimento = 0.005; 
 
     db.get(sqlReceitaMedia, [], (errReceita, rowReceita) => {
         if (errReceita) return res.status(500).json({ error: errReceita.message });

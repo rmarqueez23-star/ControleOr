@@ -5,67 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Metas Financeiras - omeuplannerfinanceiro</title>
     <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-    <header class="top-bar">
+    <style>
+        /* Estilização específica para o efeito de fundo do card neon */
+        .neon-card-base {
+            background: linear-gradient(145deg, #1e1e1e, #1a1a1a);
+        }
+        
+        /* Estilo do modal para aparecer centralizado e cobrir a tela */
+        .modal-overlay {
+            display: none; /* Inicia oculto */
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="bg-bg-main text-text-light font-sans antialiased">
+
+    <header class="sticky top-0 z-10 flex items-center justify-between border-b border-border-default bg-bg-card px-8 py-4 shadow-smooth">
         <div class="logo">omeuplannerfinanceiro</div>
-        <nav class="main-nav">
-            <a href="index.html">Dashboard</a>
-            <a href="metas.html" style="color: var(--primary-orange);">Metas</a> 
-            <a href="#lancamentos">Lançamentos</a> 
-            <a href="#investimentos">Investimentos</a>
+        <nav class="main-nav hidden md:flex space-x-8">
+            <a href="index.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Dashboard</a>
+            <a href="lancamentos.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Lançamentos</a>
+            <a href="metas.html" class="text-brand-primary font-semibold hover:text-opacity-80 transition duration-200">Metas</a> 
+            <a href="investimentos.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Investimentos</a>
         </nav>
-        <div class="user-actions">
-            <span class="icon">&#x2699;</span>
-            <div class="profile-icon"></div>
+        <div class="flex items-center space-x-4">
+            <span class="icon text-text-light cursor-pointer hover:text-brand-primary transition duration-200">&#x2699;</span>
+            <div class="w-8 h-8 bg-neutral-mid rounded-full cursor-pointer"></div>
         </div>
     </header>
 
-    <main class="dashboard-content">
-        <h1>Planejamento de Metas</h1>
+    <main class="dashboard-content p-8 bg-bg-main">
+        <h1 class="text-3xl font-bold text-text-light mb-6">Planejamento de Metas</h1>
         
-        <section id="metas-full" class="card" style="margin-bottom: 30px;">
-            <h2 style="font-size: 24px;">Controle de Objetivos Financeiros</h2>
+        <section id="metas-full" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
+            <h2 class="text-xl font-semibold text-text-light mb-4">Controle de Objetivos Financeiros</h2>
             
-            <button class="btn-primary" onclick="openMetaModal('new')" style="margin-bottom: 20px;">+ Adicionar Nova Meta</button>
+            <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange mb-6" onclick="openMetaModal('new')">
+                + Nova Meta Holográfica
+            </button>
 
-            <div id="goals-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;">
+            <div id="goals-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 </div>
         </section>
 
     </main>
     
     <div id="meta-modal" class="modal-overlay">
-        <div class="modal-content card" style="width: 450px;">
-            <h2 class="orange-text" id="meta-modal-title">Criar Nova Meta</h2>
+        <div class="bg-bg-card p-8 rounded-lg shadow-smooth border border-border-default w-full max-w-lg">
+            <h2 class="text-xl font-semibold text-neon-teal mb-4" id="meta-modal-title">Criar Nova Meta</h2>
             
             <form id="meta-form">
                 <input type="hidden" id="meta-id" name="id">
                 
-                <div class="form-group">
-                    <label>Título da Meta:</label>
-                    <input type="text" id="meta-titulo" name="titulo" class="input-field" required>
+                <div class="mb-4">
+                    <label class="block text-text-dim mb-1">Título da Meta:</label>
+                    <input type="text" id="meta-titulo" name="titulo" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" required>
                 </div>
 
-                <div class="form-group">
-                    <label>Valor Total Necessário (R$):</label>
-                    <input type="number" id="meta-valor-total" name="valor_total" class="input-field" step="0.01" required>
+                <div class="mb-4">
+                    <label class="block text-text-dim mb-1">Valor Total Necessário (R$):</label>
+                    <input type="number" id="meta-valor-total" name="valor_total" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" step="0.01" required>
                 </div>
                 
-                <div class="form-group">
-                    <label>Valor Já Arrecadado (R$):</label>
-                    <input type="number" id="meta-valor-arrecadado" name="valor_arrecadado" class="input-field" step="0.01" required>
+                <div class="mb-4">
+                    <label class="block text-text-dim mb-1">Valor Já Arrecadado (R$):</label>
+                    <input type="number" id="meta-valor-arrecadado" name="valor_arrecadado" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" step="0.01" required>
                 </div>
 
-                <div class="form-group">
-                    <label>Prazo Restante (Meses):</label>
-                    <input type="number" id="meta-prazo" name="prazo_meses" class="input-field" required>
+                <div class="mb-6">
+                    <label class="block text-text-dim mb-1">Prazo Restante (Meses):</label>
+                    <input type="number" id="meta-prazo" name="prazo_meses" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" required>
                 </div>
 
-                <div class="modal-actions">
-                    <button type="button" onclick="closeMetaModal()" class="btn-secondary">Cancelar</button>
-                    <button type="submit" class="btn-primary" id="meta-submit-btn">Salvar Meta</button>
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeMetaModal()" class="py-2 px-4 rounded border border-neutral-mid bg-bg-surface text-text-light hover:bg-bg-hover transition duration-200">Cancelar</button>
+                    <button type="submit" class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange">Salvar Meta</button>
                 </div>
             </form>
         </div>
@@ -74,7 +94,6 @@
     <script>
         const API_METAS_URL = 'http://localhost:3000/api/metas';
 
-        // Função auxiliar para formatação monetária (R$ 0.000,00)
         const formatCurrency = (amount) => {
             return new Intl.NumberFormat('pt-BR', {
                 style: 'currency',
@@ -86,7 +105,6 @@
         // FUNÇÕES DE MODAL
         // ======================================================
 
-        // Abre o modal de Meta, preenchendo se for edição
         async function openMetaModal(mode, id = null) {
             const modal = document.getElementById('meta-modal');
             const title = document.getElementById('meta-modal-title');
@@ -94,7 +112,7 @@
             
             form.reset();
             document.getElementById('meta-id').value = '';
-            document.getElementById('meta-valor-arrecadado').value = 0; // Valor padrão para novo
+            document.getElementById('meta-valor-arrecadado').value = 0;
 
             if (mode === 'new') {
                 title.textContent = 'Criar Nova Meta';
@@ -107,7 +125,6 @@
                     if (!response.ok) throw new Error('Meta não encontrada.');
                     const meta = await response.json();
 
-                    // Preenche o formulário
                     document.getElementById('meta-id').value = meta.id;
                     document.getElementById('meta-titulo').value = meta.titulo;
                     document.getElementById('meta-valor-total').value = meta.valor_total;
@@ -122,7 +139,6 @@
             }
         }
 
-        // Fecha o modal de Meta
         function closeMetaModal() {
             document.getElementById('meta-modal').style.display = 'none';
         }
@@ -131,7 +147,6 @@
         // FUNÇÕES CRUD DE METAS
         // ======================================================
 
-        // Deleta a meta (DELETE)
         function deleteMeta(id) {
             if (!confirm('Tem certeza que deseja excluir esta meta?')) return;
 
@@ -139,7 +154,7 @@
             .then(response => {
                 if (!response.ok) throw new Error('Falha na exclusão da meta.');
                 alert('Meta excluída com sucesso!');
-                loadGoals(); // Atualiza a lista de metas
+                loadGoals(); 
             })
             .catch(error => {
                 console.error('Erro ao excluir meta:', error);
@@ -147,16 +162,15 @@
             });
         }
 
-        // Carrega e renderiza todos os cards de metas (READ)
         function loadGoals() {
             fetch(API_METAS_URL)
                 .then(response => response.json())
                 .then(goals => {
                     const container = document.getElementById('goals-container');
-                    container.innerHTML = ''; // Limpa antes de carregar
+                    container.innerHTML = ''; 
                     
                     if (goals.length === 0) {
-                        container.innerHTML = '<p class="light-text text-center">Nenhuma meta cadastrada.</p>';
+                        container.innerHTML = '<p class="text-text-dim text-center col-span-full">Nenhuma meta cadastrada.</p>';
                         return;
                     }
 
@@ -164,26 +178,35 @@
                         const percent = (goal.valor_arrecadado / goal.valor_total) * 100;
                         const percentDisplay = Math.min(100, percent).toFixed(0); 
                         const isComplete = percent >= 100;
-                        const statusColor = isComplete ? 'var(--status-positive)' : 'var(--secondary-teal)';
+                        
+                        // Classes Visuais Neon
+                        const titleColor = isComplete ? 'text-status-success' : 'text-neon-teal';
+                        const progressColor = isComplete ? 'bg-status-success' : 'bg-neon-teal';
+                        
+                        // CLASSE DE ANIMAÇÃO CORRIGIDA - Usa a classe customizada do input.css
+                        const progressBarClass = isComplete 
+                            ? 'neon-progress-bar-static' 
+                            : 'neon-progress-bar-animated'; 
 
                         const cardHtml = `
-                            <div class="card goal-card ${isComplete ? 'positive-border' : 'teal-border'}">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <h3 class="teal-text" style="color: ${statusColor};">${goal.titulo}</h3>
-                                    <div style="display: flex; gap: 10px;">
-                                        <span class="icon-action" style="cursor:pointer;" onclick="openMetaModal('edit', ${goal.id})">&#9998;</span> 
-                                        <span class="icon-action" style="cursor:pointer;" onclick="deleteMeta(${goal.id})">&#x2715;</span> 
+                            <div class="neon-card-base p-4 rounded-lg shadow-smooth border border-border-default transition duration-300 hover:shadow-neon-glow-teal hover:border-neon-teal cursor-pointer">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-lg font-bold ${titleColor} m-0">${goal.titulo}</h3>
+                                    <div class="flex gap-2">
+                                        <span class="neon-icon-action" onclick="openMetaModal('edit', ${goal.id})">&#9998;</span>
+                                        <span class="neon-icon-action hover:text-status-error" onclick="deleteMeta(${goal.id})">&#x2715;</span>
                                     </div>
                                 </div>
 
-                                <p>Valor Total: <span class="bold">${formatCurrency(goal.valor_total)}</span></p>
-                                <p>Arrecadado: <span class="bold">${formatCurrency(goal.valor_arrecadado)}</span></p>
-                                ${!isComplete ? `<p>Parcelas Restantes: <span class="bold orange-text">${goal.prazo_meses}</span></p>` : `<p class="bold positive">META CONCLUÍDA!</p>`}
+                                <p class="text-text-dim text-sm">Total: <span class="font-semibold text-text-light">${formatCurrency(goal.valor_total)}</span></p>
+                                <p class="text-text-dim text-sm">Arrecadado: <span class="font-semibold text-text-light">${formatCurrency(goal.valor_arrecadado)}</span></p>
+                                
+                                ${!isComplete ? `<p class="text-text-dim text-sm mt-1">Faltam: <span class="font-semibold text-neon-orange">${goal.prazo_meses} meses</span></p>` : `<p class="font-bold text-status-success mt-1">META CONCLUÍDA!</p>`}
 
-                                <div class="progress-container">
-                                    <div class="progress-bar-fill teal-bg" style="width: ${percentDisplay}%;"></div>
+                                <div class="w-full bg-border-default rounded-full h-2 mt-4">
+                                    <div class="${progressColor} h-2 rounded-full transition-all duration-500 ${progressBarClass}" style="width: ${percentDisplay}%;"></div>
                                 </div>
-                                <span class="progress-percent" style="color: ${statusColor};">${percentDisplay}% Concluído</span>
+                                <span class="text-right block text-xs mt-1 ${titleColor} font-semibold">${percentDisplay}% Carregado</span>
                             </div>
                         `;
                         container.innerHTML += cardHtml;
@@ -191,8 +214,7 @@
                 })
                 .catch(error => {
                     console.error('Erro ao carregar metas:', error);
-                    alert('Erro ao carregar metas. Verifique se o servidor está rodando.');
-                    document.getElementById('goals-container').innerHTML = '<p class="light-text text-center">Erro ao carregar metas. Verifique o console.</p>';
+                    document.getElementById('goals-container').innerHTML = '<p class="text-text-dim text-center col-span-full">Erro ao carregar metas. Verifique o console.</p>';
                 });
         }
 
@@ -207,7 +229,6 @@
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData.entries());
             
-            // Converte valores para números
             data.valor_total = parseFloat(data.valor_total);
             data.valor_arrecadado = parseFloat(data.valor_arrecadado);
             data.prazo_meses = parseInt(data.prazo_meses);
@@ -224,7 +245,7 @@
             .then(() => {
                 alert(`Meta ${id ? 'atualizada' : 'salva'} com sucesso!`);
                 closeMetaModal();
-                loadGoals(); // Atualiza a lista de metas
+                loadGoals(); 
             })
             .catch(error => {
                 console.error('Erro ao salvar meta:', error);
@@ -232,7 +253,7 @@
             });
         });
 
-        // Ação Inicial: Carrega as metas ao abrir a página
+        // Ação Inicial
         window.onload = loadGoals;
     </script>
 </body>

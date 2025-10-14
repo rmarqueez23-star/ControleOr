@@ -1,339 +1,1472 @@
-/* Definições de Variáveis e Cores */
-:root {
-    --primary-orange: #FF8C00;      /* Laranja Vibrante (CTAs, Destaques) */
-    --secondary-teal: #008080;      /* Verde-Água/Teal (Gráficos, Progresso Positivo) */
-    --neutral-white: #FFFFFF;
-    --neutral-light-gray: #F5F5F5;  /* Fundo da Área de Conteúdo */
-    --neutral-mid-gray: #CCCCCC;    /* Bordas, Ícones não-ativos */
-    --text-dark: #333333;           /* Textos Principais */
-    --text-light: #666666;          /* Textos Secundários */
-    --status-positive: #28a745;     /* Verde (Receita, Positivo) */
-    --status-negative: #dc3545;     /* Vermelho (Despesa, Negativo) */
+/* input.css */
 
-    /* Tipografia */
-    --font-family-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    --font-size-base: 14px;
+/* ====================================================== */
+
+/* 1. DIRETIVAS DO TAILWIND (CRUCIAL)                     */
+
+/* ====================================================== */
+
+*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
 }
 
-/* Base e Tipografia */
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */
+
+/*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  /* 1 */
+  border-width: 0;
+  /* 2 */
+  border-style: solid;
+  /* 2 */
+  border-color: #e5e7eb;
+  /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5;
+  /* 1 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */
+  -moz-tab-size: 4;
+  /* 3 */
+  -o-tab-size: 4;
+     tab-size: 4;
+  /* 3 */
+  font-family: "Inter", sans-serif;
+  /* 4 */
+  font-feature-settings: normal;
+  /* 5 */
+  font-variation-settings: normal;
+  /* 6 */
+  -webkit-tap-highlight-color: transparent;
+  /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
 body {
-    font-family: var(--font-family-sans);
-    background-color: var(--neutral-white);
-    color: var(--text-dark);
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    line-height: 1.5;
+  margin: 0;
+  /* 1 */
+  line-height: inherit;
+  /* 2 */
 }
 
-h1 { font-size: 28px; font-weight: 700; color: var(--text-dark); }
-h2 { font-size: 20px; margin-top: 0; margin-bottom: 20px; }
-h3 { font-size: 16px; margin-top: 0; margin-bottom: 10px; }
-.bold { font-weight: 600; }
-.text-center { text-align: center; }
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
 
-/* Cores de Status e Destaques */
-.positivo { color: var(--status-positive); font-weight: 600; }
-.negativo { color: var(--status-negative); font-weight: 600; }
-.teal { color: var(--secondary-teal); font-weight: 600; }
-.orange-text { color: var(--primary-orange); }
-.teal-text { color: var(--secondary-teal); }
-.negative-text { color: var(--status-negative); }
-.light-text { color: var(--text-light); font-size: var(--font-size-base); }
-.status-positive-text { color: var(--status-positive); font-weight: 600; }
-
-/* Componentes Comuns */
-.card {
-    background-color: var(--neutral-white);
-    border: 1px solid #E0E0E0;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+hr {
+  height: 0;
+  /* 1 */
+  color: inherit;
+  /* 2 */
+  border-top-width: 1px;
+  /* 3 */
 }
 
-.btn-primary {
-    background-color: var(--primary-orange);
-    color: var(--neutral-white);
-    border: none;
-    border-radius: 4px;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s;
-}
-.btn-primary:hover {
-    background-color: #e67e22; 
-}
-.btn-secondary {
-    padding: 10px 15px; 
-    border: 1px solid var(--neutral-mid-gray); 
-    background-color: var(--neutral-white); 
-    border-radius: 4px; 
-    cursor: pointer;
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  -webkit-text-decoration: underline dotted;
+          text-decoration: underline dotted;
 }
 
-.input-field {
-    width: 100%; 
-    padding: 10px; 
-    border: 1px solid var(--neutral-mid-gray); 
-    border-radius: 4px;
-    box-sizing: border-box;
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
 }
 
-/* Layout Geral */
-.top-bar {
-    background-color: var(--neutral-white); 
-    border-bottom: 1px solid var(--neutral-light-gray); 
-    padding: 15px 30px; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    position: sticky; 
-    top: 0; 
-    z-index: 100;
-}
-.logo { 
-    font-size: 24px; 
-    font-weight: 900; 
-    color: var(--primary-orange); 
-}
-.main-nav { 
-    display: flex; 
-    gap: 30px; 
-}
-.main-nav a {
-    text-decoration: none; 
-    color: var(--text-dark); 
-    font-weight: 600;
-    transition: color 0.2s;
-}
-.main-nav a:hover {
-    color: var(--primary-orange);
-}
-.user-actions { 
-    display: flex; 
-    align-items: center; 
-    gap: 15px; 
-}
-.user-actions .icon {
-    font-size: 20px; 
-    cursor: pointer;
-}
-.profile-icon {
-    width: 30px; 
-    height: 30px; 
-    background-color: var(--neutral-mid-gray); 
-    border-radius: 50%; 
-    cursor: pointer;
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
 }
 
-.dashboard-content {
-    padding: 30px; 
-    background-color: var(--neutral-light-gray); 
-    display: grid; 
-    grid-template-columns: 1fr; 
-    gap: 30px;
-}
-.quick-actions { 
-    display: flex; 
-    gap: 15px; 
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
 }
 
-/* Grid Principal */
-.modules-grid {
-    display: grid; 
-    grid-template-columns: 2fr 1fr; 
-    gap: 30px;
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* 1 */
+  font-feature-settings: normal;
+  /* 2 */
+  font-variation-settings: normal;
+  /* 3 */
+  font-size: 1em;
+  /* 4 */
 }
 
-/* A. Resumo Mensal */
-.resumo-items {
-    display: flex; 
-    justify-content: space-between; 
-    text-align: center;
-}
-.resumo-items > div {
-    padding: 0 10px;
-}
-.resumo-items .valor { 
-    font-weight: 600; 
-    margin-bottom: 5px; 
-}
-.resumo-items .label { 
-    margin: 0; 
-    font-size: var(--font-size-base); 
-}
-.saldo-total {
-    border-left: 1px solid var(--neutral-mid-gray); 
-    padding-left: 20px;
-}
-.valor-saldo {
-    font-size: 18px; 
-    font-weight: 700; 
-    color: var(--secondary-teal);
-    margin-bottom: 5px;
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
 }
 
-/* A. Tabela de Planejamento */
-.saldo-mensal-resumo {
-    margin-bottom: 15px; 
-    padding: 10px; 
-    background-color: var(--neutral-light-gray); 
-    border-radius: 4px; 
-    display: flex; 
-    justify-content: space-between;
-    font-weight: 600;
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
 }
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
 table {
-    width: 100%; 
-    border-collapse: collapse; 
-    text-align: left; 
-    font-size: var(--font-size-base);
-}
-thead { 
-    border-bottom: 2px solid var(--neutral-mid-gray); 
-}
-th { 
-    padding: 8px 0; 
-    color: var(--text-light);
-}
-td { 
-    padding: 8px 0; 
-}
-tbody tr {
-    border-bottom: 1px solid var(--neutral-light-gray);
-}
-.main-category {
-    font-weight: 600;
-}
-.sub-category {
-    padding-left: 15px;
-    color: var(--text-light);
+  text-indent: 0;
+  /* 1 */
+  border-color: inherit;
+  /* 2 */
+  border-collapse: collapse;
+  /* 3 */
 }
 
-/* Barras de Progresso */
-.progress-bar-container {
-    display: flex; 
-    align-items: center; 
-    gap: 5px; 
-}
-.progress-bar-container .progress-bar {
-    width: 80%; 
-    height: 6px; 
-    background-color: var(--neutral-mid-gray); /* Fundo cinza */
-    border-radius: 3px; 
-}
-.progress-bar.negative {
-    background-color: var(--status-negative); /* Despesa: barra vermelha sobreposta ao cinza */
-}
-/* O preenchimento da barra é feito inline no HTML, mas essa classe define o estilo */
-.progress-bar-fill {
-    height: 100%;
-    border-radius: 5px;
-    background-color: var(--neutral-mid-gray);
-}
-.teal-bg {
-    background-color: var(--secondary-teal); /* Cor de progresso para Metas */
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  /* 1 */
+  font-feature-settings: inherit;
+  /* 1 */
+  font-variation-settings: inherit;
+  /* 1 */
+  font-size: 100%;
+  /* 1 */
+  font-weight: inherit;
+  /* 1 */
+  line-height: inherit;
+  /* 1 */
+  letter-spacing: inherit;
+  /* 1 */
+  color: inherit;
+  /* 1 */
+  margin: 0;
+  /* 2 */
+  padding: 0;
+  /* 3 */
 }
 
-/* C. Gráfico e Metas */
-.chart-placeholder {
-    height: 250px; 
-    background-color: var(--neutral-light-gray); 
-    border-radius: 4px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    color: var(--text-light);
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
 }
 
-.goal-card {
-    margin-bottom: 15px; 
-    padding: 15px;
-}
-.teal-border {
-    border: 2px solid var(--secondary-teal);
-}
-.progress-container {
-    height: 10px; 
-    background-color: var(--neutral-mid-gray); 
-    border-radius: 5px; 
-    margin-top: 10px;
-    overflow: hidden; /* Garante que o preenchimento não saia do container */
-}
-.progress-percent {
-    float: right; 
-    font-size: 12px; 
-    font-weight: 600;
-    margin-top: 5px;
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button;
+  /* 1 */
+  background-color: transparent;
+  /* 2 */
+  background-image: none;
+  /* 2 */
 }
 
-/* D. KPI de Investimento */
-.kpi-value {
-    font-size: 32px; 
-    font-weight: 700; 
-    margin: 5px 0 0 0;
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
 }
 
-/* Modal de Importação */
-.modal-overlay {
-    display: none; 
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0, 0, 0, 0.5); 
-    z-index: 200;
-}
-.modal-content {
-    width: 400px; 
-    margin: 100px auto; 
-    padding: 30px;
-}
-.form-group {
-    margin-bottom: 15px;
-}
-.form-group label {
-    display: block; 
-    margin-bottom: 5px;
-}
-.modal-actions {
-    display: flex; 
-    justify-content: flex-end; 
-    gap: 10px; 
-    margin-top: 20px;
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
 }
 
-/* Responsividade (Mobile) */
-@media (max-width: 900px) {
-    .modules-grid {
-        grid-template-columns: 1fr; /* Coluna única no mobile */
-    }
-    .top-bar {
-        padding: 15px;
-    }
-    .main-nav {
-        display: none; /* Esconde menu completo no mobile, priorizando o ícone de configurações */
-    }
-    .quick-actions {
-        flex-direction: column; /* Botões um abaixo do outro */
-    }
-    .dashboard-content {
-        padding: 15px;
-    }
-    .resumo-items {
-        flex-wrap: wrap;
-        justify-content: space-around;
-        gap: 15px;
-    }
-    .saldo-total {
-        border-left: none;
-        padding-left: 0;
-        margin-top: 15px;
-    }
-    .modal-content {
-        width: 90%;
-        margin: 50px auto;
-    }
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  outline-offset: -2px;
+  /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::-moz-placeholder, textarea::-moz-placeholder {
+  opacity: 1;
+  /* 1 */
+  color: #9ca3af;
+  /* 2 */
+}
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1;
+  /* 1 */
+  color: #9ca3af;
+  /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  /* 1 */
+  vertical-align: middle;
+  /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+
+/* Estilos de Tabela para legibilidade no Dark Mode */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+thead {
+  border-bottom-width: 2px;
+  --tw-border-opacity: 1;
+  border-color: rgb(58 58 58 / var(--tw-border-opacity, 1));
+}
+
+th {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  --tw-text-opacity: 1;
+  color: rgb(160 160 160 / var(--tw-text-opacity, 1));
+}
+
+td {
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(58 58 58 / var(--tw-border-opacity, 1));
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+tbody tr:last-child td {
+  border-bottom-width: 0px;
+}
+
+/* Estilo para edição em linha */
+
+[contenteditable="true"]:focus {
+  border-radius: 0.125rem;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(255 140 0 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(51 51 51 / var(--tw-bg-opacity, 1));
+  padding: 0.125rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.container {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
+/* Logo */
+
+.logo {
+  color: var(--primary-orange);
+  font-size: 24px;
+  font-weight: 900;
+}
+
+/* BARRA DE PROGRESSO ANIMADA (Metas.html) */
+
+.neon-progress-bar-animated {
+  /* Fundo já é definido no HTML (bg-brand-secondary) */
+  box-shadow: 0 0 6px var(--secondary-teal);
+  animation: neon-pulse 2s ease-in-out infinite;
+}
+
+/* BARRA DE PROGRESSO ESTÁTICA (Metas Concluídas) */
+
+.neon-progress-bar-static {
+  box-shadow: 0 0 4px var(--status-positive);
+}
+
+/* Estilo de Card para Metas (Aplicado diretamente no metas.html) */
+
+.neon-card-base {
+  /* Este gradiente customizado é mantido aqui para o efeito visual */
+  background: linear-gradient(145deg, #1e1e1e, #1a1a1a);
+}
+
+/* Ícones de Ação (Apenas define a cor base/hover se o HTML não o fizer) */
+
+.neon-icon-action {
+  color: var(--text-light);
+  /* Cor base */
+  transition: color 0.2s;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.sticky {
+  position: sticky;
+}
+
+.-top-5 {
+  top: -1.25rem;
+}
+
+.top-0 {
+  top: 0px;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
+.col-span-full {
+  grid-column: 1 / -1;
+}
+
+.m-0 {
+  margin: 0px;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
+
+.block {
+  display: block;
+}
+
+.flex {
+  display: flex;
+}
+
+.table {
+  display: table;
+}
+
+.grid {
+  display: grid;
+}
+
+.hidden {
+  display: none;
+}
+
+.h-1\.5 {
+  height: 0.375rem;
+}
+
+.h-2 {
+  height: 0.5rem;
+}
+
+.h-3 {
+  height: 0.75rem;
+}
+
+.h-36 {
+  height: 9rem;
+}
+
+.h-64 {
+  height: 16rem;
+}
+
+.h-8 {
+  height: 2rem;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.w-1\/12 {
+  width: 8.333333%;
+}
+
+.w-1\/2 {
+  width: 50%;
+}
+
+.w-1\/4 {
+  width: 25%;
+}
+
+.w-1\/6 {
+  width: 16.666667%;
+}
+
+.w-2\/12 {
+  width: 16.666667%;
+}
+
+.w-3 {
+  width: 0.75rem;
+}
+
+.w-3\/12 {
+  width: 25%;
+}
+
+.w-7 {
+  width: 1.75rem;
+}
+
+.w-8 {
+  width: 2rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.min-w-\[120px\] {
+  min-width: 120px;
+}
+
+.min-w-\[300px\] {
+  min-width: 300px;
+}
+
+.max-w-lg {
+  max-width: 32rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.gap-0\.5 {
+  gap: 0.125rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.gap-8 {
+  gap: 2rem;
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-8 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(2rem * var(--tw-space-x-reverse));
+  margin-left: calc(2rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
+
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
+.space-y-8 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2rem * var(--tw-space-y-reverse));
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.rounded-t-sm {
+  border-top-left-radius: 0.125rem;
+  border-top-right-radius: 0.125rem;
+}
+
+.border {
+  border-width: 1px;
+}
+
+.border-b {
+  border-bottom-width: 1px;
+}
+
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+
+.border-l {
+  border-left-width: 1px;
+}
+
+.border-t {
+  border-top-width: 1px;
+}
+
+.border-border-default {
+  --tw-border-opacity: 1;
+  border-color: rgb(58 58 58 / var(--tw-border-opacity, 1));
+}
+
+.border-neutral-mid {
+  --tw-border-opacity: 1;
+  border-color: rgb(204 204 204 / var(--tw-border-opacity, 1));
+}
+
+.bg-bg-card {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 30 30 / var(--tw-bg-opacity, 1));
+}
+
+.bg-bg-main {
+  --tw-bg-opacity: 1;
+  background-color: rgb(18 18 18 / var(--tw-bg-opacity, 1));
+}
+
+.bg-bg-surface {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 37 37 / var(--tw-bg-opacity, 1));
+}
+
+.bg-border-default {
+  --tw-bg-opacity: 1;
+  background-color: rgb(58 58 58 / var(--tw-bg-opacity, 1));
+}
+
+.bg-brand-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 140 0 / var(--tw-bg-opacity, 1));
+}
+
+.bg-brand-secondary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 128 128 / var(--tw-bg-opacity, 1));
+}
+
+.bg-neon-teal {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-neutral-mid {
+  --tw-bg-opacity: 1;
+  background-color: rgb(204 204 204 / var(--tw-bg-opacity, 1));
+}
+
+.bg-status-error {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 53 69 / var(--tw-bg-opacity, 1));
+}
+
+.bg-status-success {
+  --tw-bg-opacity: 1;
+  background-color: rgb(40 167 69 / var(--tw-bg-opacity, 1));
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.p-3 {
+  padding: 0.75rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.p-6 {
+  padding: 1.5rem;
+}
+
+.p-8 {
+  padding: 2rem;
+}
+
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
+.pl-4 {
+  padding-left: 1rem;
+}
+
+.pt-2 {
+  padding-top: 0.5rem;
+}
+
+.pt-4 {
+  padding-top: 1rem;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.font-sans {
+  font-family: "Inter", sans-serif;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-brand-primary {
+  --tw-text-opacity: 1;
+  color: rgb(255 140 0 / var(--tw-text-opacity, 1));
+}
+
+.text-brand-secondary {
+  --tw-text-opacity: 1;
+  color: rgb(0 128 128 / var(--tw-text-opacity, 1));
+}
+
+.text-neon-orange {
+  --tw-text-opacity: 1;
+  color: rgb(255 112 0 / var(--tw-text-opacity, 1));
+}
+
+.text-neon-teal {
+  --tw-text-opacity: 1;
+  color: rgb(0 255 255 / var(--tw-text-opacity, 1));
+}
+
+.text-status-error {
+  --tw-text-opacity: 1;
+  color: rgb(220 53 69 / var(--tw-text-opacity, 1));
+}
+
+.text-status-success {
+  --tw-text-opacity: 1;
+  color: rgb(40 167 69 / var(--tw-text-opacity, 1));
+}
+
+.text-text-dim {
+  --tw-text-opacity: 1;
+  color: rgb(160 160 160 / var(--tw-text-opacity, 1));
+}
+
+.text-text-light {
+  --tw-text-opacity: 1;
+  color: rgb(224 224 224 / var(--tw-text-opacity, 1));
+}
+
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.underline {
+  text-decoration-line: underline;
+}
+
+.antialiased {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.shadow-neon-glow-orange {
+  --tw-shadow: 0 0 8px #FF7000;
+  --tw-shadow-colored: 0 0 8px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-smooth {
+  --tw-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  --tw-shadow-colored: 0 4px 6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.duration-200 {
+  transition-duration: 200ms;
+}
+
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.duration-500 {
+  transition-duration: 500ms;
+}
+
+/* ====================================================== */
+
+/* 2. VARIÁVEIS E BASE GERAL (PRESERVADO)               */
+
+/* ====================================================== */
+
+:root {
+  /* Paleta de Cores (Mapeadas no tailwind.config.js) */
+  --primary-orange: #FF8C00;
+  --secondary-teal: #008080;
+  --neutral-white: #FFFFFF;
+  --neutral-light-gray: #F5F5F5;
+  --neutral-mid-gray: #CCCCCC;
+  --neutral-dark-gray: #E0E0E0;
+  --text-dark: #333333;
+  --text-light: #E0E0E0;
+  --status-positive: #28a745;
+  --status-negative: #dc3545;
+  /* Variável usada na animação para manter o brilho consistente */
+  --neon-teal: #00FFFF;
+}
+
+/* Base global - Garante o uso da fonte e box-sizing */
+
+body {
+  font-family: var(--font-family-sans);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ====================================================== */
+
+/* 3. DEFINIÇÃO DE ANIMAÇÃO NEON (DENTRO DO ARQUIVO CSS)  */
+
+/* O Tailwind irá processar e incluir estes keyframes.    */
+
+/* ====================================================== */
+
+@keyframes neon-pulse {
+  0%, 100% {
+    box-shadow: 0 0 6px var(--secondary-teal);
+  }
+
+  50% {
+    /* Brilho mais forte no meio do ciclo */
+    box-shadow: 0 0 10px var(--secondary-teal), 0 0 20px rgba(0, 255, 255, 0.4);
+  }
+}
+
+/* ====================================================== */
+
+/* 4. COMPONENTES CUSTOMIZADOS E ESSENCIAIS (@layer components) */
+
+/* (Estes estilos são processados para funcionar no Dark Mode)  */
+
+/* ====================================================== */
+
+/* ====================================================== */
+
+/* 5. ESTILOS GERAIS DE TABELA (Para legibilidade)        */
+
+/* ====================================================== */
+
+.last\:border-b-0:last-child {
+  border-bottom-width: 0px;
+}
+
+.hover\:border-neon-teal:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 255 255 / var(--tw-border-opacity, 1));
+}
+
+.hover\:bg-bg-hover:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(51 51 51 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-green-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(21 128 61 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-orange-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(194 65 12 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:text-brand-primary:hover {
+  --tw-text-opacity: 1;
+  color: rgb(255 140 0 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-status-error:hover {
+  --tw-text-opacity: 1;
+  color: rgb(220 53 69 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-opacity-80:hover {
+  --tw-text-opacity: 0.8;
+}
+
+.hover\:shadow-neon-glow-teal:hover {
+  --tw-shadow: 0 0 10px #00FFFF;
+  --tw-shadow-colored: 0 0 10px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.focus\:border-brand-primary:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 140 0 / var(--tw-border-opacity, 1));
+}
+
+.focus\:border-neon-teal:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 255 255 / var(--tw-border-opacity, 1));
+}
+
+.focus\:ring-brand-primary:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 140 0 / var(--tw-ring-opacity, 1));
+}
+
+.focus\:ring-neon-teal:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(0 255 255 / var(--tw-ring-opacity, 1));
+}
+
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .md\:flex {
+    display: flex;
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .lg\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
