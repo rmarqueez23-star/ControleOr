@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carteira de Investimentos - omeuplannerfinanceiro</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr; /* Gráfico de um lado, tabela do outro */
+            gap: 30px;
+        }
+        .distribuicao-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--neutral-light-gray);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="logo">omeuplannerfinanceiro</div>
+        <nav class="main-nav">
+            <a href="index.html">Dashboard</a>
+            <a href="metas.html">Metas</a> 
+            <a href="#lancamentos">Lançamentos</a> 
+            <a href="investimentos.html" style="color: var(--primary-orange);">Investimentos</a> </nav>
+        <div class="user-actions">
+            <span class="icon">&#x2699;</span>
+            <div class="profile-icon"></div>
+        </div>
+    </header>
+
+    <main class="dashboard-content">
+        <h1>Minha Carteira de Investimentos</h1>
+        
+        <button class="btn-primary" onclick="openAtivoModal('new')" style="margin-bottom: 20px;">+ Adicionar Novo Ativo</button>
+
+        <section class="portfolio-grid" style="margin-bottom: 30px;">
+            
+            <div class="card" id="carteira-resumo-card">
+                <h2 style="margin-bottom: 10px;">Visão Geral da Carteira</h2>
+                <p class="light-text">Patrimônio Total Investido (Custo):</p>
+                <p class="kpi-value positive" id="total-patrimonio">R$ 0,00</p>
+                
+                <h3 style="margin-top: 30px;">Distribuição por Classe de Ativo</h3>
+                
+                <div class="chart-placeholder" style="height: 150px; margin-bottom: 20px;">
+                    [Gráfico de Distribuição (Simulado)]
+                </div>
+
+                <div id="distribuicao-container">
+                    </div>
+            </div>
+
+            <div class="card">
+                <h2>Ativos em Carteira</h2>
+                <table id="table-ativos">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Tipo</th>
+                            <th>Qtd</th>
+                            <th>Custo Médio</th>
+                            <th>Custo Total</th>
+                            <th>Vencimento</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="investimento-kpi-bottom" class="card text-center">
+            <h3 class="light-text">Gastos Planejados (Investimento) do Mês</h3>
+            <p class="kpi-value orange-text">R$ 1.500,00</p>
+        </section>
+
+    </main>
+
+    <div id="ativo-modal" class="modal-overlay">
+        <div class="modal-content card" style="width: 450px;">
+            <h2 class="orange-text" id="ativo-modal-title">Adicionar Novo Ativo</h2>
+            
+            <form id="ativo-form">
+                <input type="hidden" id="ativo-id" name="id">
+                
+                <div class="form-group">
+                    <label>Produto (Ex: BOVA11, CDB):</label>
+                    <input type="text" id="ativo-produto" name="produto" class="input-field" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo de Ativo:</label>
+                    <select id="ativo-tipo" name="tipo_ativo" class="input-field" required>
+                        <option value="Ações">Ações</option>
+                        <option value="FIIs">FIIs (Fundos Imobiliários)</option>
+                        <option value="Renda Fixa">Renda Fixa (CDB, Tesouro)</option>
+                        <option value="Fundos">Fundos</option>
+                    </select>
+                </div>
+                
+                <div style="display: flex; gap: 20px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Quantidade:</label>
+                        <input type="number" id="ativo-quantidade" name="quantidade" class="input-field" step="any" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Custo Médio (R$/unidade):</label>
+                        <input type="number" id="ativo-custo" name="custo_medio" class="input-field" step="0.01" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Instituição Financeira:</label>
+                    <input type="text" id="ativo-instituicao" name="instituicao" class="input-field">
+                </div>
+                
+                <div class="form-group">
+                    <label>Vencimento (Opcional - para Renda Fixa):</label>
+                    <input type="date" id="ativo-vencimento" name="vencimento" class="input-field">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" onclick="closeAtivoModal()" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn-primary" id="ativo-submit-btn">Salvar Ativo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        const API_ATIVOS_URL = 'http://localhost:3000/api/ativos';
+        const API_CONSOLIDADO_URL = 'http://localhost:3000/api/carteira/consolidado';
+
+        // Função auxiliar de formatação monetária (mantida)
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+            }).format(amount);
+        };
+
+        // ======================================================
+        // FUNÇÕES DE MODAL
+        // ======================================================
+
+        function openAtivoModal(mode, id = null) {
+            const modal = document.getElementById('ativo-modal');
+            const title = document.getElementById('ativo-modal-title');
+            const form = document.getElementById('ativo-form');
+            
+            form.reset();
+            document.getElementById('ativo-id').value = '';
+
+            if (mode === 'new') {
+                title.textContent = 'Adicionar Novo Ativo';
+                modal.style.display = 'flex';
+            }
+            // A edição completa via modal PUT/GET não está implementada aqui para simplificar, 
+            // mas seguiria a mesma lógica do modal de Metas.
+        }
+
+        function closeAtivoModal() {
+            document.getElementById('ativo-modal').style.display = 'none';
+        }
+
+        // ======================================================
+        // FUNÇÕES CRUD E CARREGAMENTO
+        // ======================================================
+
+        // Deleta o ativo
+        function deleteAtivo(id) {
+            if (!confirm('Tem certeza que deseja excluir este ativo?')) return;
+
+            fetch(`${API_ATIVOS_URL}/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (!response.ok) throw new Error('Falha na exclusão.');
+                alert('Ativo excluído com sucesso!');
+                loadPortfolio(); // Atualiza toda a carteira
+            })
+            .catch(error => {
+                console.error('Erro ao excluir ativo:', error);
+                alert('Erro ao excluir o ativo.');
+            });
+        }
+        
+        // Carrega o Resumo e Distribuição da Carteira
+        function loadConsolidatedSummary() {
+            fetch(API_CONSOLIDADO_URL)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('total-patrimonio').textContent = formatCurrency(data.totalPatrimonio);
+                    
+                    const container = document.getElementById('distribuicao-container');
+                    container.innerHTML = '';
+                    
+                    if (data.distribuicao.length === 0) {
+                        container.innerHTML = '<p class="light-text">Nenhum investimento cadastrado.</p>';
+                        return;
+                    }
+
+                    data.distribuicao.forEach(item => {
+                        container.innerHTML += `
+                            <div class="distribuicao-item">
+                                <span>${item.tipo}</span>
+                                <span class="bold">${item.percentual.toFixed(2)}% (${formatCurrency(item.valor)})</span>
+                            </div>
+                        `;
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar consolidado:', error);
+                    document.getElementById('total-patrimonio').textContent = 'Erro ao carregar';
+                });
+        }
+        
+        // Carrega a Tabela Detalhada de Ativos
+        function loadAtivosTable() {
+             fetch(API_ATIVOS_URL)
+                .then(response => response.json())
+                .then(ativos => {
+                    const tbody = document.querySelector('#table-ativos tbody');
+                    tbody.innerHTML = ''; 
+
+                    if (ativos.length === 0) {
+                         tbody.innerHTML = '<tr><td colspan="7" class="light-text text-center">Nenhum ativo cadastrado.</td></tr>';
+                        return;
+                    }
+
+                    ativos.forEach(a => {
+                        const custoTotal = a.quantidade * a.custo_medio;
+                        
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${a.produto}</td>
+                                <td>${a.tipo_ativo}</td>
+                                <td>${a.quantidade.toFixed(a.tipo_ativo === 'Renda Fixa' ? 0 : 2)}</td>
+                                <td>${formatCurrency(a.custo_medio)}</td>
+                                <td class="bold">${formatCurrency(custoTotal)}</td>
+                                <td>${a.vencimento ? a.vencimento : '-'}</td>
+                                <td>
+                                    <span class="icon-action" style="cursor:pointer;" onclick="deleteAtivo(${a.id})">&#x2715;</span>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar ativos:', error);
+                });
+        }
+        
+        // Função principal de carregamento
+        function loadPortfolio() {
+            loadConsolidatedSummary();
+            loadAtivosTable();
+        }
+
+        // Lógica de Envio do Formulário (Create Ativo)
+        document.getElementById('ativo-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Converte valores numéricos
+            data.quantidade = parseFloat(data.quantidade);
+            data.custo_medio = parseFloat(data.custo_medio);
+
+            fetch(API_ATIVOS_URL, { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Falha ao salvar ativo.');
+                return response.json();
+            })
+            .then(() => {
+                alert('Ativo salvo com sucesso!');
+                closeAtivoModal();
+                event.target.reset();
+                loadPortfolio(); // Atualiza a carteira
+            })
+            .catch(error => {
+                console.error('Erro ao salvar ativo:', error);
+                alert(`Erro ao salvar ativo. Verifique se o servidor (Node.js) está rodando na porta 3000.`);
+            });
+        });
+
+        // Ação Inicial
+        window.onload = loadPortfolio;
+    </script>
+</body>
+</html>

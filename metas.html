@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metas Financeiras - omeuplannerfinanceiro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="logo">omeuplannerfinanceiro</div>
+        <nav class="main-nav">
+            <a href="index.html">Dashboard</a>
+            <a href="metas.html" style="color: var(--primary-orange);">Metas</a> 
+            <a href="#lancamentos">Lançamentos</a> 
+            <a href="#investimentos">Investimentos</a>
+        </nav>
+        <div class="user-actions">
+            <span class="icon">&#x2699;</span>
+            <div class="profile-icon"></div>
+        </div>
+    </header>
+
+    <main class="dashboard-content">
+        <h1>Planejamento de Metas</h1>
+        
+        <section id="metas-full" class="card" style="margin-bottom: 30px;">
+            <h2 style="font-size: 24px;">Controle de Objetivos Financeiros</h2>
+            
+            <button class="btn-primary" onclick="openMetaModal('new')" style="margin-bottom: 20px;">+ Adicionar Nova Meta</button>
+
+            <div id="goals-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;">
+                </div>
+        </section>
+
+    </main>
+    
+    <div id="meta-modal" class="modal-overlay">
+        <div class="modal-content card" style="width: 450px;">
+            <h2 class="orange-text" id="meta-modal-title">Criar Nova Meta</h2>
+            
+            <form id="meta-form">
+                <input type="hidden" id="meta-id" name="id">
+                
+                <div class="form-group">
+                    <label>Título da Meta:</label>
+                    <input type="text" id="meta-titulo" name="titulo" class="input-field" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Valor Total Necessário (R$):</label>
+                    <input type="number" id="meta-valor-total" name="valor_total" class="input-field" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Valor Já Arrecadado (R$):</label>
+                    <input type="number" id="meta-valor-arrecadado" name="valor_arrecadado" class="input-field" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Prazo Restante (Meses):</label>
+                    <input type="number" id="meta-prazo" name="prazo_meses" class="input-field" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" onclick="closeMetaModal()" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn-primary" id="meta-submit-btn">Salvar Meta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_METAS_URL = 'http://localhost:3000/api/metas';
+
+        // Função auxiliar para formatação monetária (R$ 0.000,00)
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+            }).format(amount);
+        };
+
+        // ======================================================
+        // FUNÇÕES DE MODAL
+        // ======================================================
+
+        // Abre o modal de Meta, preenchendo se for edição
+        async function openMetaModal(mode, id = null) {
+            const modal = document.getElementById('meta-modal');
+            const title = document.getElementById('meta-modal-title');
+            const form = document.getElementById('meta-form');
+            
+            form.reset();
+            document.getElementById('meta-id').value = '';
+            document.getElementById('meta-valor-arrecadado').value = 0; // Valor padrão para novo
+
+            if (mode === 'new') {
+                title.textContent = 'Criar Nova Meta';
+                modal.style.display = 'flex';
+            } else if (mode === 'edit' && id) {
+                title.textContent = 'Editar Meta';
+                
+                try {
+                    const response = await fetch(`${API_METAS_URL}/${id}`);
+                    if (!response.ok) throw new Error('Meta não encontrada.');
+                    const meta = await response.json();
+
+                    // Preenche o formulário
+                    document.getElementById('meta-id').value = meta.id;
+                    document.getElementById('meta-titulo').value = meta.titulo;
+                    document.getElementById('meta-valor-total').value = meta.valor_total;
+                    document.getElementById('meta-valor-arrecadado').value = meta.valor_arrecadado;
+                    document.getElementById('meta-prazo').value = meta.prazo_meses;
+                    
+                    modal.style.display = 'flex';
+                } catch (error) {
+                    console.error('Erro ao buscar meta para edição:', error);
+                    alert('Não foi possível carregar os dados da meta.');
+                }
+            }
+        }
+
+        // Fecha o modal de Meta
+        function closeMetaModal() {
+            document.getElementById('meta-modal').style.display = 'none';
+        }
+
+        // ======================================================
+        // FUNÇÕES CRUD DE METAS
+        // ======================================================
+
+        // Deleta a meta (DELETE)
+        function deleteMeta(id) {
+            if (!confirm('Tem certeza que deseja excluir esta meta?')) return;
+
+            fetch(`${API_METAS_URL}/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (!response.ok) throw new Error('Falha na exclusão da meta.');
+                alert('Meta excluída com sucesso!');
+                loadGoals(); // Atualiza a lista de metas
+            })
+            .catch(error => {
+                console.error('Erro ao excluir meta:', error);
+                alert('Erro ao excluir a meta.');
+            });
+        }
+
+        // Carrega e renderiza todos os cards de metas (READ)
+        function loadGoals() {
+            fetch(API_METAS_URL)
+                .then(response => response.json())
+                .then(goals => {
+                    const container = document.getElementById('goals-container');
+                    container.innerHTML = ''; // Limpa antes de carregar
+                    
+                    if (goals.length === 0) {
+                        container.innerHTML = '<p class="light-text text-center">Nenhuma meta cadastrada.</p>';
+                        return;
+                    }
+
+                    goals.forEach(goal => {
+                        const percent = (goal.valor_arrecadado / goal.valor_total) * 100;
+                        const percentDisplay = Math.min(100, percent).toFixed(0); 
+                        const isComplete = percent >= 100;
+                        const statusColor = isComplete ? 'var(--status-positive)' : 'var(--secondary-teal)';
+
+                        const cardHtml = `
+                            <div class="card goal-card ${isComplete ? 'positive-border' : 'teal-border'}">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <h3 class="teal-text" style="color: ${statusColor};">${goal.titulo}</h3>
+                                    <div style="display: flex; gap: 10px;">
+                                        <span class="icon-action" style="cursor:pointer;" onclick="openMetaModal('edit', ${goal.id})">&#9998;</span> 
+                                        <span class="icon-action" style="cursor:pointer;" onclick="deleteMeta(${goal.id})">&#x2715;</span> 
+                                    </div>
+                                </div>
+
+                                <p>Valor Total: <span class="bold">${formatCurrency(goal.valor_total)}</span></p>
+                                <p>Arrecadado: <span class="bold">${formatCurrency(goal.valor_arrecadado)}</span></p>
+                                ${!isComplete ? `<p>Parcelas Restantes: <span class="bold orange-text">${goal.prazo_meses}</span></p>` : `<p class="bold positive">META CONCLUÍDA!</p>`}
+
+                                <div class="progress-container">
+                                    <div class="progress-bar-fill teal-bg" style="width: ${percentDisplay}%;"></div>
+                                </div>
+                                <span class="progress-percent" style="color: ${statusColor};">${percentDisplay}% Concluído</span>
+                            </div>
+                        `;
+                        container.innerHTML += cardHtml;
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar metas:', error);
+                    alert('Erro ao carregar metas. Verifique se o servidor está rodando.');
+                    document.getElementById('goals-container').innerHTML = '<p class="light-text text-center">Erro ao carregar metas. Verifique o console.</p>';
+                });
+        }
+
+        // Lógica de Envio do Formulário de Metas (Create/Update)
+        document.getElementById('meta-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const id = document.getElementById('meta-id').value;
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `${API_METAS_URL}/${id}` : API_METAS_URL;
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Converte valores para números
+            data.valor_total = parseFloat(data.valor_total);
+            data.valor_arrecadado = parseFloat(data.valor_arrecadado);
+            data.prazo_meses = parseInt(data.prazo_meses);
+
+            fetch(url, { 
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`Falha ao salvar meta. Status: ${response.status}`);
+                return response.json();
+            })
+            .then(() => {
+                alert(`Meta ${id ? 'atualizada' : 'salva'} com sucesso!`);
+                closeMetaModal();
+                loadGoals(); // Atualiza a lista de metas
+            })
+            .catch(error => {
+                console.error('Erro ao salvar meta:', error);
+                alert('Erro ao salvar meta. Verifique o console.');
+            });
+        });
+
+        // Ação Inicial: Carrega as metas ao abrir a página
+        window.onload = loadGoals;
+    </script>
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Financeiro Pessoal - Visão Geral</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="logo">
+            omeuplannerfinanceiro
+        </div>
+        <nav class="main-nav">
+            <a href="index.html" style="color: var(--primary-orange);">Dashboard</a> 
+            <a href="metas.html">Metas</a>
+            <a href="#lancamentos">Lançamentos</a> 
+            <a href="investimentos.html">Investimentos</a> 
+        </nav>
+        <div class="user-actions">
+            <span class="icon">&#x2699;</span>
+            <div class="profile-icon"></div>
+        </div>
+    </header>
+
+    <main class="dashboard-content">
+
+        <h1>Dashboard Financeiro</h1>
+        <div class="quick-actions">
+            <button class="btn-primary" onclick="openManualEntryModal()">+ Nova Transação</button>
+            <button class="btn-primary" onclick="openImportModal()">&#x2191; Importar Dados</button> 
+        </div>
+
+        <div class="modules-grid">
+            
+            <div>
+                
+                <section id="resumo-mensal" class="card">
+                    <h2>Resumo de Janeiro 2025</h2>
+                    <div class="resumo-items">
+                        <div><p class="valor positivo">R$ 0,00</p><p class="label">Receita Programada</p></div>
+                        <div><p class="valor negativo">R$ 0,00</p><p class="label">Despesas Lançadas</p></div>
+                        <div><p class="valor teal">R$ 500,00</p><p class="label">Planos (Fixo)</p></div>
+                        <div class="saldo-total">
+                            <p class="valor-saldo">R$ 0,00</p>
+                            <p class="label">Saldo Projetado do Mês</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="receitas-lancamentos" class="card" style="margin-bottom: 30px;">
+                    <h2>Lançamentos de Receitas</h2>
+                    <div class="saldo-mensal-resumo">
+                        <span>Receita Total Lançada:</span>
+                        <span id="total-receita" class="status-positive-text">R$ 0,00</span>
+                    </div>
+                    
+                    <table id="table-receitas">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Descrição/Categoria</th>
+                                <th style="width: 25%;">Valor (R$)</th>
+                                <th style="width: 15%;">Data</th>
+                                <th style="width: 10%;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </section>
+
+                <section id="despesas-lancamentos" class="card" style="margin-bottom: 30px;">
+                    <h2>Lançamentos de Despesas</h2>
+                    <div class="saldo-mensal-resumo">
+                        <span>Despesa Total Lançada:</span>
+                        <span id="total-despesa" class="negative-text">R$ 0,00</span>
+                    </div>
+                    
+                    <table id="table-despesas">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Descrição/Categoria</th>
+                                <th style="width: 25%;">Valor (R$)</th>
+                                <th style="width: 15%;">Data</th>
+                                <th style="width: 10%;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="main-category">
+                                <td class="negative-text">Despesas Fixas (Exemplo Estático)</td>
+                                <td>R$ 4.000,00</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            </tbody>
+                    </table>
+                </section>
+                
+                <section id="grafico-saldo" class="card">
+                    <h2>Balanço Mensal Projetado (Próx. 12 Meses)</h2>
+                    <div id="balance-chart-container" style="display: flex; justify-content: space-around; align-items: flex-end; height: 250px; padding: 10px; border-bottom: 1px solid var(--neutral-mid-gray);">
+                        </div>
+                    <div id="chart-legend" style="display: flex; justify-content: center; gap: 20px; margin-top: 10px;">
+                        <span style="color: var(--status-positive);">&#9632; Receita</span>
+                        <span style="color: var(--status-negative);">&#9632; Despesa</span>
+                    </div>
+                </section>
+
+            </div>
+            
+            <div>
+                
+                <section id="metas-resumo" class="card" style="margin-bottom: 30px; padding: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h2 style="font-size: 20px; margin: 0;">Minhas Metas Financeiras</h2>
+                        <a href="metas.html" class="orange-text" style="font-size: 14px; text-decoration: none;">Gerenciar ></a>
+                    </div>
+                    <div id="goals-summary-container">
+                        </div>
+                </section>
+
+                <section id="investimentos-resumo" class="card" style="margin-bottom: 30px; padding: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h2 style="font-size: 20px; margin: 0;">Resumo da Carteira (Custo)</h2>
+                        <a href="investimentos.html" class="orange-text" style="font-size: 14px; text-decoration: none;">Ver Carteira ></a>
+                    </div>
+                    
+                    <p class="light-text" style="margin-bottom: 5px;">Patrimônio Total Investido:</p>
+                    <p class="kpi-value positive" id="total-patrimonio-resumo" style="font-size: 24px; margin-top: 0;">R$ 0,00</p>
+                    
+                    <div id="portfolio-distribution-container">
+                        </div>
+                </section>
+                
+                <section id="investimento-kpi" class="card text-center">
+                    <h3 class="light-text">Gastos Planejados (Investimento) do Mês</h3>
+                    <p class="kpi-value orange-text">R$ 1.500,00</p>
+                </section>
+                
+            </div>
+        </div>
+        
+        <section id="investimentos" class="card">
+            <h2>Monitoramento de Investimentos</h2>
+            <p class="light-text text-center">Para gerenciar e visualizar detalhes da carteira, acesse a <a href="investimentos.html" class="orange-text">Aba Investimentos</a>.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">☐</th>
+                        <th style="width: 20%;">Inst. Fin. - Partição</th>
+                        <th style="width: 20%;">Emissor</th>
+                        <th style="width: 30%;">Produto</th>
+                        <th style="width: 15%;">Vencimento</th>
+                        <th style="width: 10%;">Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>☐</td>
+                        <td>Banco XYZ - Renda Fixa</td>
+                        <td>Tesouro Nacional</td>
+                        <td>Tesouro IPCA+ 2035</td>
+                        <td>15/05/2035</td>
+                        <td><span class="icon-action">&#9998;</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <div id="manual-entry-modal" class="modal-overlay">
+        <div class="modal-content card" style="width: 500px;">
+            <h2 class="orange-text">Registrar Nova Transação</h2>
+            
+            <form id="transaction-form">
+                <div class="form-group">
+                    <label>Tipo de Lançamento:</label>
+                    <div>
+                        <input type="radio" id="receita" name="tipo" value="Receita" required> <label for="receita" class="positivo">Receita</label>
+                        <input type="radio" id="despesa" name="tipo" value="Despesa" required style="margin-left: 20px;"> <label for="despesa" class="negativo">Despesa</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Descrição:</label>
+                    <input type="text" name="descricao" class="input-field" required>
+                </div>
+                
+                <div style="display: flex; gap: 20px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Valor (R$):</label>
+                        <input type="number" name="valor" class="input-field" step="0.01" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Data:</label>
+                        <input type="date" name="data" class="input-field" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Categoria:</label>
+                    <select name="categoria" class="input-field">
+                        <option value="Salario">Salário (Receita)</option>
+                        <option value="Outras">Outras Receitas</option>
+                        <option value="Alimentacao">Alimentação</option>
+                        <option value="Moradia">Moradia/Aluguel</option>
+                        <option value="Lazer">Lazer</option>
+                        <option value="Transporte">Transporte</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" onclick="closeManualEntryModal()" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar Lançamento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="import-modal" class="modal-overlay">
+        <div class="modal-content card" style="width: 400px;">
+            <h2 class="orange-text">Importar Extratos Bancários</h2>
+            <p class="light-text">Faça o upload de seus arquivos para automatizar o cadastro de transações.</p>
+
+            <form>
+                <div class="form-group">
+                    <label>Instituição Financeira:</label>
+                    <select class="input-field">
+                        <option>Selecione</option>
+                        <option>Nubank</option>
+                        <option>Itaú</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Upload de Arquivo (CSV, OFX):</label>
+                    <input type="file" class="input-field">
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" onclick="closeImportModal()" class="btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000/api/transacoes';
+        const API_RESUMO_URL = 'http://localhost:3000/api/resumo';
+        const API_METAS_URL = 'http://localhost:3000/api/metas'; 
+        const API_CARTEIRA_URL = 'http://localhost:3000/api/carteira/consolidado'; 
+        const API_BALANCO_URL = 'http://localhost:3000/api/balanco-mensal'; // URL do Gráfico
+
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+            }).format(amount);
+        };
+
+        // Funções de controle dos Modais
+        function openManualEntryModal() {
+            document.getElementById('manual-entry-modal').style.display = 'flex'; 
+        }
+        function closeManualEntryModal() {
+            document.getElementById('manual-entry-modal').style.display = 'none';
+        }
+        function openImportModal() {
+            document.getElementById('import-modal').style.display = 'flex'; 
+        }
+        function closeImportModal() {
+            document.getElementById('import-modal').style.display = 'none';
+        }
+
+        // ======================================================
+        // FUNÇÕES DE TRANSAÇÕES E CRUD
+        // ======================================================
+
+        function deleteTransaction(id) {
+            if (!confirm('Tem certeza que deseja excluir esta transação?')) return;
+
+            fetch(`${API_BASE_URL}/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (!response.ok) throw new Error('Falha na exclusão.');
+                alert('Transação excluída com sucesso!');
+                refreshUI();
+            })
+            .catch(error => {
+                console.error('Erro ao excluir:', error);
+                alert('Erro ao excluir a transação.');
+            });
+        }
+
+        function handleEdit(event, id, field) {
+            const row = event.target.closest('tr');
+            const tipo = row.getAttribute('data-tipo');
+            const dataTransacao = row.getAttribute('data-data');
+
+            const newValueText = event.target.textContent;
+            let finalValue;
+            
+            if (field === 'valor') {
+                const numericValue = parseFloat(newValueText.replace(/[^0-9,-]+/g, "").replace(',', '.'));
+                if (isNaN(numericValue)) {
+                    alert('Valor inválido. Edição cancelada.');
+                    refreshUI(); 
+                    return; 
+                }
+                finalValue = numericValue;
+            } else {
+                finalValue = newValueText;
+            }
+
+            const payload = {
+                tipo: tipo,
+                valor: parseFloat(row.querySelector('[data-field="valor"]').textContent.replace(/[^0-9,-]+/g, "").replace(',', '.')),
+                descricao: row.querySelector('[data-field="descricao"]').textContent.split('(')[0].trim(),
+                data: dataTransacao,
+                categoria: 'Outros', 
+                status: 'Pago'
+            };
+            
+            payload[field] = finalValue;
+
+            fetch(`${API_BASE_URL}/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Falha na atualização.');
+                if (field === 'valor') {
+                    event.target.textContent = formatCurrency(finalValue);
+                }
+                refreshUI();
+            })
+            .catch(error => {
+                console.error('Erro ao atualizar:', error);
+                alert('Erro ao atualizar a transação. Verifique o console.');
+                refreshUI(); 
+            });
+        }
+
+
+        // ======================================================
+        // FUNÇÕES DE CARREGAMENTO DE DADOS (READ)
+        // ======================================================
+
+        function loadSummary() {
+            fetch(API_RESUMO_URL)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector('.resumo-items .valor.positivo').textContent = formatCurrency(data.receitaProgramada);
+                    document.querySelector('.resumo-items .valor.negativo').textContent = formatCurrency(data.despesasFixas + data.planos); 
+                    document.querySelector('.resumo-items .valor-saldo').textContent = formatCurrency(data.saldoProjetado);
+                    
+                    document.getElementById('total-receita').textContent = formatCurrency(data.receitaProgramada);
+                    document.getElementById('total-despesa').textContent = formatCurrency(data.despesasFixas + data.planos);
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar o Resumo Mensal:', error);
+                });
+        }
+
+        function loadTransactionsTable() {
+            fetch(API_BASE_URL)
+                .then(response => response.json())
+                .then(transactions => {
+                    const tbodyReceitas = document.querySelector('#table-receitas tbody');
+                    const tbodyDespesas = document.querySelector('#table-despesas tbody');
+                    
+                    tbodyReceitas.innerHTML = ''; 
+                    const staticRow = tbodyDespesas.querySelector('.main-category') ? tbodyDespesas.querySelector('.main-category').outerHTML : '';
+                    tbodyDespesas.innerHTML = staticRow; 
+
+                    transactions.forEach(t => {
+                        const isExpense = t.tipo === 'Despesa';
+                        const tableBody = isExpense ? tbodyDespesas : tbodyReceitas;
+                        const rowClass = isExpense ? 'negative-text' : 'positivo';
+                        const valorFormatado = formatCurrency(t.valor);
+                        
+                        const newRow = `
+                            <tr data-id="${t.id}" data-tipo="${t.tipo}" data-data="${t.data}">
+                                <td class="${rowClass}" data-field="descricao" contenteditable="true" onblur="handleEdit(event, ${t.id}, 'descricao')">${t.descricao} (${t.categoria})</td>
+                                <td class="${rowClass}" data-field="valor" contenteditable="true" onblur="handleEdit(event, ${t.id}, 'valor')">${valorFormatado}</td>
+                                <td class="${rowClass}">${t.data}</td>
+                                <td>
+                                    <span class="icon-action" style="cursor:pointer;" onclick="deleteTransaction(${t.id})">&#x2715;</span>
+                                </td>
+                            </tr>
+                        `;
+                        tableBody.insertAdjacentHTML('afterbegin', newRow); 
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar a tabela de transações:', error);
+                });
+        }
+        
+        function loadGoalsSummary() {
+            fetch(API_METAS_URL)
+                .then(response => response.json())
+                .then(goals => {
+                    const container = document.getElementById('goals-summary-container');
+                    container.innerHTML = ''; 
+
+                    if (goals.length === 0) {
+                        container.innerHTML = '<p class="light-text text-center">Nenhuma meta cadastrada.</p><a href="metas.html" class="btn-primary" style="width:100%; text-align:center; box-sizing:border-box; margin-top: 10px;">Criar Nova Meta</a>';
+                        return;
+                    }
+
+                    const topGoals = goals.slice(0, 3); 
+
+                    topGoals.forEach(goal => {
+                        const percent = (goal.valor_arrecadado / goal.valor_total) * 100;
+                        const percentDisplay = Math.min(100, percent).toFixed(0); 
+                        const isComplete = percent >= 100;
+                        const statusColor = isComplete ? 'var(--status-positive)' : 'var(--secondary-teal)';
+
+                        const cardHtml = `
+                            <div class="goal-card-summary" style="padding: 10px 0; border-bottom: 1px solid var(--border-color);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                    <span class="bold" style="color: ${statusColor}; font-size: 14px;">${goal.titulo}</span>
+                                    <span class="bold light-text" style="font-size: 14px;">${percentDisplay}%</span>
+                                </div>
+                                <div class="progress-container" style="height: 6px;">
+                                    <div class="progress-bar-fill teal-bg" style="width: ${percentDisplay}%; height: 100%;"></div>
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += cardHtml;
+                    });
+                    
+                    if (goals.length > 3) {
+                        container.innerHTML += `<p class="text-center" style="margin-top: 10px;"><a href="metas.html" class="light-text" style="text-decoration: none;">Ver todas (${goals.length})</a></p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar resumo de metas:', error);
+                    document.getElementById('goals-summary-container').innerHTML = '<p class="light-text text-center">Erro ao carregar metas.</p>';
+                });
+        }
+        
+        function loadInvestmentSummary() {
+            fetch(API_CARTEIRA_URL)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('total-patrimonio-resumo').textContent = formatCurrency(data.totalPatrimonio);
+                    
+                    const container = document.getElementById('portfolio-distribution-container');
+                    container.innerHTML = '';
+                    
+                    if (data.distribuicao.length === 0) {
+                        container.innerHTML = '<p class="light-text">Nenhum investimento cadastrado.</p>';
+                        return;
+                    }
+
+                    // Exibe a distribuição (tipos de ativo)
+                    data.distribuicao.forEach(item => {
+                        const percentualTexto = item.percentual.toFixed(1);
+
+                        container.innerHTML += `
+                            <div style="display: flex; justify-content: space-between; font-size: 14px; padding: 5px 0;">
+                                <span class="light-text">${item.tipo}</span>
+                                <span class="bold">${percentualTexto}%</span>
+                            </div>
+                        `;
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar resumo de investimentos:', error);
+                    document.getElementById('total-patrimonio-resumo').textContent = 'R$ Erro';
+                });
+        }
+        
+        // ======================================================
+        // FUNÇÃO DO GRÁFICO (Balanço Mensal)
+        // ======================================================
+        
+        function loadBalanceChart() {
+            fetch(API_BALANCO_URL)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('balance-chart-container');
+                    container.innerHTML = '';
+                    
+                    if (data.length === 0 || data[0].receita === 0 && data[0].despesa === 0) {
+                        container.innerHTML = '<p class="light-text text-center" style="width:100%;">Lance Receitas e Despesas para gerar a projeção.</p>';
+                        return;
+                    }
+
+                    const allValues = data.flatMap(item => [item.receita, item.despesa]).filter(v => v !== 0);
+                    const maxVal = Math.max(...allValues);
+                    const maxHeight = 230;
+
+                    data.forEach(item => {
+                        const heightReceita = (item.receita / maxVal) * maxHeight;
+                        const heightDespesa = (item.despesa / maxVal) * maxHeight;
+                        
+                        const balanco = item.receita - item.despesa;
+                        const balancoClass = balanco >= 0 ? 'positivo' : 'negativo';
+                        
+                        const column = document.createElement('div');
+                        column.style.width = '7%';
+                        column.style.textAlign = 'center';
+                        column.style.display = 'flex';
+                        column.style.flexDirection = 'column';
+                        column.style.alignItems = 'center';
+                        column.style.position = 'relative';
+
+                        const tooltip = document.createElement('span');
+                        tooltip.textContent = formatCurrency(balanco);
+                        tooltip.className = balancoClass;
+                        tooltip.style.position = 'absolute';
+                        tooltip.style.top = '-20px';
+                        tooltip.style.fontSize = '10px';
+                        tooltip.style.fontWeight = 'bold';
+                        
+                        column.innerHTML = `
+                            <div style="display: flex; height: ${maxHeight}px; align-items: flex-end; gap: 2px; width: 100%; margin-bottom: 5px;">
+                                <div style="background-color: var(--status-negative); width: 50%; height: ${heightDespesa}px; border-radius: 2px 2px 0 0;"></div>
+                                <div style="background-color: var(--status-positive); width: 50%; height: ${heightReceita}px; border-radius: 2px 2px 0 0;"></div>
+                            </div>
+                            <span style="font-size: 11px; color: var(--text-light);">${item.mes}</span>
+                        `;
+
+                        column.prepend(tooltip); 
+                        container.appendChild(column);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar o gráfico de balanço:', error);
+                    document.getElementById('balance-chart-container').innerHTML = '<p class="light-text text-center" style="width:100%;">Erro ao carregar o gráfico de projeção.</p>';
+                });
+        }
+
+
+        // Função de atualização geral da interface
+        function refreshUI() {
+            loadSummary();
+            loadTransactionsTable();
+            loadGoalsSummary(); 
+            loadInvestmentSummary(); 
+            loadBalanceChart(); // FINAL: Carrega o gráfico
+        }
+
+        // Lógica de Envio do Formulário (Create)
+        document.getElementById('transaction-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            data.valor = parseFloat(data.valor); 
+            data.status = 'Pago'; 
+
+            fetch(API_BASE_URL, { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Falha ao salvar a transação.');
+                return response.json();
+            })
+            .then(() => {
+                alert('Transação salva com sucesso! Atualizando dashboard.');
+                closeManualEntryModal();
+                event.target.reset();
+                refreshUI(); 
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert(`Erro ao salvar transação. Verifique se o servidor (Node.js) está rodando na porta 3000.`);
+            });
+        });
+
+        // Ação Inicial
+        window.onload = refreshUI;
+    </script>
+</body>
+</html>
