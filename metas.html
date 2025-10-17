@@ -11,10 +11,9 @@
         .neon-card-base {
             background: linear-gradient(145deg, #1e1e1e, #1a1a1a);
         }
-        
         /* Estilo do modal para aparecer centralizado e cobrir a tela */
         .modal-overlay {
-            display: none; /* Inicia oculto */
+            display: none; 
             position: fixed;
             inset: 0;
             background-color: rgba(0, 0, 0, 0.75);
@@ -92,7 +91,7 @@
     </div>
 
     <script>
-        const API_METAS_URL = 'http://localhost:3000/api/metas';
+        const API_HOST = 'http://localhost:3000/api/';
 
         const formatCurrency = (amount) => {
             return new Intl.NumberFormat('pt-BR', {
@@ -121,9 +120,9 @@
                 title.textContent = 'Editar Meta';
                 
                 try {
-                    const response = await fetch(`${API_METAS_URL}/${id}`);
-                    if (!response.ok) throw new Error('Meta não encontrada.');
+                    const response = await fetch(`${API_HOST}metas/${id}`);
                     const meta = await response.json();
+                    if (meta.message) throw new Error('Meta não encontrada.');
 
                     document.getElementById('meta-id').value = meta.id;
                     document.getElementById('meta-titulo').value = meta.titulo;
@@ -134,7 +133,7 @@
                     modal.style.display = 'flex';
                 } catch (error) {
                     console.error('Erro ao buscar meta para edição:', error);
-                    alert('Não foi possível carregar os dados da meta.');
+                    alert('Não foi possível carregar os dados da meta. Verifique se o servidor Node está rodando.');
                 }
             }
         }
@@ -144,87 +143,85 @@
         }
 
         // ======================================================
-        // FUNÇÕES CRUD DE METAS
+        // FUNÇÕES CRUD DE METAS (Revertido para FETCH)
         // ======================================================
 
         function deleteMeta(id) {
             if (!confirm('Tem certeza que deseja excluir esta meta?')) return;
 
-            fetch(`${API_METAS_URL}/${id}`, { method: 'DELETE' })
+            fetch(`${API_HOST}metas/${id}`, { method: 'DELETE' })
             .then(response => {
-                if (!response.ok) throw new Error('Falha na exclusão da meta.');
+                if (!response.ok) throw new Error('Falha na exclusão.');
                 alert('Meta excluída com sucesso!');
                 loadGoals(); 
             })
             .catch(error => {
                 console.error('Erro ao excluir meta:', error);
-                alert('Erro ao excluir a meta.');
+                alert('Erro ao excluir a meta. Verifique o console.');
             });
         }
 
-        function loadGoals() {
-            fetch(API_METAS_URL)
-                .then(response => response.json())
-                .then(goals => {
-                    const container = document.getElementById('goals-container');
-                    container.innerHTML = ''; 
+        async function loadGoals() {
+            try {
+                const response = await fetch(`${API_HOST}metas`);
+                const goals = await response.json();
+
+                const container = document.getElementById('goals-container');
+                container.innerHTML = ''; 
+                
+                if (goals.length === 0) {
+                    container.innerHTML = '<p class="text-text-dim text-center col-span-full">Nenhuma meta cadastrada.</p>';
+                    return;
+                }
+
+                goals.forEach(goal => {
+                    const percent = (goal.valor_arrecadado / goal.valor_total) * 100;
+                    const percentDisplay = Math.min(100, percent).toFixed(0); 
+                    const isComplete = percent >= 100;
                     
-                    if (goals.length === 0) {
-                        container.innerHTML = '<p class="text-text-dim text-center col-span-full">Nenhuma meta cadastrada.</p>';
-                        return;
-                    }
+                    // Classes Visuais Neon
+                    const titleColor = isComplete ? 'text-status-success' : 'text-neon-teal';
+                    const progressColor = isComplete ? 'bg-status-success' : 'bg-neon-teal';
+                    const progressBarClass = isComplete 
+                        ? 'neon-progress-bar-static' 
+                        : 'neon-progress-bar-animated'; 
 
-                    goals.forEach(goal => {
-                        const percent = (goal.valor_arrecadado / goal.valor_total) * 100;
-                        const percentDisplay = Math.min(100, percent).toFixed(0); 
-                        const isComplete = percent >= 100;
-                        
-                        // Classes Visuais Neon
-                        const titleColor = isComplete ? 'text-status-success' : 'text-neon-teal';
-                        const progressColor = isComplete ? 'bg-status-success' : 'bg-neon-teal';
-                        
-                        // CLASSE DE ANIMAÇÃO CORRIGIDA - Usa a classe customizada do input.css
-                        const progressBarClass = isComplete 
-                            ? 'neon-progress-bar-static' 
-                            : 'neon-progress-bar-animated'; 
-
-                        const cardHtml = `
-                            <div class="neon-card-base p-4 rounded-lg shadow-smooth border border-border-default transition duration-300 hover:shadow-neon-glow-teal hover:border-neon-teal cursor-pointer">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="text-lg font-bold ${titleColor} m-0">${goal.titulo}</h3>
-                                    <div class="flex gap-2">
-                                        <span class="neon-icon-action" onclick="openMetaModal('edit', ${goal.id})">&#9998;</span>
-                                        <span class="neon-icon-action hover:text-status-error" onclick="deleteMeta(${goal.id})">&#x2715;</span>
-                                    </div>
+                    const cardHtml = `
+                        <div class="neon-card-base p-4 rounded-lg shadow-smooth border border-border-default transition duration-300 hover:shadow-neon-glow-teal hover:border-neon-teal cursor-pointer">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold ${titleColor} m-0">${goal.titulo}</h3>
+                                <div class="flex gap-2">
+                                    <span class="neon-icon-action" onclick="openMetaModal('edit', ${goal.id})">&#9998;</span>
+                                    <span class="neon-icon-action hover:text-status-error" onclick="deleteMeta(${goal.id})">&#x2715;</span>
                                 </div>
-
-                                <p class="text-text-dim text-sm">Total: <span class="font-semibold text-text-light">${formatCurrency(goal.valor_total)}</span></p>
-                                <p class="text-text-dim text-sm">Arrecadado: <span class="font-semibold text-text-light">${formatCurrency(goal.valor_arrecadado)}</span></p>
-                                
-                                ${!isComplete ? `<p class="text-text-dim text-sm mt-1">Faltam: <span class="font-semibold text-neon-orange">${goal.prazo_meses} meses</span></p>` : `<p class="font-bold text-status-success mt-1">META CONCLUÍDA!</p>`}
-
-                                <div class="w-full bg-border-default rounded-full h-2 mt-4">
-                                    <div class="${progressColor} h-2 rounded-full transition-all duration-500 ${progressBarClass}" style="width: ${percentDisplay}%;"></div>
-                                </div>
-                                <span class="text-right block text-xs mt-1 ${titleColor} font-semibold">${percentDisplay}% Carregado</span>
                             </div>
-                        `;
-                        container.innerHTML += cardHtml;
-                    });
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar metas:', error);
-                    document.getElementById('goals-container').innerHTML = '<p class="text-text-dim text-center col-span-full">Erro ao carregar metas. Verifique o console.</p>';
+
+                            <p class="text-text-dim text-sm">Total: <span class="font-semibold text-text-light">${formatCurrency(goal.valor_total)}</span></p>
+                            <p class="text-text-dim text-sm">Arrecadado: <span class="font-semibold text-text-light">${formatCurrency(goal.valor_arrecadado)}</span></p>
+                            
+                            ${!isComplete ? `<p class="text-text-dim text-sm mt-1">Faltam: <span class="font-semibold text-neon-orange">${goal.prazo_meses} meses</span></p>` : `<p class="font-bold text-status-success mt-1">META CONCLUÍDA!</p>`}
+
+                            <div class="w-full bg-border-default rounded-full h-2 mt-4">
+                                <div class="${progressColor} h-2 rounded-full transition-all duration-500 ${progressBarClass}" style="width: ${percentDisplay}%;"></div>
+                            </div>
+                            <span class="text-right block text-xs mt-1 ${titleColor} font-semibold">${percentDisplay}% Carregado</span>
+                        </div>
+                    `;
+                    container.innerHTML += cardHtml;
                 });
+            } catch (error) {
+                console.error('Erro ao carregar metas:', error);
+                document.getElementById('goals-container').innerHTML = '<p class="text-text-dim text-center col-span-full">Erro ao carregar metas. Verifique se o servidor Node está rodando.</p>';
+            }
         }
 
         // Lógica de Envio do Formulário de Metas (Create/Update)
-        document.getElementById('meta-form').addEventListener('submit', function(event) {
+        document.getElementById('meta-form').addEventListener('submit', async function(event) {
             event.preventDefault();
 
             const id = document.getElementById('meta-id').value;
             const method = id ? 'PUT' : 'POST';
-            const url = id ? `${API_METAS_URL}/${id}` : API_METAS_URL;
+            const url = id ? `${API_HOST}metas/${id}` : `${API_HOST}metas`;
 
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData.entries());
@@ -233,24 +230,22 @@
             data.valor_arrecadado = parseFloat(data.valor_arrecadado);
             data.prazo_meses = parseInt(data.prazo_meses);
 
-            fetch(url, { 
-                method: method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            })
-            .then(response => {
-                if (!response.ok) throw new Error(`Falha ao salvar meta. Status: ${response.status}`);
-                return response.json();
-            })
-            .then(() => {
+            try {
+                const response = await fetch(url, { 
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) throw new Error(`Falha ao salvar meta.`);
+                
                 alert(`Meta ${id ? 'atualizada' : 'salva'} com sucesso!`);
                 closeMetaModal();
                 loadGoals(); 
-            })
-            .catch(error => {
+            } catch(error) {
                 console.error('Erro ao salvar meta:', error);
-                alert('Erro ao salvar meta. Verifique o console.');
-            });
+                alert('Erro ao salvar meta. Verifique o console e a conexão com o servidor.');
+            }
         });
 
         // Ação Inicial

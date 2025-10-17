@@ -26,21 +26,49 @@
         <h1 class="text-3xl font-bold text-text-light mb-6">Gestão de Lançamentos</h1>
         <p class="text-text-dim mb-8">Use esta página para registrar e gerenciar todas as suas transações.</p>
 
+        <section id="resumo-orcamento" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
+            <h2 class="text-xl font-semibold text-text-light mb-4">Visão Orçamentária do Mês</h2>
+            <div class="flex flex-wrap justify-between text-center gap-6">
+                
+                <div class="flex-1 min-w-[150px]">
+                    <p class="text-text-light font-bold text-lg" id="lanc_gasto_planejado">R$ 0,00</p>
+                    <p class="text-text-dim text-sm">Gasto Planejado (Invest. Lançado)</p>
+                </div>
+                
+                <div class="flex-1 min-w-[150px]">
+                    <p class="text-status-success font-bold text-lg" id="lanc_receita_total">R$ 0,00</p>
+                    <p class="text-text-dim text-sm">Receita Total Lançada</p>
+                </div>
+
+                <div class="flex-1 min-w-[150px] border-l border-border-default pl-4">
+                    <p class="font-extrabold text-xl" id="lanc_valor_sobra">R$ 0,00</p>
+                    <p class="text-text-light text-sm">Valor que Sobra (Líquido)</p>
+                </div>
+
+            </div>
+        </section>
+
         <section id="form-lancamento" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
             <h2 class="text-xl font-semibold text-text-light mb-4">+ Novo Lançamento Rápido</h2>
             
             <form id="transaction-form" class="flex flex-wrap gap-8">
                 
-                <div class="flex-1 min-w-[300px]">
+                <div style="flex: 1 1 300px;">
                     <div class="mb-4">
                         <label class="block text-text-dim font-bold mb-2">Tipo:</label>
                         <div class="segmented-control type-selector">
                             
                             <input type="radio" id="receita" name="tipo" value="Receita" required> 
-                            <label for="receita" class="segment-label positive-bg">Receita</label>
+                            <label for="receita" class="segment-label positive-bg flex items-center justify-center space-x-2">
+                                <span class="text-xl">💰</span> 
+                                <span>Receita</span>
+                            </label>
                             
                             <input type="radio" id="despesa" name="tipo" value="Despesa" required> 
-                            <label for="despesa" class="segment-label negative-bg">Despesa</label>
+                            <label for="despesa" class="segment-label negative-bg flex items-center justify-center space-x-2">
+                                <span class="text-xl">💸</span> 
+                                <span>Despesa</span>
+                            </label>
                             
                         </div>
                     </div>
@@ -50,13 +78,22 @@
                         <div class="segmented-control frequency-selector">
                             
                             <input type="radio" id="fixa" name="frequencia" value="Fixa" required> 
-                            <label for="fixa" class="segment-label">Fixa</label>
+                            <label for="fixa" class="segment-label flex items-center justify-center space-x-2">
+                                <span class="text-xl text-neon-teal-base">🔄</span> 
+                                <span>Fixa</span>
+                            </label>
                             
                             <input type="radio" id="parcelada" name="frequencia" value="Parcelada"> 
-                            <label for="parcelada" class="segment-label">Parcelada</label>
+                            <label for="parcelada" class="segment-label flex items-center justify-center space-x-2">
+                                <span class="text-xl text-neon-teal-base">🔢</span> 
+                                <span>Parcelada</span>
+                            </label>
                             
                             <input type="radio" id="unica" name="frequencia" value="Unica" checked> 
-                            <label for="unica" class="segment-label">Única</label>
+                            <label for="unica" class="segment-label flex items-center justify-center space-x-2">
+                                <span class="text-xl text-neon-teal-base">✨</span> 
+                                <span>Única</span>
+                            </label>
                             
                         </div>
                     </div>
@@ -73,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="flex-1 min-w-[300px]">
+                <div style="flex: 1 1 300px;">
                     <div class="flex gap-4 mb-4">
                         <div class="flex-1">
                             <label class="block text-text-dim mb-1">Valor (R$):</label>
@@ -137,7 +174,7 @@
         
         <section id="despesas-fixas-lancamentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold text-text-light">Despesas Fixas e Únicas</h2>
+                <h2 class="text-xl font-semibold text-text-light">Despesas Fixas e Recorrentes (e Únicas)</h2>
                 <span id="total-despesa-fixa-lancamentos" class="text-status-error font-bold text-lg">R$ 0,00</span>
             </div>
             
@@ -186,7 +223,7 @@
     </main>
 
     <script>
-        const API_BASE_URL = 'http://localhost:3000/api/transacoes';
+        const API_HOST = 'http://localhost:3000/api/';
 
         const formatCurrency = (amount) => {
             return new Intl.NumberFormat('pt-BR', {
@@ -196,7 +233,48 @@
         };
         
         // ======================================================
-        // LÓGICA DO FORMULÁRIO E SUBMISSÃO
+        // FUNÇÃO DE CARREGAMENTO DO KPI DE ORÇAMENTO (Dinâmica)
+        // ======================================================
+
+        async function loadBudgetKPI() {
+            try {
+                const response = await fetch(`${API_HOST}transacoes`);
+                const transactions = await response.json();
+                
+                let receitaTotal = 0;
+                let despesaReal = 0; 
+                let gastoPlanejadoInvestimento = 0; 
+
+                transactions.forEach(t => {
+                    if (t.tipo === 'Receita') {
+                        receitaTotal += t.valor;
+                    } else if (t.tipo === 'Despesa') {
+                        if (t.categoria === 'Investimentos') {
+                            gastoPlanejadoInvestimento += t.valor;
+                        } else {
+                            despesaReal += t.valor;
+                        }
+                    }
+                });
+
+                const valorSobra = receitaTotal - despesaReal - gastoPlanejadoInvestimento;
+
+                document.getElementById('lanc_gasto_planejado').textContent = formatCurrency(gastoPlanejadoInvestimento);
+                document.getElementById('lanc_receita_total').textContent = formatCurrency(receitaTotal);
+                
+                const sobraElement = document.getElementById('lanc_valor_sobra');
+                sobraElement.textContent = formatCurrency(valorSobra);
+                sobraElement.classList.remove('text-status-success', 'text-status-error');
+                sobraElement.classList.add(valorSobra >= 0 ? 'text-status-success' : 'text-status-error');
+
+            } catch (error) {
+                console.error('Erro ao carregar KPI de orçamento:', error);
+            }
+        }
+
+
+        // ======================================================
+        // LÓGICA DO FORMULÁRIO E LISTAGEM
         // ======================================================
 
         // 1. Controle da visibilidade dos campos de Parcelamento
@@ -205,14 +283,11 @@
                 const fields = document.getElementById('parcela-fields');
                 const isParcelada = event.target.value === 'Parcelada';
                 
-                // Aplica classe Tailwind 'hidden' ou remove
                 fields.classList.toggle('hidden', !isParcelada); 
                 
-                // Define se os campos são obrigatórios ou não
                 document.querySelector('input[name="parcelas_totais"]').required = isParcelada;
                 document.querySelector('input[name="parcela_atual"]').required = isParcelada;
 
-                // Limpa/reseta valores se a opção for alterada
                 if (!isParcelada) {
                     document.querySelector('input[name="parcelas_totais"]').value = 1;
                     document.querySelector('input[name="parcela_atual"]').value = 1;
@@ -222,66 +297,58 @@
 
 
         // 2. Lógica de Envio do Formulário (Create)
-        document.getElementById('transaction-form').addEventListener('submit', function(event) {
+        document.getElementById('transaction-form').addEventListener('submit', async function(event) {
             event.preventDefault();
 
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData.entries());
             
-            // Tratamento de valores e tipagem
             data.valor = parseFloat(data.valor);
             data.parcelas_totais = (data.frequencia === 'Parcelada') ? parseInt(data.parcelas_totais) : null;
             data.parcela_atual = (data.frequencia === 'Parcelada') ? parseInt(data.parcela_atual) : null;
-
-            // Define status inicial se não for fornecido
             data.status = (data.tipo === 'Receita') ? 'A Receber' : 'A Pagar';
-            
-            // Envia POST para o servidor
-            fetch(API_BASE_URL, { 
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Falha ao salvar a transação.');
-                return response.json();
-            })
-            .then(() => {
+
+            try {
+                const response = await fetch(`${API_HOST}transacoes`, { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) throw new Error('Falha na conexão ou servidor.');
+
                 alert('Lançamento salvo com sucesso! Atualizando lista...');
                 event.target.reset();
-                document.getElementById('unica').checked = true; // Volta para o padrão
-                document.getElementById('parcela-fields').classList.add('hidden'); // Esconde parcelas
-                loadTransactionsListings(); // Atualiza a listagem
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert(`Erro ao salvar lançamento. Verifique o console e se o servidor está rodando.`);
-            });
+                document.getElementById('unica').checked = true; 
+                document.getElementById('parcela-fields').classList.add('hidden'); 
+                loadTransactionsListings(); 
+                loadBudgetKPI(); 
+            } catch (error) {
+                console.error('Erro ao salvar lançamento:', error);
+                alert(`Erro ao salvar lançamento. Verifique se o servidor (Node.js) está rodando na porta 3000.`);
+            }
         });
         
         
-        // ======================================================
-        // LÓGICA DE LISTAGEM E FILTRAGEM
-        // ======================================================
-
         // Função para deletar a transação
-        function deleteTransaction(id) {
+        async function deleteTransaction(id) {
             if (!confirm('Tem certeza que deseja excluir este lançamento?')) return;
 
-            fetch(`${API_BASE_URL}/${id}`, { method: 'DELETE' })
-            .then(response => {
+            try {
+                const response = await fetch(`${API_HOST}transacoes/${id}`, { method: 'DELETE' });
                 if (!response.ok) throw new Error('Falha na exclusão.');
+                
                 alert('Lançamento excluído com sucesso!');
                 loadTransactionsListings();
-            })
-            .catch(error => {
+                loadBudgetKPI(); 
+            } catch (error) {
                 console.error('Erro ao excluir:', error);
-                alert('Erro ao excluir o lançamento.');
-            });
+                alert('Erro ao excluir o lançamento. Verifique o console.');
+            }
         }
         
         // Função para mudar o status (Pago/Recebido)
-        function updateTransactionStatus(id, currentStatus) {
+        async function updateTransactionStatus(id, currentStatus) {
             let newStatus = '';
             if (currentStatus === 'A Pagar') newStatus = 'Pago';
             else if (currentStatus === 'A Receber') newStatus = 'Recebido';
@@ -289,11 +356,12 @@
 
             if (!confirm(`Confirma marcar como "${newStatus}"?`)) return;
 
-            fetch(`${API_BASE_URL}`) 
-            .then(res => res.json())
-            .then(allTransactions => {
-                const t = allTransactions.find(item => item.id === id);
-                if (!t) return alert('Transação não encontrada.');
+            try {
+                const res = await fetch(`${API_HOST}transacoes`);
+                const allTransactions = await res.json();
+                const t = allTransactions.find(item => item.id == id);
+
+                if (!t) throw new Error('Transação não encontrada para atualização.');
                 
                 const payload = {
                     ...t,
@@ -301,99 +369,98 @@
                     valor: parseFloat(t.valor) 
                 };
 
-                fetch(`${API_BASE_URL}/${id}`, {
+                const response = await fetch(`${API_HOST}transacoes/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('Falha na atualização de status.');
-                    loadTransactionsListings(); 
-                })
-                .catch(error => {
-                    console.error('Erro ao atualizar status:', error);
-                    alert('Erro ao atualizar o status da transação.');
                 });
-            })
-            .catch(error => console.error('Erro ao buscar transação para update:', error));
+
+                if (!response.ok) throw new Error('Falha na atualização de status.');
+                
+                loadTransactionsListings(); 
+                loadBudgetKPI(); 
+            } catch (error) {
+                console.error('Erro ao atualizar status:', error);
+                alert('Erro ao atualizar o status da transação. Verifique o console.');
+            }
         }
 
 
         // Função principal para carregar as listagens nas 3 tabelas
-        function loadTransactionsListings() {
-            fetch(API_BASE_URL)
-                .then(response => response.json())
-                .then(transactions => {
-                    const tbodyReceitas = document.querySelector('#table-receitas-lancamentos tbody');
-                    const tbodyDespesasFixas = document.querySelector('#table-despesas-fixas tbody');
-                    const tbodyDespesasParceladas = document.querySelector('#table-despesas-parceladas tbody');
+        async function loadTransactionsListings() {
+            try {
+                const response = await fetch(`${API_HOST}transacoes`);
+                const transactions = await response.json();
+
+                const tbodyReceitas = document.querySelector('#table-receitas-lancamentos tbody');
+                const tbodyDespesasFixas = document.querySelector('#table-despesas-fixas tbody');
+                const tbodyDespesasParceladas = document.querySelector('#table-despesas-parceladas tbody');
+                
+                tbodyReceitas.innerHTML = '';
+                tbodyDespesasFixas.innerHTML = '';
+                tbodyDespesasParceladas.innerHTML = '';
+
+                let totalReceita = 0;
+                let totalDespesaFixa = 0;
+                let totalDespesaParcelada = 0;
+
+                transactions.forEach(t => {
+                    const valorFormatado = formatCurrency(t.valor);
+                    const isExpense = t.tipo === 'Despesa';
                     
-                    // Limpa todas as tabelas
-                    tbodyReceitas.innerHTML = '';
-                    tbodyDespesasFixas.innerHTML = '';
-                    tbodyDespesasParceladas.innerHTML = '';
-
-                    let totalReceita = 0;
-                    let totalDespesaFixa = 0;
-                    let totalDespesaParcelada = 0;
-
-                    transactions.forEach(t => {
-                        const valorFormatado = formatCurrency(t.valor);
-                        const isExpense = t.tipo === 'Despesa';
-                        
-                        let tableBody;
-                        if (t.tipo === 'Receita') {
-                            tableBody = tbodyReceitas;
-                            totalReceita += t.valor;
-                        } else if (t.frequencia === 'Parcelada') {
-                            tableBody = tbodyDespesasParceladas;
-                            totalDespesaParcelada += t.valor;
-                        } else { 
-                            // Despesa Fixa ou Única
-                            tableBody = tbodyDespesasFixas;
-                            totalDespesaFixa += t.valor; 
-                        }
-                        
-                        // Lógica para Botão de Ação (Pagar/Receber)
-                        let actionHTML;
-                        if ((isExpense && t.status === 'A Pagar') || (!isExpense && t.status === 'A Receber')) {
-                            const actionText = isExpense ? 'Marcar Pago' : 'Marcar Recebido';
-                            const actionClass = isExpense ? 'bg-status-success hover:bg-green-700' : 'bg-brand-primary hover:bg-orange-700';
-                            actionHTML = `<button class="py-1 px-2 text-xs text-white rounded ${actionClass}" onclick="updateTransactionStatus(${t.id}, '${t.status}')">${actionText}</button>`;
-                        } else {
-                            // Já está pago ou recebido
-                            const statusColor = t.status.includes('Pago') ? 'text-status-success' : 'text-status-error';
-                            actionHTML = `<span class="${statusColor} font-bold text-xs">${t.status}</span>`;
-                        }
-                        
-                        // Cria a linha da tabela
-                        const row = `
-                            <tr class="border-b border-border-default hover:bg-bg-hover transition duration-200">
-                                <td class="py-3 px-1">${t.descricao} (${t.categoria})</td>
-                                <td class="py-3 px-1 font-bold ${isExpense ? 'text-status-error' : 'text-status-success'}">${valorFormatado}</td>
-                                <td class="py-3 px-1 text-text-dim">${t.frequencia} ${t.frequencia === 'Parcelada' ? `(${t.parcela_atual}/${t.parcelas_totais})` : ''}</td>
-                                <td class="py-3 px-1 text-text-dim">${t.data}</td>
-                                <td class="py-3 px-1 text-center">${actionHTML}</td>
-                                <td class="py-3 px-1 text-center">
-                                    <span class="text-text-dim cursor-pointer hover:text-status-error transition duration-200" onclick="deleteTransaction(${t.id})">&#x2715;</span>
-                                </td>
-                            </tr>
-                        `;
-                        tableBody.insertAdjacentHTML('beforeend', row); 
-                    });
+                    let tableBody;
+                    if (t.tipo === 'Receita') {
+                        tableBody = tbodyReceitas;
+                        totalReceita += t.valor;
+                    } else if (t.frequencia === 'Parcelada') {
+                        tableBody = tbodyDespesasParceladas;
+                        totalDespesaParcelada += t.valor;
+                    } else { 
+                        tableBody = tbodyDespesasFixas;
+                        totalDespesaFixa += t.valor; 
+                    }
                     
-                    // Atualiza os totais nos cabeçalhos das seções
-                    document.getElementById('total-receita-lancamentos').textContent = formatCurrency(totalReceita);
-                    document.getElementById('total-despesa-fixa-lancamentos').textContent = formatCurrency(totalDespesaFixa);
-                    document.getElementById('total-despesa-parcelada-lancamentos').textContent = formatCurrency(totalDespesaParcelada);
-
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar lançamentos:', error);
+                    // Lógica para Botão de Ação (Pagar/Receber)
+                    let actionHTML;
+                    if ((isExpense && t.status === 'A Pagar') || (!isExpense && t.status === 'A Receber')) {
+                        const actionText = isExpense ? 'Marcar Pago' : 'Marcar Recebido';
+                        const actionClass = isExpense ? 'bg-status-error hover:bg-red-700' : 'bg-status-success hover:bg-green-700';
+                        actionHTML = `<button class="py-1 px-2 text-xs text-white rounded ${actionClass}" onclick="updateTransactionStatus(${t.id}, '${t.status}')">${actionText}</button>`;
+                    } else {
+                        // Já está pago ou recebido
+                        const statusColor = t.status.includes('Pago') || t.status.includes('Recebido') ? 'text-status-success' : 'text-status-error';
+                        actionHTML = `<span class="${statusColor} font-bold text-xs">${t.status}</span>`;
+                    }
+                    
+                    const row = `
+                        <tr class="border-b border-border-default hover:bg-bg-hover transition duration-200">
+                            <td class="py-3 px-1">${t.descricao} (${t.categoria})</td>
+                            <td class="py-3 px-1 font-bold ${isExpense ? 'text-status-error' : 'text-status-success'}">${valorFormatado}</td>
+                            <td class="py-3 px-1 text-text-dim">${t.frequencia} ${t.frequencia === 'Parcelada' ? `(${t.parcela_atual}/${t.parcelas_totais})` : ''}</td>
+                            <td class="py-3 px-1 text-text-dim">${t.data}</td>
+                            <td class="py-3 px-1 text-center">${actionHTML}</td>
+                            <td class="py-3 px-1 text-center">
+                                <span class="text-text-dim cursor-pointer hover:text-status-error transition duration-200" onclick="deleteTransaction(${t.id})">&#x2715;</span>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.insertAdjacentHTML('beforeend', row); 
                 });
+                
+                document.getElementById('total-receita-lancamentos').textContent = formatCurrency(totalReceita);
+                document.getElementById('total-despesa-fixa-lancamentos').textContent = formatCurrency(totalDespesaFixa);
+                document.getElementById('total-despesa-parcelada-lancamentos').textContent = formatCurrency(totalDespesaParcelada);
+
+            } catch (error) {
+                console.error('Erro ao carregar lançamentos:', error);
+            }
         }
 
-        window.onload = loadTransactionsListings;
+        // Ação Inicial: Carrega listagens e o KPI
+        window.onload = function() {
+            loadTransactionsListings();
+            loadBudgetKPI();
+        };
     </script>
 </body>
 </html>

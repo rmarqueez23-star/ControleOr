@@ -10,7 +10,7 @@
 
 
 /* ====================================================== */
-/* 2. VARIÁVEIS E BASE GERAL (PRESERVADO)               */
+/* 2. VARIÁVEIS E BASE GERAL (DESIGN SYSTEM)            */
 /* ====================================================== */
 
 :root {
@@ -25,7 +25,6 @@
     --text-light: #E0E0E0;         
     --status-positive: #28a745;    
     --status-negative: #dc3545;    
-    /* Variável usada na animação para manter o brilho consistente */
     --neon-teal: #00FFFF;
 }
 
@@ -38,8 +37,7 @@ body {
 }
 
 /* ====================================================== */
-/* 3. DEFINIÇÃO DE ANIMAÇÃO NEON (DENTRO DO ARQUIVO CSS)  */
-/* O Tailwind irá processar e incluir estes keyframes.    */
+/* 3. DEFINIÇÃO DE ANIMAÇÃO E COMPONENTES NEON            */
 /* ====================================================== */
 
 @keyframes neon-pulse {
@@ -47,16 +45,9 @@ body {
         box-shadow: 0 0 6px var(--secondary-teal);
     }
     50% {
-        /* Brilho mais forte no meio do ciclo */
         box-shadow: 0 0 10px var(--secondary-teal), 0 0 20px rgba(0, 255, 255, 0.4);
     }
 }
-
-
-/* ====================================================== */
-/* 4. COMPONENTES CUSTOMIZADOS E ESSENCIAIS (@layer components) */
-/* (Estes estilos são processados para funcionar no Dark Mode)  */
-/* ====================================================== */
 
 @layer components {
     /* Logo */
@@ -68,36 +59,106 @@ body {
 
     /* BARRA DE PROGRESSO ANIMADA (Metas.html) */
     .neon-progress-bar-animated {
-        /* Fundo já é definido no HTML (bg-brand-secondary) */
         box-shadow: 0 0 6px var(--secondary-teal);
         animation: neon-pulse 2s ease-in-out infinite; 
     }
 
-    /* BARRA DE PROGRESSO ESTÁTICA (Metas Concluídas) */
+    /* BARRA DE PROGRESSE ESTÁTICA */
     .neon-progress-bar-static {
         box-shadow: 0 0 4px var(--status-positive);
     }
-
-    /* Estilo de Card para Metas (Aplicado diretamente no metas.html) */
+    
+    /* Estilo de Card para Metas */
     .neon-card-base {
-        /* Este gradiente customizado é mantido aqui para o efeito visual */
         background: linear-gradient(145deg, #1e1e1e, #1a1a1a);
     }
 
-    /* Ícones de Ação (Apenas define a cor base/hover se o HTML não o fizer) */
+    /* Ícones de Ação em Metas */
     .neon-icon-action {
-        color: var(--text-light); /* Cor base */
+        color: var(--text-light); 
         transition: color 0.2s;
     }
 }
 
 
 /* ====================================================== */
-/* 5. ESTILOS GERAIS DE TABELA (Para legibilidade)        */
+/* 4. ESTILOS DE FORMULÁRIO E SEGMENTED CONTROLS (Lançamentos) */
 /* ====================================================== */
 
 @layer base {
-    /* Estilos de Tabela para legibilidade no Dark Mode */
+    
+    /* ------------------------------------------------------ */
+    /* SEGMENTED CONTROL BASE */
+    /* ------------------------------------------------------ */
+    
+    /* Oculta os inputs de rádio originais (CRUCIAL) */
+    .segmented-control input {
+        display: none;
+    }
+
+    .segmented-control {
+        @apply flex border border-border-default rounded-md overflow-hidden w-full;
+    }
+
+    /* Estilo padrão para o rótulo/segmento */
+    .segment-label {
+        @apply flex-1 py-3 px-3 cursor-pointer font-semibold transition duration-200 border-l border-border-default bg-bg-surface hover:bg-bg-hover;
+        
+        /* CORREÇÃO VISUAL: Garante o alinhamento central */
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        text-align: center;
+        white-space: nowrap; 
+    }
+
+    /* Remove a borda esquerda do primeiro item */
+    .segmented-control .segment-label:first-of-type {
+        border-left: none;
+    }
+    
+    /* ------------------------------------------------------ */
+    /* TIPO (RECEITA / DESPESA) - CORREÇÃO DE CLASSE */
+    /* ------------------------------------------------------ */
+    
+    /* Estilo ativo para TIPO RECEITA */
+    .type-selector input#receita:checked + .segment-label {
+        @apply bg-status-success text-white;
+    }
+
+    /* Estilo ativo para TIPO DESPESA */
+    .type-selector input#despesa:checked + .segment-label {
+        @apply bg-status-error text-white;
+    }
+    
+    /* ------------------------------------------------------ */
+    /* FREQUÊNCIA (NEON - Aplica-se ao Texto e Ícone) */
+    /* ------------------------------------------------------ */
+    
+    /* Estilo ATIVO para Frequência (Fundo Teal) */
+    .frequency-selector input:checked + .segment-label {
+        @apply bg-brand-secondary text-white; 
+    }
+    
+    /* Cor base dos ícones (Neon Teal) */
+    .frequency-selector .segment-label span:first-child {
+        color: var(--neon-teal); 
+        transition: color 0.2s;
+    }
+    
+    /* Quando checado, o ícone e texto da frequência devem ser brancos (sobrepõe o neon-teal) */
+    .frequency-selector input:checked + .segment-label span {
+        @apply text-white; 
+    }
+    .frequency-selector input:checked + .segment-label span:nth-child(2) {
+         @apply text-white; 
+    }
+
+
+    /* ------------------------------------------------------ */
+    /* TABELAS E EDIÇÃO */
+    /* ------------------------------------------------------ */
+
     table {
         @apply border-collapse w-full text-left text-sm;
     }

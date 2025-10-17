@@ -8,6 +8,7 @@ module.exports = {
   ],
   
   // 2. Habilita o modo escuro via classe (necessário para o tema escuro)
+  // Nota: Embora não usemos o toggle 'dark', a paleta base (bg-main, bg-card) é tratada como padrão (light).
   darkMode: 'class', 
   
   theme: {
@@ -18,8 +19,8 @@ module.exports = {
         'brand-primary': '#FF8C00',     // Laranja Vibrante
         'brand-secondary': '#008080',   // Teal/Verde-Água
         
-        // Cores de Fundo (Dark Mode Palette)
-        'bg-main': '#121212',           // Fundo principal muito escuro
+        // Paleta de Fundo (Dark Mode - Definida como cores base do tema)
+        'bg-main': '#121212',           // Fundo principal (quase preto)
         'bg-card': '#1E1E1E',           // Fundo de cards/blocos
         'bg-surface': '#252525',        // Superfície de inputs, modais
         'bg-hover': '#333333',          // Efeito hover
@@ -34,16 +35,17 @@ module.exports = {
         'status-success': '#28A745',    // Verde (Receita/Sucesso)
         'status-error': '#DC3545',      // Vermelho (Despesa/Erro)
 
-        // NOVO: Cores NEON (para os efeitos visuais)
-        'neon-teal': '#00FFFF',         // Ciano brilhante para destaque (Progresso)
-        'neon-orange': '#FF7000',       // Laranja neon (Texto, Aviso)
+        // Cores NEON (para os efeitos visuais)
+        'neon-teal': '#00FFFF',         // Ciano brilhante (Destaque principal)
+        'neon-orange': '#FF7000',       // Laranja neon (Alerta/Texto secundário em Metas)
       },
       
       // 4. Sombra de Brilho Customizada (Efeito Neon)
       boxShadow: {
         'smooth': '0 4px 6px rgba(0, 0, 0, 0.5)',
-        'neon-glow-teal': '0 0 10px #00FFFF', // Usado para hover em metas
-        'neon-glow-orange': '0 0 8px #FF7000', // Usado no botão principal
+        'neon-glow-teal': '0 0 10px #00FFFF', // Brilho para hover em cards e gráficos
+        'neon-glow-orange': '0 0 8px #FF7000', // Brilho para CTA principal (Nova Transação)
+        'neon-glow-button': '0 0 8px #00FFFF', // Brilho para botões de destaque (ajuste no último passo)
       },
 
       // Configuração de Tipografia

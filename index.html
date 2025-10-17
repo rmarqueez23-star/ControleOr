@@ -48,10 +48,11 @@
     <main class="dashboard-content p-8">
 
         <h1 class="text-3xl font-bold text-text-light mb-6">Dashboard Financeiro</h1>
-        
-        <div class="flex items-center gap-4 mb-8">
+        <div class="flex gap-4 mb-8">
             <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange" onclick="window.location.href='lancamentos.html';">+ Nova Transação</button>
-            
+        </div>
+
+        <div class="flex items-center gap-4 mb-8">
             <div class="flex items-center space-x-2 text-text-dim text-sm">
                 <label for="month-select">Visualizando:</label>
                 
@@ -68,24 +69,24 @@
             <div class="lg:col-span-2 space-y-8">
                 
                 <section id="resumo-mensal" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default hover:border-brand-primary transition duration-200">
-                    <h2 class="text-xl font-semibold text-text-light mb-4">Resumo Mensal</h2>
+                    <h2 class="text-xl font-semibold text-text-light mb-4" id="resumo-title">Resumo Mensal</h2>
                     <div class="flex flex-wrap justify-between text-center gap-4">
+                        
                         <div class="flex-1 min-w-[120px]">
                             <p class="text-status-success font-bold text-lg" id="receita-programada">R$ 0,00</p>
                             <p class="text-text-dim text-sm">Receita Programada</p>
                         </div>
+                        
                         <div class="flex-1 min-w-[120px]">
                             <p class="text-status-error font-bold text-lg" id="despesas-lancadas">R$ 0,00</p>
                             <p class="text-text-dim text-sm">Despesas Lançadas</p>
                         </div>
-                        <div class="flex-1 min-w-[120px]">
-                            <p class="text-brand-secondary font-bold text-lg">R$ 500,00</p>
-                            <p class="text-text-dim text-sm">Planos (Fixo)</p>
-                        </div>
+                        
                         <div class="flex-1 min-w-[120px] border-l border-border-default pl-4">
                             <p class="text-brand-secondary font-extrabold text-xl" id="saldo-projetado">R$ 0,00</p>
                             <p class="text-text-light text-sm">Saldo Projetado</p>
                         </div>
+
                     </div>
                 </section>
                 
@@ -138,11 +139,11 @@
                 </section>
                 
                 <section id="grafico-saldo" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default hover:shadow-neon-glow-teal hover:border-neon-teal transition duration-200">
-                    <h2 class="text-xl font-semibold text-text-light mb-4">Balanço Mensal Projetado (Próx. 12 Meses)</h2>
+                    <h2 class="text-xl font-semibold text-text-light mb-4">Comparação Receita x Despesa - Anual</h2>
                     
                     <div id="balance-chart-container" class="flex justify-around items-end h-64 p-2 border-b border-border-default">
                         </div>
-                    <div id="chart-legend" class="flex justify-center gap-8 mt-4 text-sm text-text-dim">
+                    <div class="flex justify-center gap-8 mt-4 text-sm text-text-dim">
                         <span class="flex items-center text-status-success"><span class="w-3 h-3 bg-status-success rounded-full mr-2"></span> Receita</span>
                         <span class="flex items-center text-status-error"><span class="w-3 h-3 bg-status-error rounded-full mr-2"></span> Despesa</span>
                     </div>
@@ -155,7 +156,7 @@
                 <section id="metas-resumo" class="bg-bg-card p-4 rounded-lg shadow-smooth border border-border-default hover:shadow-neon-glow-teal hover:border-neon-teal transition duration-200">
                     <div class="flex justify-between items-center mb-3">
                         <h2 class="text-lg font-semibold text-text-light m-0">Minhas Metas Financeiras</h2>
-                        <a href="metas.html" class="text-brand-primary text-sm hover:text-opacity-80 transition duration-200">Gerenciar ></a>
+                        <a href="metas.html" class="text-neon-teal text-sm hover:text-opacity-80 transition duration-200">Gerenciar ></a>
                     </div>
                     <div id="goals-summary-container">
                         </div>
@@ -164,7 +165,7 @@
                 <section id="investimentos-resumo" class="bg-bg-card p-4 rounded-lg shadow-smooth border border-border-default hover:shadow-neon-glow-teal hover:border-neon-teal transition duration-200">
                     <div class="flex justify-between items-center mb-3">
                         <h2 class="text-lg font-semibold text-text-light m-0">Resumo da Carteira (Custo)</h2>
-                        <a href="investimentos.html" class="text-brand-primary text-sm hover:text-opacity-80 transition duration-200">Ver Carteira ></a>
+                        <a href="investimentos.html" class="text-neon-teal text-sm hover:text-opacity-80 transition duration-200">Ver Carteira ></a>
                     </div>
                     
                     <p class="text-text-dim text-sm mb-1">Patrimônio Total Investido:</p>
@@ -174,9 +175,9 @@
                         </div>
                 </section>
                 
-                <section id="investimento-kpi" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default text-center hover:shadow-neon-glow-orange hover:border-brand-primary transition duration-200">
+                <section id="investimento-kpi" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default text-center hover:shadow-neon-glow-teal hover:border-neon-teal transition duration-200">
                     <h3 class="text-text-dim text-sm mb-1">Gastos Planejados (Investimento) do Mês</h3>
-                    <p class="text-brand-primary font-extrabold text-3xl">R$ 1.500,00</p>
+                    <p class="text-neon-teal font-extrabold text-3xl">R$ 1.500,00</p>
                 </section>
                 
             </div>
@@ -184,7 +185,7 @@
         
         <section id="investimentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mt-8">
             <h2 class="text-xl font-semibold text-text-light mb-4">Monitoramento de Investimentos</h2>
-            <p class="text-text-dim text-center py-4">Para gerenciar e visualizar detalhes da carteira, acesse a <a href="investimentos.html" class="text-brand-primary underline hover:text-opacity-80">Aba Investimentos</a>.</p>
+            <p class="text-text-dim text-center py-4">Para gerenciar e visualizar detalhes da carteira, acesse a <a href="investimentos.html" class="text-neon-teal underline hover:text-opacity-80">Aba Investimentos</a>.</p>
             
             <table class="w-full text-sm text-text-light">
                 <thead>
@@ -204,7 +205,7 @@
                         <td class="py-2">Tesouro Nacional</td>
                         <td class="py-2">Tesouro IPCA+ 2035</td>
                         <td class="py-2">15/05/2035</td>
-                        <td class="py-2"><span class="text-text-dim cursor-pointer hover:text-brand-primary">&#9998;</span></td>
+                        <td class="py-2"><span class="text-text-dim cursor-pointer hover:text-neon-teal">&#9998;</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -213,12 +214,8 @@
     </main>
 
     <script>
-        const API_BASE_URL = 'http://localhost:3000/api/transacoes';
-        const API_RESUMO_URL = 'http://localhost:3000/api/resumo';
-        const API_METAS_URL = 'http://localhost:3000/api/metas'; 
-        const API_CARTEIRA_URL = 'http://localhost:3000/api/carteira/consolidado'; 
-        const API_BALANCO_URL = 'http://localhost:3000/api/balanco-mensal'; 
-
+        const API_HOST = 'http://localhost:3000/api/'; // Base da API
+        
         const formatCurrency = (amount) => {
             return new Intl.NumberFormat('pt-BR', {
                 style: 'currency',
@@ -228,17 +225,6 @@
         
         // Nomes dos meses para o seletor
         const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-
-        // Funções de controle dos Modais
-        function openManualEntryModal() {
-            window.location.href = 'lancamentos.html';
-        }
-        function closeImportModal() {
-            // Não faz nada, pois o modal foi removido
-        }
-        function openImportModal() {
-            alert("A funcionalidade de Importar Dados foi desativada neste protótipo.");
-        }
 
 
         // ======================================================
@@ -284,25 +270,25 @@
 
 
         // ======================================================
-        // FUNÇÕES DE TRANSAÇÕES E CRUD
+        // FUNÇÕES DE TRANSAÇÕES E CRUD (REVERTIDO PARA FETCH HTTP)
         // ======================================================
 
-        function deleteTransaction(id) {
+        async function deleteTransaction(id) {
             if (!confirm('Tem certeza que deseja excluir esta transação?')) return;
 
-            fetch(`${API_BASE_URL}/${id}`, { method: 'DELETE' })
-            .then(response => {
+            try {
+                const response = await fetch(`${API_HOST}transacoes/${id}`, { method: 'DELETE' });
                 if (!response.ok) throw new Error('Falha na exclusão.');
+                
                 alert('Transação excluída com sucesso!');
                 refreshUI();
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Erro ao excluir:', error);
-                alert('Erro ao excluir a transação.');
-            });
+                alert('Erro ao excluir a transação. Verifique o console.');
+            }
         }
 
-        function handleEdit(event, id, field) {
+        async function handleEdit(event, id, field) {
             const row = event.target.closest('tr');
             const tipo = row.getAttribute('data-tipo');
             const dataTransacao = row.getAttribute('data-data');
@@ -333,23 +319,24 @@
             
             payload[field] = finalValue;
 
-            fetch(`${API_BASE_URL}/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            })
-            .then(response => {
+            try {
+                const response = await fetch(`${API_HOST}transacoes/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
                 if (!response.ok) throw new Error('Falha na atualização.');
+                
                 if (field === 'valor') {
                     event.target.textContent = formatCurrency(finalValue);
                 }
                 refreshUI();
-            })
-            .catch(error => {
+            } catch(error) {
                 console.error('Erro ao atualizar:', error);
                 alert('Erro ao atualizar a transação. Verifique o console.');
                 refreshUI(); 
-            });
+            }
         }
 
 
@@ -357,195 +344,199 @@
         // FUNÇÕES DE CARREGAMENTO DE DADOS (READ COM FILTRO)
         // ======================================================
 
-        function loadSummary() {
+        async function loadSummary() {
             const params = getFilterParams();
             
-            fetch(`${API_RESUMO_URL}?${params}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('receita-programada').textContent = formatCurrency(data.receitaProgramada);
-                    document.getElementById('despesas-lancadas').textContent = formatCurrency(data.despesasFixas + data.planos); 
-                    document.getElementById('saldo-projetado').textContent = formatCurrency(data.saldoProjetado);
-                    
-                    document.getElementById('total-receita').textContent = formatCurrency(data.receitaProgramada);
-                    document.getElementById('total-despesa').textContent = formatCurrency(data.despesasFixas + data.planos);
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar o Resumo Mensal:', error);
-                });
+            try {
+                const response = await fetch(`${API_HOST}resumo?${params}`);
+                const data = await response.json();
+
+                document.getElementById('receita-programada').textContent = formatCurrency(data.receitaProgramada);
+                document.getElementById('despesas-lancadas').textContent = formatCurrency(data.despesasFixas); 
+                document.getElementById('saldo-projetado').textContent = formatCurrency(data.saldoProjetado);
+                
+                document.getElementById('total-receita').textContent = formatCurrency(data.receitaProgramada);
+                document.getElementById('total-despesa').textContent = formatCurrency(data.despesasFixas); 
+            } catch(error) {
+                console.error('Erro ao carregar o Resumo Mensal:', error);
+            }
         }
 
-        function loadTransactionsTable() {
+        async function loadTransactionsTable() {
             const params = getFilterParams();
             
-            fetch(`${API_BASE_URL}?${params}`)
-                .then(response => response.json())
-                .then(transactions => {
-                    const tbodyReceitas = document.getElementById('table-receitas-tbody');
-                    const tbodyDespesas = document.getElementById('table-despesas-tbody');
-                    
-                    tbodyReceitas.innerHTML = ''; 
-                    const staticRowHtml = `<tr class="font-semibold text-status-error border-b border-border-default hover:bg-bg-hover transition duration-200"><td class="py-2">Despesas Fixas (Exemplo Estático)</td><td class="py-2">R$ 4.000,00</td><td class="py-2">-</td><td class="py-2">-</td></tr>`;
-                    tbodyDespesas.innerHTML = staticRowHtml; 
+            try {
+                const response = await fetch(`${API_HOST}transacoes?${params}`);
+                const transactions = await response.json();
+                
+                const tbodyReceitas = document.getElementById('table-receitas-tbody');
+                const tbodyDespesas = document.getElementById('table-despesas-tbody');
+                
+                tbodyReceitas.innerHTML = ''; 
+                const staticRowHtml = `<tr class="font-semibold text-status-error border-b border-border-default hover:bg-bg-hover transition duration-200"><td class="py-2">Despesas Fixas (Exemplo Estático)</td><td class="py-2">R$ 4.000,00</td><td class="py-2">-</td><td class="py-2">-</td></tr>`;
+                tbodyDespesas.innerHTML = staticRowHtml; 
 
-                    transactions.forEach(t => {
-                        const isExpense = t.tipo === 'Despesa';
-                        const tableBody = isExpense ? tbodyDespesas : tbodyReceitas;
-                        const rowClass = isExpense ? 'text-status-error' : 'text-status-success';
-                        const valorFormatado = formatCurrency(t.valor);
-                        
-                        const newRow = `
-                            <tr class="border-b border-border-default hover:bg-bg-hover transition duration-200" data-id="${t.id}" data-tipo="${t.tipo}" data-data="${t.data}">
-                                <td class="py-2 ${rowClass}" data-field="descricao" contenteditable="true" onblur="handleEdit(event, ${t.id}, 'descricao')">${t.descricao} (${t.categoria})</td>
-                                <td class="py-2 ${rowClass}" data-field="valor" contenteditable="true" onblur="handleEdit(event, ${t.id}, 'valor')">${valorFormatado}</td>
-                                <td class="py-2 text-text-dim">${t.data}</td>
-                                <td class="py-2">
-                                    <span class="text-text-dim cursor-pointer hover:text-status-error transition duration-200" onclick="deleteTransaction(${t.id})">&#x2715;</span>
-                                </td>
-                            </tr>
-                        `;
-                        tableBody.insertAdjacentHTML('afterbegin', newRow); 
-                    });
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar a tabela de transações:', error);
+                transactions.forEach(t => {
+                    const isExpense = t.tipo === 'Despesa';
+                    const tableBody = isExpense ? tbodyDespesas : tbodyReceitas;
+                    const rowClass = isExpense ? 'text-status-error' : 'text-status-success';
+                    const valorFormatado = formatCurrency(t.valor);
+                    
+                    const newRow = `
+                        <tr class="border-b border-border-default hover:bg-bg-hover transition duration-200" data-id="${t.id}" data-tipo="${t.tipo}" data-data="${t.data}">
+                            <td class="py-2 ${rowClass}" data-field="descricao" contenteditable="true" onblur="handleEdit(event, ${t.id}, 'descricao')">${t.descricao} (${t.categoria})</td>
+                            <td class="py-2 ${rowClass}" data-field="valor" contenteditable="true" onblur="handleEdit(event, ${t.id}, 'valor')">${valorFormatado}</td>
+                            <td class="py-2 text-text-dim">${t.data}</td>
+                            <td class="py-2">
+                                <span class="text-text-dim cursor-pointer hover:text-status-error transition duration-200" onclick="deleteTransaction(${t.id})">&#x2715;</span>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.insertAdjacentHTML('afterbegin', newRow); 
                 });
+            } catch(error) {
+                console.error('Erro ao carregar a tabela de transações:', error);
+            }
         }
         
-        // FUNÇÕES DE RESUMO (loadGoalsSummary, loadInvestmentSummary, loadBalanceChart)
-        // ... (Mantidas, mas elas JÁ chamam as rotas que não precisam de filtro de mês/ano, exceto o BalanceChart que só precisa da média geral)
-        // Se você quiser que o Balanço Mensal use a média do mês selecionado, a rota API precisa ser modificada para aceitar o filtro.
+        async function loadGoalsSummary() {
+            try {
+                const response = await fetch(`${API_HOST}metas`);
+                const goals = await response.json();
+                
+                const container = document.getElementById('goals-summary-container');
+                container.innerHTML = ''; 
 
-        function loadGoalsSummary() {
-            // Metas não são filtradas por mês
-            fetch(API_METAS_URL)
-                .then(response => response.json())
-                .then(goals => {
-                    const container = document.getElementById('goals-summary-container');
-                    container.innerHTML = ''; 
+                if (goals.length === 0) {
+                    container.innerHTML = '<p class="text-text-dim text-center">Nenhuma meta cadastrada.</p><a href="metas.html" class="bg-brand-primary text-white font-bold py-2 px-4 rounded block text-center mt-3 hover:bg-orange-700 shadow-neon-glow-orange">Criar Nova Meta</a>';
+                    return;
+                }
 
-                    if (goals.length === 0) {
-                        container.innerHTML = '<p class="text-text-dim text-center">Nenhuma meta cadastrada.</p><a href="metas.html" class="bg-brand-primary text-white font-bold py-2 px-4 rounded block text-center mt-3 hover:bg-orange-700">Criar Nova Meta</a>';
-                        return;
-                    }
+                const topGoals = goals.slice(0, 3); 
 
-                    const topGoals = goals.slice(0, 3); 
-
-                    topGoals.forEach(goal => {
-                        const percent = (goal.valor_arrecadado / goal.valor_total) * 100;
-                        const percentDisplay = Math.min(100, percent).toFixed(0); 
-                        const isComplete = percent >= 100;
-                        
-                        const titleColor = isComplete ? 'text-status-success' : 'text-neon-teal';
-                        const progressColor = isComplete ? 'bg-status-success' : 'bg-neon-teal';
-                        const progressBarClass = isComplete 
-                            ? 'neon-progress-bar-static' 
-                            : 'neon-progress-bar-animated'; 
-
-                        const cardHtml = `
-                            <div class="py-3 border-b border-border-default last:border-b-0">
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="font-semibold ${titleColor} text-sm">${goal.titulo}</span>
-                                    <span class="text-text-dim text-sm font-semibold">${percentDisplay}%</span>
-                                </div>
-                                <div class="w-full bg-border-default rounded-full h-1.5">
-                                    <div class="${progressColor} h-1.5 rounded-full transition-all duration-500 ${progressBarClass}" style="width: ${percentDisplay}%;"></div>
-                                </div>
-                            </div>
-                        `;
-                        container.innerHTML += cardHtml;
-                    });
+                topGoals.forEach(goal => {
+                    const percent = (goal.valor_arrecadado / goal.valor_total) * 100;
+                    const percentDisplay = Math.min(100, percent).toFixed(0); 
+                    const isComplete = percent >= 100;
                     
-                    if (goals.length > 3) {
-                        container.innerHTML += `<p class="text-center mt-3"><a href="metas.html" class="text-text-dim text-sm hover:text-brand-primary">Ver todas (${goals.length})</a></p>`;
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar resumo de metas:', error);
-                    document.getElementById('goals-summary-container').innerHTML = '<p class="text-text-dim text-center">Erro ao carregar metas.</p>';
+                    const titleColor = isComplete ? 'text-status-success' : 'text-neon-teal';
+                    const progressColor = isComplete ? 'bg-status-success' : 'bg-neon-teal';
+                    const progressBarClass = isComplete 
+                        ? 'neon-progress-bar-static' 
+                        : 'neon-progress-bar-animated'; 
+
+                    const cardHtml = `
+                        <div class="py-3 border-b border-border-default last:border-b-0">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-semibold ${titleColor} text-sm">${goal.titulo}</span>
+                                <span class="text-text-dim text-sm font-semibold">${percentDisplay}%</span>
+                            </div>
+                            <div class="w-full bg-border-default rounded-full h-1.5">
+                                <div class="${progressColor} h-1.5 rounded-full transition-all duration-500 ${progressBarClass}" style="width: ${percentDisplay}%;"></div>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += cardHtml;
                 });
+                
+                if (goals.length > 3) {
+                    container.innerHTML += `<p class="text-center mt-3"><a href="metas.html" class="text-text-dim text-sm hover:text-neon-teal">Ver todas (${goals.length})</a></p>`;
+                }
+            } catch(error) {
+                 console.error('Erro ao carregar resumo de metas:', error);
+                 document.getElementById('goals-summary-container').innerHTML = '<p class="text-text-dim text-center">Erro ao carregar metas.</p>';
+            }
         }
         
-        function loadInvestmentSummary() {
-            // Investimentos não são filtrados por mês
-            fetch(API_CARTEIRA_URL)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('total-patrimonio-resumo').textContent = formatCurrency(data.totalPatrimonio);
-                    
-                    const container = document.getElementById('portfolio-distribution-container');
-                    container.innerHTML = '';
-                    
-                    if (data.distribuicao.length === 0) {
-                        container.innerHTML = '<p class="text-text-dim">Nenhum investimento cadastrado.</p>';
-                        return;
-                    }
+        async function loadInvestmentSummary() {
+            try {
+                const response = await fetch(`${API_HOST}carteira/consolidado`);
+                const data = await response.json();
+                
+                document.getElementById('total-patrimonio-resumo').textContent = formatCurrency(data.totalPatrimonio);
+                
+                const container = document.getElementById('portfolio-distribution-container');
+                container.innerHTML = '';
+                
+                if (data.distribuicao.length === 0) {
+                    container.innerHTML = '<p class="text-text-dim">Nenhum investimento cadastrado.</p>';
+                    return;
+                }
 
-                    data.distribuicao.forEach(item => {
-                        const percentualTexto = item.percentual.toFixed(1);
+                data.distribuicao.forEach(item => {
+                    const percentualTexto = item.percentual.toFixed(1);
 
-                        container.innerHTML += `
-                            <div class="flex justify-between text-sm py-1">
-                                <span class="text-text-dim">${item.tipo}</span>
-                                <span class="font-semibold">${percentualTexto}%</span>
-                            </div>
-                        `;
-                    });
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar resumo de investimentos:', error);
-                    document.getElementById('total-patrimonio-resumo').textContent = 'R$ Erro';
+                    container.innerHTML += `
+                        <div class="flex justify-between text-sm py-1">
+                            <span class="text-text-dim">${item.tipo}</span>
+                            <span class="font-semibold">${percentualTexto}%</span>
+                        </div>
+                    `;
                 });
+            } catch(error) {
+                console.error('Erro ao carregar resumo de investimentos:', error);
+                document.getElementById('total-patrimonio-resumo').textContent = 'R$ Erro';
+            }
         }
         
-        function loadBalanceChart() {
-            // Gráfico usa média GERAL, não precisa de filtro de mês
-            fetch(API_BALANCO_URL)
-                .then(response => response.json())
-                .then(data => {
-                    const container = document.getElementById('balance-chart-container');
-                    container.innerHTML = '';
+        async function loadBalanceChart() {
+            try {
+                const response = await fetch(`${API_HOST}balanco-mensal`);
+                const data = await response.json();
+                
+                const container = document.getElementById('balance-chart-container');
+                container.innerHTML = '';
+                
+                // Verifica se há dados suficientes para plotar
+                if (data.length === 0 || data.every(d => d.receita === 0 && d.despesa === 0)) {
+                    container.innerHTML = '<p class="text-text-dim text-center w-full">Lance Receitas e Despesas para gerar a comparação anual.</p>';
+                    return;
+                }
+
+                // 1. Cálculo do valor MÁXIMO para escalonamento
+                const allValues = data.flatMap(item => [item.receita, item.despesa]).filter(v => v !== 0);
+                const maxVal = Math.max(...allValues);
+                const maxHeight = 230;
+
+                data.forEach(item => {
+                    // 2. Cálculo das alturas em pixels
+                    const heightReceita = item.receita > 0 ? (item.receita / maxVal) * maxHeight : 0;
+                    const heightDespesa = item.despesa > 0 ? (item.despesa / maxVal) * maxHeight : 0;
                     
-                    if (data.length === 0 || data[0].receita === 0 && data[0].despesa === 0) {
-                        container.innerHTML = '<p class="text-text-dim text-center w-full">Lance Receitas e Despesas para gerar a projeção.</p>';
-                        return;
-                    }
+                    const balanco = item.receita - item.despesa;
+                    const balancoClass = balanco >= 0 ? 'text-status-success' : 'text-status-error';
+                    
+                    const column = document.createElement('div');
+                    // Usamos w-1/12 para manter 12 colunas no grid flex
+                    column.className = 'w-1/12 text-center flex flex-col items-center relative';
 
-                    const allValues = data.flatMap(item => [item.receita, item.despesa]).filter(v => v !== 0);
-                    const maxVal = Math.max(...allValues);
-                    const maxHeight = 230;
+                    // OBTEM O VALOR DE RECEITA (O QUE ESTAVA NO TOPO)
+                    const tooltipValue = formatCurrency(item.receita); // Apenas o valor da Receita
+                    
+                    // Removido: O tooltip de SALDO. Adicionado tooltip de RECEITA para visualização (embora você queira remover)
+                    const tooltip = document.createElement('span');
+                    tooltip.textContent = tooltipValue;
+                    tooltip.className = `absolute -top-5 text-xs font-bold text-status-success`; // Sempre verde
+                    
+                    
+                    // 3. INJEÇÃO CORRIGIDA PARA DUAS BARRAS LADO A LADO
+                    column.innerHTML = `
+                        <div class="flex h-full items-end gap-0.5 w-11/12 mb-1 justify-center">
+                            <div class="w-1/2 rounded-t-sm bg-status-error shadow-neon-glow-teal" style="height: ${heightDespesa.toFixed(2)}px;"></div>
+                            <div class="w-1/2 rounded-t-sm bg-status-success shadow-neon-glow-teal" style="height: ${heightReceita.toFixed(2)}px;"></div>
+                        </div>
+                        <span class="text-xs text-text-dim">${item.mes}</span>
+                    `;
 
-                    data.forEach(item => {
-                        const heightReceita = (item.receita / maxVal) * maxHeight;
-                        const heightDespesa = (item.despesa / maxVal) * maxHeight;
-                        
-                        const balanco = item.receita - item.despesa;
-                        const balancoClass = balanco >= 0 ? 'text-status-success' : 'text-status-error';
-                        
-                        const column = document.createElement('div');
-                        column.className = 'w-7 text-center flex flex-col items-center relative';
-
-                        const tooltip = document.createElement('span');
-                        tooltip.textContent = formatCurrency(balanco);
-                        tooltip.className = `absolute -top-5 text-xs font-bold ${balancoClass}`;
-                        
-                        // Barra de Progresso com Brilho Neon Simulado
-                        column.innerHTML = `
-                            <div class="flex h-full items-end gap-0.5 w-full mb-1">
-                                <div class="bg-status-error w-1/2 rounded-t-sm shadow-neon-glow-teal" style="height: ${heightDespesa}px;"></div>
-                                <div class="bg-status-success w-1/2 rounded-t-sm shadow-neon-glow-teal" style="height: ${heightReceita}px;"></div>
-                            </div>
-                            <span class="text-xs text-text-dim">${item.mes}</span>
-                        `;
-
-                        column.prepend(tooltip); 
-                        container.appendChild(column);
-                    });
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar o gráfico de balanço:', error);
-                    document.getElementById('balance-chart-container').innerHTML = '<p class="text-text-dim text-center w-full">Erro ao carregar o gráfico de projeção.</p>';
+                    // Removemos a injeção do tooltip se você quer o gráfico totalmente limpo
+                    // column.prepend(tooltip); // Linha COMENTADA para remover o valor do topo! 
+                    
+                    container.appendChild(column);
                 });
+            } catch(error) {
+                console.error('Erro ao carregar o gráfico de balanço:', error);
+                document.getElementById('balance-chart-container').innerHTML = '<p class="text-text-dim text-center w-full">Erro ao carregar o gráfico de projeção.</p>';
+            }
         }
 
 
