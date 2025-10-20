@@ -9,7 +9,7 @@
     <style>
         /* Estilização específica para o efeito de fundo do card neon */
         .neon-card-base {
-            background: linear-gradient(145deg, #1e1e1e, #1a1a1a);
+            background: linear-gradient(145deg, #161B22, #121212);
         }
         /* Estilo do modal para aparecer centralizado e cobrir a tela */
         .modal-overlay {
@@ -28,22 +28,22 @@
     <header class="sticky top-0 z-10 flex items-center justify-between border-b border-border-default bg-bg-card px-8 py-4 shadow-smooth">
         <div class="logo">omeuplannerfinanceiro</div>
         <nav class="main-nav hidden md:flex space-x-8">
-            <a href="index.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Dashboard</a>
-            <a href="lancamentos.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Lançamentos</a>
+            <a href="index.html" class="text-text-light font-semibold hover:text-accent-main transition duration-200">Dashboard</a>
+            <a href="lancamentos.html" class="text-text-light font-semibold hover:text-accent-main transition duration-200">Lançamentos</a>
             <a href="metas.html" class="text-brand-primary font-semibold hover:text-opacity-80 transition duration-200">Metas</a> 
-            <a href="investimentos.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Investimentos</a>
+            <a href="investimentos.html" class="text-text-light font-semibold hover:text-accent-main transition duration-200">Investimentos</a>
         </nav>
         <div class="flex items-center space-x-4">
-            <span class="icon text-text-light cursor-pointer hover:text-brand-primary transition duration-200">&#x2699;</span>
+            <span class="icon text-text-light cursor-pointer hover:text-accent-main transition duration-200">&#x2699;</span>
             <div class="w-8 h-8 bg-neutral-mid rounded-full cursor-pointer"></div>
         </div>
     </header>
 
     <main class="dashboard-content p-8 bg-bg-main">
-        <h1 class="text-3xl font-bold text-text-light mb-6">Planejamento de Metas</h1>
+        <h1 class="text-3xl font-bold text-text-primary mb-6">Planejamento de Metas</h1>
         
         <section id="metas-full" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
-            <h2 class="text-xl font-semibold text-text-light mb-4">Controle de Objetivos Financeiros</h2>
+            <h2 class="text-xl font-semibold text-text-primary mb-4">Controle de Objetivos Financeiros</h2>
             
             <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange mb-6" onclick="openMetaModal('new')">
                 + Nova Meta Holográfica
@@ -63,27 +63,27 @@
                 <input type="hidden" id="meta-id" name="id">
                 
                 <div class="mb-4">
-                    <label class="block text-text-dim mb-1">Título da Meta:</label>
-                    <input type="text" id="meta-titulo" name="titulo" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" required>
+                    <label class="block text-text-secondary mb-1">Título da Meta:</label>
+                    <input type="text" id="meta-titulo" name="titulo" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-neon-teal focus:border-neon-teal" required>
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-text-dim mb-1">Valor Total Necessário (R$):</label>
-                    <input type="number" id="meta-valor-total" name="valor_total" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" step="0.01" required>
+                    <label class="block text-text-secondary mb-1">Valor Total Necessário (R$):</label>
+                    <input type="number" id="meta-valor-total" name="valor_total" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-neon-teal focus:border-neon-teal" step="0.01" required>
                 </div>
                 
                 <div class="mb-4">
-                    <label class="block text-text-dim mb-1">Valor Já Arrecadado (R$):</label>
-                    <input type="number" id="meta-valor-arrecadado" name="valor_arrecadado" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" step="0.01" required>
+                    <label class="block text-text-secondary mb-1">Valor Já Arrecadado (R$):</label>
+                    <input type="number" id="meta-valor-arrecadado" name="valor_arrecadado" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-neon-teal focus:border-neon-teal" step="0.01" required>
                 </div>
 
                 <div class="mb-6">
-                    <label class="block text-text-dim mb-1">Prazo Restante (Meses):</label>
-                    <input type="number" id="meta-prazo" name="prazo_meses" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" required>
+                    <label class="block text-text-secondary mb-1">Prazo Restante (Meses):</label>
+                    <input type="number" id="meta-prazo" name="prazo_meses" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-neon-teal focus:border-neon-teal" required>
                 </div>
 
                 <div class="flex justify-end gap-3">
-                    <button type="button" onclick="closeMetaModal()" class="py-2 px-4 rounded border border-neutral-mid bg-bg-surface text-text-light hover:bg-bg-hover transition duration-200">Cancelar</button>
+                    <button type="button" onclick="closeMetaModal()" class="py-2 px-4 rounded border border-neutral-mid bg-bg-surface text-text-primary hover:bg-bg-hover transition duration-200">Cancelar</button>
                     <button type="submit" class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange">Salvar Meta</button>
                 </div>
             </form>
@@ -143,7 +143,7 @@
         }
 
         // ======================================================
-        // FUNÇÕES CRUD DE METAS (Revertido para FETCH)
+        // FUNÇÕES CRUD DE METAS
         // ======================================================
 
         function deleteMeta(id) {
@@ -170,7 +170,7 @@
                 container.innerHTML = ''; 
                 
                 if (goals.length === 0) {
-                    container.innerHTML = '<p class="text-text-dim text-center col-span-full">Nenhuma meta cadastrada.</p>';
+                    container.innerHTML = '<p class="text-text-secondary text-center col-span-full">Nenhuma meta cadastrada.</p>';
                     return;
                 }
 
@@ -182,6 +182,8 @@
                     // Classes Visuais Neon
                     const titleColor = isComplete ? 'text-status-success' : 'text-neon-teal';
                     const progressColor = isComplete ? 'bg-status-success' : 'bg-neon-teal';
+                    
+                    // CLASSE DE ANIMAÇÃO/ESTÁTICA
                     const progressBarClass = isComplete 
                         ? 'neon-progress-bar-static' 
                         : 'neon-progress-bar-animated'; 
@@ -196,10 +198,10 @@
                                 </div>
                             </div>
 
-                            <p class="text-text-dim text-sm">Total: <span class="font-semibold text-text-light">${formatCurrency(goal.valor_total)}</span></p>
-                            <p class="text-text-dim text-sm">Arrecadado: <span class="font-semibold text-text-light">${formatCurrency(goal.valor_arrecadado)}</span></p>
+                            <p class="text-text-secondary text-sm">Total: <span class="font-semibold text-text-primary">${formatCurrency(goal.valor_total)}</span></p>
+                            <p class="text-text-secondary text-sm">Arrecadado: <span class="font-semibold text-text-primary">${formatCurrency(goal.valor_arrecadado)}</span></p>
                             
-                            ${!isComplete ? `<p class="text-text-dim text-sm mt-1">Faltam: <span class="font-semibold text-neon-orange">${goal.prazo_meses} meses</span></p>` : `<p class="font-bold text-status-success mt-1">META CONCLUÍDA!</p>`}
+                            ${!isComplete ? `<p class="text-text-secondary text-sm mt-1">Faltam: <span class="font-semibold text-neon-orange">${goal.prazo_meses} meses</span></p>` : `<p class="font-bold text-status-success mt-1">META CONCLUÍDA!</p>`}
 
                             <div class="w-full bg-border-default rounded-full h-2 mt-4">
                                 <div class="${progressColor} h-2 rounded-full transition-all duration-500 ${progressBarClass}" style="width: ${percentDisplay}%;"></div>
@@ -211,7 +213,7 @@
                 });
             } catch (error) {
                 console.error('Erro ao carregar metas:', error);
-                document.getElementById('goals-container').innerHTML = '<p class="text-text-dim text-center col-span-full">Erro ao carregar metas. Verifique se o servidor Node está rodando.</p>';
+                document.getElementById('goals-container').innerHTML = '<p class="text-text-secondary text-center col-span-full">Erro ao carregar metas. Verifique se o servidor Node está rodando.</p>';
             }
         }
 

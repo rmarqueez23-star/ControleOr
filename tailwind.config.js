@@ -1,56 +1,49 @@
-// tailwind.config.js - Tema Escuro Minimalista e Neon
+// tailwind.config.js - TEMA INVERTIDO: CLARO é o Padrão, DARK é a customização
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // 1. Configura quais arquivos o Tailwind deve escanear para encontrar classes
   content: [
     "./*.html", 
   ],
   
-  // 2. Habilita o modo escuro via classe (necessário para o tema escuro)
-  // Nota: Embora não usemos o toggle 'dark', a paleta base (bg-main, bg-card) é tratada como padrão (light).
+  // Usamos 'class' para controle manual
   darkMode: 'class', 
   
   theme: {
     extend: {
       // 3. Mapeamento das Cores Customizadas
       colors: {
-        // Cores de Marca
-        'brand-primary': '#FF8C00',     // Laranja Vibrante
-        'brand-secondary': '#008080',   // Teal/Verde-Água
+        // --- CORES DO TEMA CLARO (Padrão, Sem Prefixo) ---
+        'bg-main': '#F5F5F5',           // Fundo principal CLARO
+        'bg-card': '#FFFFFF',           // Fundo de cards (Branco)
+        'bg-surface': '#E0E0E0',        // Superfície de Inputs
+        'bg-hover': '#EEEEEE',          // Efeito hover
         
-        // Paleta de Fundo (Dark Mode - Definida como cores base do tema)
-        'bg-main': '#121212',           // Fundo principal (quase preto)
-        'bg-card': '#1E1E1E',           // Fundo de cards/blocos
-        'bg-surface': '#252525',        // Superfície de inputs, modais
-        'bg-hover': '#333333',          // Efeito hover
+        'text-primary': '#333333',       // Texto principal ESCURO
+        'text-secondary': '#666666',     // Texto secundário ESCURO
+        'border-default': '#CCCCCC',     // Bordas CLARAS
+
+        // --- CORES DE ACENTO E STATUS (Mantidas, serão as mesmas em ambos os temas) ---
+        'brand-primary': '#FF8C00',     // Laranja
+        'brand-secondary': '#008080',   // Teal
+        'status-success': '#28A745',     // Verde
+        'status-error': '#DC3545',       // Vermelho
         
-        // Cores de Texto e Bordas
-        'text-light': '#E0E0E0',        // Texto principal
-        'text-dim': '#A0A0A0',          // Texto secundário/label
-        'border-default': '#3A3A3A',    // Bordas e divisores
-        'neutral-mid': '#CCCCCC',       // Usado para cores neutras no JS
-
-        // Cores de Status
-        'status-success': '#28A745',    // Verde (Receita/Sucesso)
-        'status-error': '#DC3545',      // Vermelho (Despesa/Erro)
-
-        // Cores NEON (para os efeitos visuais)
-        'neon-teal': '#00FFFF',         // Ciano brilhante (Destaque principal)
-        'neon-orange': '#FF7000',       // Laranja neon (Alerta/Texto secundário em Metas)
+        // Cores NEON (Serão usadas APENAS no modo Dark)
+        'neon-teal': '#00E0FF',         
+        'neon-orange': '#FF7000',      
       },
       
-      // 4. Sombra de Brilho Customizada (Efeito Neon)
+      // 4. Sombra de Brilho Customizada
       boxShadow: {
-        'smooth': '0 4px 6px rgba(0, 0, 0, 0.5)',
-        'neon-glow-teal': '0 0 10px #00FFFF', // Brilho para hover em cards e gráficos
-        'neon-glow-orange': '0 0 8px #FF7000', // Brilho para CTA principal (Nova Transação)
-        'neon-glow-button': '0 0 8px #00FFFF', // Brilho para botões de destaque (ajuste no último passo)
+        'smooth': '0 2px 4px rgba(0, 0, 0, 0.1)',
+        'neon-glow-teal': '0 0 10px #00FFFF', 
+        'neon-glow-orange': '0 0 8px #FF7000',
+        'shadow-card-hover': '0 4px 10px rgba(0, 0, 0, 0.1)',
       },
 
-      // Configuração de Tipografia
       fontFamily: {
-        sans: ['"Inter"', 'sans-serif'],
+        sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
       },
     },
   },

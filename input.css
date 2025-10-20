@@ -1,4 +1,4 @@
-/* input.css */
+/* input.css - FINAL CONSOLIDADO E CORRIGIDO PARA COMPILAÇÃO */
 
 /* ====================================================== */
 /* 1. DIRETIVAS DO TAILWIND (CRUCIAL)                     */
@@ -14,21 +14,27 @@
 /* ====================================================== */
 
 :root {
-    /* Paleta de Cores (Mapeadas no tailwind.config.js) */
     --primary-orange: #FF8C00;     
     --secondary-teal: #008080;     
     --neutral-white: #FFFFFF;
-    --neutral-light-gray: #F5F5F5; 
-    --neutral-mid-gray: #CCCCCC;   
-    --neutral-dark-gray: #E0E0E0;  
-    --text-dark: #333333;          
-    --text-light: #E0E0E0;         
-    --status-positive: #28a745;    
-    --status-negative: #dc3545;    
-    --neon-teal: #00FFFF;
+    
+    /* VARIÁVEIS PRINCIPAIS (DARK MODE DEFAULT) */
+    --bg-main: #0E1117;           
+    --bg-card: #161B22;           
+    --bg-surface: #21262D;        
+    --bg-hover: #333333;
+    --border-color: #3A3A3A;      
+    
+    --text-color-primary: #E6EDF3; 
+    --text-color-secondary: #8B949E; 
+    
+    --status-positive: #3FB950;    
+    --status-negative: #F85149;    
+    --neon-teal: #00E0FF; 
+    --accent-main: #00E0FF;
 }
 
-/* Base global - Garante o uso da fonte e box-sizing */
+/* Base global */
 body {
     font-family: var(--font-family-sans);
     margin: 0;
@@ -42,141 +48,160 @@ body {
 
 @keyframes neon-pulse {
     0%, 100% {
-        box-shadow: 0 0 6px var(--secondary-teal);
+        box-shadow: 0 0 6px var(--neon-teal);
     }
     50% {
-        box-shadow: 0 0 10px var(--secondary-teal), 0 0 20px rgba(0, 255, 255, 0.4);
+        box-shadow: 0 0 10px var(--neon-teal), 0 0 20px rgba(0, 224, 255, 0.4);
     }
 }
 
 @layer components {
     /* Logo */
     .logo { 
-        color: var(--primary-orange);
-        font-size: 24px; 
-        font-weight: 900; 
+        color: var(--primary-orange); 
+        @apply text-2xl font-black;
     }
 
     /* BARRA DE PROGRESSO ANIMADA (Metas.html) */
     .neon-progress-bar-animated {
-        box-shadow: 0 0 6px var(--secondary-teal);
+        background-image: linear-gradient(90deg, #00E0FF 0%, #7B61FF 100%);
+        box-shadow: 0 0 6px var(--neon-teal);
         animation: neon-pulse 2s ease-in-out infinite; 
     }
 
     /* BARRA DE PROGRESSE ESTÁTICA */
     .neon-progress-bar-static {
+        background-color: var(--status-positive);
         box-shadow: 0 0 4px var(--status-positive);
     }
     
     /* Estilo de Card para Metas */
     .neon-card-base {
-        background: linear-gradient(145deg, #1e1e1e, #1a1a1a);
+        background: linear-gradient(145deg, #161B22, #121212);
     }
 
     /* Ícones de Ação em Metas */
     .neon-icon-action {
-        color: var(--text-light); 
-        transition: color 0.2s;
+        color: var(--text-color-secondary); 
+        @apply transition duration-200;
+    }
+    .neon-icon-action:hover {
+        color: var(--neon-teal);
     }
 }
 
 
 /* ====================================================== */
-/* 4. ESTILOS DE FORMULÁRIO E SEGMENTED CONTROLS (Lançamentos) */
+/* 4. ESTILOS GERAIS E TABELAS */
 /* ====================================================== */
 
 @layer base {
+    
+    /* Regra CRÍTICA: Aplica o fundo Dark Tech ao body como padrão */
+    body {
+        background-color: var(--bg-main);
+        color: var(--text-color-primary);
+    }
     
     /* ------------------------------------------------------ */
     /* SEGMENTED CONTROL BASE */
     /* ------------------------------------------------------ */
     
-    /* Oculta os inputs de rádio originais (CRUCIAL) */
     .segmented-control input {
         display: none;
     }
 
     .segmented-control {
-        @apply flex border border-border-default rounded-md overflow-hidden w-full;
+        border: 1px solid var(--border-color);
+        @apply flex rounded-md overflow-hidden w-full;
     }
 
     /* Estilo padrão para o rótulo/segmento */
     .segment-label {
-        @apply flex-1 py-3 px-3 cursor-pointer font-semibold transition duration-200 border-l border-border-default bg-bg-surface hover:bg-bg-hover;
+        background-color: var(--bg-surface); 
+        border-left: 1px solid var(--border-color); 
         
-        /* CORREÇÃO VISUAL: Garante o alinhamento central */
+        @apply flex-1 py-3 px-3 cursor-pointer font-semibold transition duration-200 hover:bg-bg-hover;
         display: flex; 
         align-items: center; 
         justify-content: center;
         text-align: center;
         white-space: nowrap; 
     }
-
-    /* Remove a borda esquerda do primeiro item */
     .segmented-control .segment-label:first-of-type {
         border-left: none;
     }
     
-    /* ------------------------------------------------------ */
-    /* TIPO (RECEITA / DESPESA) - CORREÇÃO DE CLASSE */
-    /* ------------------------------------------------------ */
-    
-    /* Estilo ativo para TIPO RECEITA */
-    .type-selector input#receita:checked + .segment-label {
-        @apply bg-status-success text-white;
-    }
+    /* Estilos Ativos (CORREÇÃO AQUI - Usando BG direto para evitar erro) */
+    .type-selector input#receita:checked + .segment-label { background-color: var(--status-positive); @apply text-white; }
+    .type-selector input#despesa:checked + .segment-label { background-color: var(--status-negative); @apply text-white; }
+    .frequency-selector input:checked + .segment-label { background-color: var(--accent-secondary); @apply text-white; } /* Corrigido */
+    .frequency-selector .segment-label span:first-child { color: var(--neon-teal); }
+    .frequency-selector input:checked + .segment-label span { @apply text-white; }
 
-    /* Estilo ativo para TIPO DESPESA */
-    .type-selector input#despesa:checked + .segment-label {
-        @apply bg-status-error text-white;
-    }
-    
-    /* ------------------------------------------------------ */
-    /* FREQUÊNCIA (NEON - Aplica-se ao Texto e Ícone) */
-    /* ------------------------------------------------------ */
-    
-    /* Estilo ATIVO para Frequência (Fundo Teal) */
-    .frequency-selector input:checked + .segment-label {
-        @apply bg-brand-secondary text-white; 
-    }
-    
-    /* Cor base dos ícones (Neon Teal) */
-    .frequency-selector .segment-label span:first-child {
-        color: var(--neon-teal); 
-        transition: color 0.2s;
-    }
-    
-    /* Quando checado, o ícone e texto da frequência devem ser brancos (sobrepõe o neon-teal) */
-    .frequency-selector input:checked + .segment-label span {
-        @apply text-white; 
-    }
-    .frequency-selector input:checked + .segment-label span:nth-child(2) {
-         @apply text-white; 
-    }
-
-
-    /* ------------------------------------------------------ */
-    /* TABELAS E EDIÇÃO */
-    /* ------------------------------------------------------ */
-
+    /* Regras de Tabela */
     table {
         @apply border-collapse w-full text-left text-sm;
     }
     thead {
-        @apply border-b-2 border-border-default;
+        border-bottom: 2px solid var(--border-color);
     }
     th { 
-        @apply py-2 px-1 text-text-dim;
+        @apply py-2 px-1;
+        color: var(--text-color-secondary);
     }
     td { 
-        @apply py-3 px-1 border-b border-border-default;
+        @apply py-3 px-1;
+        border-bottom: 1px solid var(--border-color);
     }
     tbody tr:last-child td {
-        @apply border-b-0;
+        border-bottom: none;
     }
     
     /* Estilo para edição em linha */
     [contenteditable="true"]:focus {
-        @apply bg-bg-hover outline-none border border-brand-primary rounded-sm p-0.5;
+        background-color: var(--bg-hover);
+        border: 1px solid var(--accent-main);
+        @apply outline-none rounded-sm p-0.5;
+    }
+}
+
+
+/* ====================================================== */
+/* 5. REGRAS PARA O MODO CLARO (LIGHT MODE) - FORÇA DE REVERSÃO */
+/* ====================================================== */
+
+html.light {
+    /* Define o novo esquema de cores CLARAS nas variáveis CSS */
+    --bg-main: #F5F5F5;             
+    --bg-card: #FFFFFF;             
+    --bg-surface: #E0E0E0;          
+    --bg-hover: #EEEEEE;            
+    --border-color: #CCCCCC;        
+    
+    --text-color-primary: #333333;  
+    --text-color-secondary: #666666; 
+    
+    @layer base {
+        /* FORÇA A MUDANÇA DE FUNDO E TEXTO DO BODY */
+        body {
+            background-color: var(--bg-main) !important; 
+            color: var(--text-color-primary) !important; 
+        }
+        
+        /* Reverte elementos de fundo e borda dos cards/inputs */
+        .bg-bg-card, .bg-bg-surface {
+            background-color: var(--bg-card) !important;
+        }
+        
+        /* Força a cor ESCURA no texto secundário para contraste */
+        .text-text-secondary {
+            color: var(--text-color-secondary) !important;
+        }
+        
+        /* Garante que o texto de tabelas também seja escuro */
+        .text-text-primary {
+            color: var(--text-color-primary) !important;
+        }
     }
 }

@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lançamentos - o meu planner financeiro</title>
+    <title>Carteira de Investimentos - omeuplannerfinanceiro</title>
     <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Estilo para simular o Gráfico de Rosca/Pizza (Donut Chart) */
+        .donut-chart {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                /* As cores são injetadas via JavaScript no atributo style */
+            );
+            border: 30px solid var(--bg-main); 
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); 
+        }
+        /* Layout Grid para os cards de KPI (similar ao do Investidor 10) */
+        .kpi-row-grid {
+            @apply grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6;
+        }
+    </style>
 </head>
 <body class="bg-bg-main text-text-light font-sans antialiased">
 
@@ -12,9 +30,9 @@
         <div class="logo">omeuplannerfinanceiro</div>
         <nav class="main-nav hidden md:flex space-x-8">
             <a href="index.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Dashboard</a>
-            <a href="lancamentos.html" class="text-brand-primary font-semibold hover:text-opacity-80 transition duration-200">Lançamentos</a> 
+            <a href="lancamentos.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Lançamentos</a> 
             <a href="metas.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Metas</a>
-            <a href="investimentos.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Investimentos</a>
+            <a href="investimentos.html" class="text-brand-primary font-semibold hover:text-opacity-80 transition duration-200">Investimentos</a> 
         </nav>
         <div class="flex items-center space-x-4">
             <span class="icon text-text-light cursor-pointer hover:text-brand-primary transition duration-200">&#x2699;</span>
@@ -23,195 +41,106 @@
     </header>
 
     <main class="dashboard-content p-8 bg-bg-main">
-        <h1 class="text-3xl font-bold text-text-light mb-6">Gestão de Lançamentos</h1>
-        <p class="text-text-dim mb-8">Use esta página para registrar e gerenciar todas as suas transações.</p>
-
-        <section id="resumo-orcamento" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
-            <h2 class="text-xl font-semibold text-text-light mb-4">Visão Orçamentária do Mês</h2>
-            <div class="flex flex-wrap justify-between text-center gap-6">
-                
-                <div class="flex-1 min-w-[150px]">
-                    <p class="text-text-light font-bold text-lg" id="lanc_gasto_planejado">R$ 0,00</p>
-                    <p class="text-text-dim text-sm">Gasto Planejado (Invest. Lançado)</p>
-                </div>
-                
-                <div class="flex-1 min-w-[150px]">
-                    <p class="text-status-success font-bold text-lg" id="lanc_receita_total">R$ 0,00</p>
-                    <p class="text-text-dim text-sm">Receita Total Lançada</p>
-                </div>
-
-                <div class="flex-1 min-w-[150px] border-l border-border-default pl-4">
-                    <p class="font-extrabold text-xl" id="lanc_valor_sobra">R$ 0,00</p>
-                    <p class="text-text-light text-sm">Valor que Sobra (Líquido)</p>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="form-lancamento" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
-            <h2 class="text-xl font-semibold text-text-light mb-4">+ Novo Lançamento Rápido</h2>
-            
-            <form id="transaction-form" class="flex flex-wrap gap-8">
-                
-                <div style="flex: 1 1 300px;">
-                    <div class="mb-4">
-                        <label class="block text-text-dim font-bold mb-2">Tipo:</label>
-                        <div class="segmented-control type-selector">
-                            
-                            <input type="radio" id="receita" name="tipo" value="Receita" required> 
-                            <label for="receita" class="segment-label positive-bg flex items-center justify-center space-x-2">
-                                <span class="text-xl">💰</span> 
-                                <span>Receita</span>
-                            </label>
-                            
-                            <input type="radio" id="despesa" name="tipo" value="Despesa" required> 
-                            <label for="despesa" class="segment-label negative-bg flex items-center justify-center space-x-2">
-                                <span class="text-xl">💸</span> 
-                                <span>Despesa</span>
-                            </label>
-                            
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-text-dim font-bold mb-2">Frequência:</label>
-                        <div class="segmented-control frequency-selector">
-                            
-                            <input type="radio" id="fixa" name="frequencia" value="Fixa" required> 
-                            <label for="fixa" class="segment-label flex items-center justify-center space-x-2">
-                                <span class="text-xl">🔄</span> 
-                                <span>Fixa</span>
-                            </label>
-                            
-                            <input type="radio" id="parcelada" name="frequencia" value="Parcelada"> 
-                            <label for="parcelada" class="segment-label flex items-center justify-center space-x-2">
-                                <span class="text-xl">🔢</span> 
-                                <span>Parcelada</span>
-                            </label>
-                            
-                            <input type="radio" id="unica" name="frequencia" value="Unica" checked> 
-                            <label for="unica" class="segment-label flex items-center justify-center space-x-2">
-                                <span class="text-xl">✨</span> 
-                                <span>Única</span>
-                            </label>
-                            
-                        </div>
-                    </div>
-
-                    <div id="parcela-fields" class="hidden mt-4 flex gap-4">
-                        <div class="flex-1 mb-4">
-                            <label class="block text-text-dim mb-1">Nº Parcelas:</label>
-                            <input type="number" name="parcelas_totais" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary" value="1">
-                        </div>
-                        <div class="flex-1 mb-4">
-                            <label class="block text-text-dim mb-1">Parcela Atual:</label>
-                            <input type="number" name="parcela_atual" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary" value="1">
-                        </div>
-                    </div>
-                </div>
-
-                <div style="flex: 1 1 300px;">
-                    <div class="flex gap-4 mb-4">
-                        <div class="flex-1">
-                            <label class="block text-text-dim mb-1">Valor (R$):</label>
-                            <input type="number" name="valor" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary" step="0.01" required>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-text-dim mb-1">Data:</label>
-                            <input type="date" name="data" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary" value="2025-01-01" required>
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-text-dim mb-1">Descrição:</label>
-                        <input type="text" name="descricao" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary" required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-text-dim mb-1">Categoria:</label>
-                        <select name="categoria" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary">
-                            <option value="Salario">Salário (Receita)</option>
-                            <option value="Servicos">Serviços/Freelance</option>
-                            <option value="Aluguel">Moradia/Aluguel</option>
-                            <option value="Alimentacao">Alimentação</option>
-                            <option value="Lazer">Lazer</option>
-                            <option value="Investimentos">Investimentos</option>
-                            <option value="Outros">Outros</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="w-full text-right border-t border-border-default pt-4">
-                    <button type="reset" class="py-2 px-4 rounded border border-neutral-mid bg-bg-surface text-text-light hover:bg-bg-hover transition duration-200">Limpar Formulário</button>
-                    <button type="submit" class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200">Salvar Lançamento</button>
-                </div>
-            </form>
-        </section>
-
-        <section id="receitas-lancamentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold text-text-light">Receitas Programadas</h2>
-                <span id="total-receita-lancamentos" class="text-status-success font-bold text-lg">R$ 0,00</span>
-            </div>
-            
-            <div class="overflow-x-auto">
-                <table id="table-receitas-lancamentos" class="w-full text-sm text-text-light whitespace-nowrap">
-                    <thead>
-                        <tr class="border-b-2 border-border-default text-text-dim">
-                            <th class="py-2 px-1 text-left w-3/12">Descrição/Categoria</th>
-                            <th class="py-2 px-1 text-left w-2/12">Valor</th>
-                            <th class="py-2 px-1 text-left w-2/12">Frequência</th>
-                            <th class="py-2 px-1 text-left w-2/12">Data</th>
-                            <th class="py-2 px-1 text-center w-2/12">Status</th>
-                            <th class="py-2 px-1 text-center w-1/12">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        </tbody>
-                </table>
-            </div>
-        </section>
+        <h1 class="text-3xl font-bold text-text-light mb-6">Minha Carteira de Investimentos</h1>
         
-        <section id="despesas-fixas-lancamentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold text-text-light">Despesas Fixas e Recorrentes (e Únicas)</h2>
-                <span id="total-despesa-fixa-lancamentos" class="text-status-error font-bold text-lg">R$ 0,00</span>
+        <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange mb-8" onclick="openAtivoModal('new')">+ Adicionar Novo Ativo</button>
+
+        <section class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
+            
+            <div class="flex flex-wrap justify-between items-center pb-4 border-b border-border-default mb-4">
+                <div class="text-text-dim text-lg font-semibold">Patrimônio Total</div>
+                
+                <div class="flex items-center space-x-6">
+                    <p class="text-status-success font-extrabold text-3xl" id="kpi-total-patrimonio">R$ 0,00</p>
+                    
+                    <div class="text-xs text-text-dim">
+                        <span>Valor Investido:</span>
+                        <span class="font-semibold text-text-light" id="kpi-valor-investido">R$ 0,00</span>
+                    </div>
+                </div>
             </div>
             
-            <div class="overflow-x-auto">
-                <table id="table-despesas-fixas" class="w-full text-sm text-text-light whitespace-nowrap">
-                    <thead>
-                        <tr class="border-b-2 border-border-default text-text-dim">
-                            <th class="py-2 px-1 text-left w-3/12">Descrição/Categoria</th>
-                            <th class="py-2 px-1 text-left w-2/12">Valor</th>
-                            <th class="py-2 px-1 text-left w-2/12">Frequência</th>
-                            <th class="py-2 px-1 text-left w-2/12">Data de Vencimento</th>
-                            <th class="py-2 px-1 text-center w-2/12">Status</th>
-                            <th class="py-2 px-1 text-center w-1/12">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        </tbody>
-                </table>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                
+                <div class="col-span-1">
+                    <p class="text-text-dim text-sm">Lucro Total</p>
+                    <p class="font-bold mt-1" id="kpi-lucro-total">R$ 0,00</p>
+                    <div class="text-xs text-text-dim mt-1">
+                        <span id="kpi-ganhos-liquidos">Ganhos: R$ 0,00</span>
+                    </div>
+                </div>
+
+                <div class="col-span-1">
+                    <p class="text-text-dim text-sm">Proventos Recebidos (12M)</p>
+                    <p class="text-text-light font-bold mt-1" id="kpi-proventos">R$ 0,00</p>
+                </div>
+
+                <div class="col-span-1">
+                    <p class="text-text-dim text-sm">Variação (Dia)</p>
+                    <p class="font-bold mt-1" id="kpi-variacao-dia">0.00%</p>
+                </div>
+
+                <div class="col-span-1">
+                    <p class="text-text-dim text-sm">Rentabilidade (Total)</p>
+                    <p class="font-bold mt-1" id="kpi-rentabilidade">0.00%</p>
+                </div>
             </div>
         </section>
 
-        <section id="despesas-parceladas-lancamentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold text-text-light">Despesas Parceladas (A Prazo)</h2>
-                <span id="total-despesa-parcelada-lancamentos" class="text-status-error font-bold text-lg">R$ 0,00</span>
+
+        <section class="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-8">
+
+            <div class="lg:col-span-3 bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default">
+                <h2 class="text-xl font-semibold text-text-light mb-4">Evolução do Patrimônio</h2>
+                <div class="flex items-center justify-between text-text-dim text-sm mb-4">
+                    <span>Valor aplicado | Ganho total</span>
+                    <select class="p-1 border border-border-default rounded bg-bg-surface text-text-dim">
+                         <option>Últimos 12 Meses</option>
+                    </select>
+                </div>
+                
+                <div class="bg-bg-surface h-64 rounded-lg flex items-center justify-center text-text-dim border border-border-default">
+                    [Placeholder para Gráfico de Linha/Barras (Simulado)]
+                </div>
             </div>
+
+            <div class="lg:col-span-2 bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default">
+                <h2 class="text-xl font-semibold text-text-light mb-4">Distribuição de Ativos</h2>
+                
+                <div class="flex flex-col items-center justify-center py-4">
+                    <div id="donut-chart-wrapper" class="relative mb-6">
+                        <div class="donut-chart" id="invest-donut-chart"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-xl font-bold text-text-light" id="invest-donut-total">%</span>
+                        </div>
+                    </div>
+
+                    <div id="invest-distribuicao-container" class="space-y-2 text-sm w-full max-w-xs">
+                        </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default">
+            <h2 class="text-xl font-semibold text-text-light mb-4">Meus Ativos em Carteira</h2>
+            
+            <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange mb-4" onclick="openAtivoModal('new')">
+                + Novo Ativo
+            </button>
             
             <div class="overflow-x-auto">
-                <table id="table-despesas-parceladas" class="w-full text-sm text-text-light whitespace-nowrap">
+                <table id="table-ativos" class="w-full text-sm text-text-light whitespace-nowrap">
                     <thead>
                         <tr class="border-b-2 border-border-default text-text-dim">
-                            <th class="py-2 px-1 text-left w-3/12">Descrição/Categoria</th>
-                            <th class="py-2 px-1 text-left w-2/12">Valor (Parcela)</th>
-                            <th class="py-2 px-1 text-left w-2/12">Parcelas</th>
-                            <th class="py-2 px-1 text-left w-2/12">Vencimento</th>
-                            <th class="py-2 px-1 text-center w-2/12">Status</th>
-                            <th class="py-2 px-1 text-center w-1/12">Ações</th>
+                            <th class="py-3 px-2 text-left">Ativo</th>
+                            <th class="py-3 px-2 text-left">Qtd</th>
+                            <th class="py-3 px-2 text-right">Preço Médio</th>
+                            <th class="py-3 px-2 text-right">Valor Atual (Sim.)</th>
+                            <th class="py-3 px-2 text-right">Variação (%)</th>
+                            <th class="py-3 px-2 text-right">Custo Total</th>
+                            <th class="py-3 px-2 text-center">Opções</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -222,245 +151,296 @@
 
     </main>
 
+    <div id="ativo-modal" class="modal-overlay">
+        <div class="bg-bg-card p-8 rounded-lg shadow-smooth border border-border-default w-full max-w-md">
+            <h2 class="text-xl font-semibold text-brand-primary mb-4" id="ativo-modal-title">Adicionar Novo Ativo</h2>
+            
+            <form id="ativo-form">
+                <input type="hidden" id="ativo-id" name="id">
+                
+                <div class="mb-4">
+                    <label class="block text-text-dim mb-1">Produto (Ex: BOVA11, CDB):</label>
+                    <input type="text" id="ativo-produto" name="produto" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-text-dim mb-1">Tipo de Ativo:</label>
+                    <select id="ativo-tipo" name="tipo_ativo" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" required>
+                        <option value="Ações">Ações</option>
+                        <option value="FIIs">FIIs (Fundos Imobiliários)</option>
+                        <option value="Renda Fixa">Renda Fixa (CDB, Tesouro)</option>
+                        <option value="Fundos">Fundos</option>
+                    </select>
+                </div>
+                
+                <div class="flex gap-4 mb-4">
+                    <div class="w-1/2">
+                        <label class="block text-text-dim mb-1">Quantidade:</label>
+                        <input type="number" id="ativo-quantidade" name="quantidade" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" step="any" required>
+                    </div>
+                    <div class="w-1/2">
+                        <label class="block text-text-dim mb-1">Custo Médio (R$/unidade):</label>
+                        <input type="number" id="ativo-custo" name="custo_medio" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" step="0.01" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-text-dim mb-1">Instituição Financeira:</label>
+                    <input type="text" id="ativo-instituicao" name="instituicao" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-text-dim mb-1">Vencimento (Opcional - para Renda Fixa):</label>
+                    <input type="date" id="ativo-vencimento" name="vencimento" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal">
+                </div>
+
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeAtivoModal()" class="py-2 px-4 rounded border border-neutral-mid bg-bg-surface text-text-light hover:bg-bg-hover transition duration-200">Cancelar</button>
+                    <button type="submit" class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange" id="ativo-submit-btn">Salvar Ativo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <script>
         const API_HOST = 'http://localhost:3000/api/';
 
+        // --- Variáveis de Simulação (Para Preços Atuais e Variações) ---
+        const MOCK_PRICES = {
+            'BOVA11': { precoAtual: 120.00, variacaoDia: 0.50 },
+            'MXRF11': { precoAtual: 10.50, variacaoDia: -0.20 },
+            'CDB DI': { precoAtual: 1050.00, variacaoDia: 0.05 },
+            'DEFAULT': { precoAtual: 1.00, variacaoDia: 0.00 },
+        };
+        // Cores para o gráfico de rosca
+        const DISTRIBUTION_COLORS = {
+            'Ações': '#FF7000',      // Laranja Neon
+            'FIIs': '#00FFFF',       // Ciano Neon
+            'Renda Fixa': '#28A745', // Verde Sucesso
+            'Fundos': '#DC3545',     // Vermelho
+            'Outros': '#A0A0A0'      // Cinza
+        };
+
+        // --- FUNÇÕES GERAIS ---
         const formatCurrency = (amount) => {
             return new Intl.NumberFormat('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
             }).format(amount);
         };
-        
+        const formatPercent = (amount) => {
+            return `${amount.toFixed(2)}%`;
+        };
+
         // ======================================================
-        // FUNÇÃO DE CARREGAMENTO DO KPI DE ORÇAMENTO (Dinâmica)
+        // FUNÇÕES DE MODAL
         // ======================================================
 
-        async function loadBudgetKPI() {
-            try {
-                const response = await fetch(`${API_HOST}transacoes`);
-                const transactions = await response.json();
-                
-                let receitaTotal = 0;
-                let despesaReal = 0; 
-                let gastoPlanejadoInvestimento = 0; 
+        function openAtivoModal(mode, id = null) {
+            const modal = document.getElementById('ativo-modal');
+            const title = document.getElementById('ativo-modal-title');
+            document.getElementById('ativo-form').reset();
+            document.getElementById('ativo-id').value = '';
 
-                transactions.forEach(t => {
-                    if (t.tipo === 'Receita') {
-                        receitaTotal += t.valor;
-                    } else if (t.tipo === 'Despesa') {
-                        if (t.categoria === 'Investimentos') {
-                            gastoPlanejadoInvestimento += t.valor;
-                        } else {
-                            despesaReal += t.valor;
-                        }
-                    }
-                });
-
-                const valorSobra = receitaTotal - despesaReal - gastoPlanejadoInvestimento;
-
-                document.getElementById('lanc_gasto_planejado').textContent = formatCurrency(gastoPlanejadoInvestimento);
-                document.getElementById('lanc_receita_total').textContent = formatCurrency(receitaTotal);
-                
-                const sobraElement = document.getElementById('lanc_valor_sobra');
-                sobraElement.textContent = formatCurrency(valorSobra);
-                sobraElement.classList.remove('text-status-success', 'text-status-error');
-                sobraElement.classList.add(valorSobra >= 0 ? 'text-status-success' : 'text-status-error');
-
-            } catch (error) {
-                console.error('Erro ao carregar KPI de orçamento:', error);
+            if (mode === 'new') {
+                title.textContent = 'Adicionar Novo Ativo';
+                modal.style.display = 'flex';
             }
         }
 
+        function closeAtivoModal() {
+            document.getElementById('ativo-modal').style.display = 'none';
+        }
 
         // ======================================================
-        // LÓGICA DO FORMULÁRIO E LISTAGEM
+        // FUNÇÕES CRUD E CARREGAMENTO
         // ======================================================
 
-        // 1. Controle da visibilidade dos campos de Parcelamento
-        document.querySelectorAll('input[name="frequencia"]').forEach(radio => {
-            radio.addEventListener('change', (event) => {
-                const fields = document.getElementById('parcela-fields');
-                const isParcelada = event.target.value === 'Parcelada';
-                
-                fields.classList.toggle('hidden', !isParcelada); 
-                
-                document.querySelector('input[name="parcelas_totais"]').required = isParcelada;
-                document.querySelector('input[name="parcela_atual"]').required = isParcelada;
+        // Deleta o ativo
+        async function deleteAtivo(id) {
+            if (!confirm('Tem certeza que deseja excluir este ativo?')) return;
 
-                if (!isParcelada) {
-                    document.querySelector('input[name="parcelas_totais"]').value = 1;
-                    document.querySelector('input[name="parcela_atual"]').value = 1;
+            try {
+                const response = await fetch(`${API_HOST}ativos/${id}`, { method: 'DELETE' });
+                if (!response.ok) throw new Error('Falha na exclusão.');
+                
+                alert('Ativo excluído com sucesso!');
+                loadPortfolio(); 
+            } catch (error) {
+                console.error('Erro ao excluir ativo:', error);
+                alert('Erro ao excluir o ativo. Verifique a conexão com o servidor.');
+            }
+        }
+        
+        // Carrega o Resumo e Distribuição (Donut Chart)
+        async function loadConsolidatedSummary() {
+            try {
+                const response = await fetch(`${API_HOST}carteira/consolidado`);
+                const data = await response.json();
+                
+                const totalGeral = data.totalPatrimonio;
+                let cssGradient = '';
+                let currentDegree = 0;
+                
+                const distribuicaoContainer = document.getElementById('invest-distribuicao-container');
+                distribuicaoContainer.innerHTML = '';
+                
+                // Variáveis para cálculo de KPIs Secundários
+                let custoTotalInvestido = 0;
+                const ativosResponse = await fetch(`${API_HOST}ativos`);
+                const ativos = await ativosResponse.json();
+
+                // 1. Calcular Custo Total (Valor Investido)
+                ativos.forEach(a => {
+                    custoTotalInvestido += a.quantidade * a.custo_medio;
+                });
+                
+                // 2. Calcular o Lucro e Rentabilidade (Baseado em mock prices)
+                // (Simulação de preço atual e custo total para os KPIs)
+                const mockPatrimonioAtual = ativos.reduce((sum, a) => {
+                    const priceData = MOCK_PRICES[a.produto] || MOCK_PRICES['DEFAULT'];
+                    return sum + (a.quantidade * priceData.precoAtual);
+                }, 0);
+
+                const lucroTotal = mockPatrimonioAtual - custoTotalInvestido;
+                const rentabilidadeTotal = (mockPatrimonioAtual / custoTotalInvestido - 1) * 100 || 0;
+                
+                const lucroClass = lucroTotal >= 0 ? 'text-status-success' : 'text-status-error';
+                const rentabilidadeClass = rentabilidadeTotal >= 0 ? 'text-status-success' : 'text-status-error';
+
+                // 3. Gerar o Gráfico de Rosca
+                data.distribuicao.forEach(item => {
+                    const color = DISTRIBUTION_COLORS[item.tipo] || DISTRIBUTION_COLORS['Outros'];
+                    const percentage = totalGeral > 0 ? (item.valor / totalGeral) : 0;
+                    const endDegree = currentDegree + (percentage * 360);
+
+                    // Constrói o gradiente CSS
+                    cssGradient += `${color} ${currentDegree}deg ${endDegree}deg, `;
+                    currentDegree = endDegree;
+
+                    // Constrói a legenda detalhada
+                    distribuicaoContainer.innerHTML += `
+                        <div class="flex justify-between text-sm">
+                            <span class="text-text-light flex items-center">
+                                <span class="w-2 h-2 rounded-full mr-2" style="background-color: ${color};"></span>
+                                ${item.tipo}
+                            </span>
+                            <span class="font-semibold">${formatPercent(item.percentual)}</span>
+                        </div>
+                    `;
+                });
+                
+                // Aplica o gráfico de rosca (removendo a vírgula e espaço finais)
+                document.getElementById('invest-donut-chart').style.background = `conic-gradient(${cssGradient.slice(0, -2)})`;
+                document.getElementById('invest-donut-total').textContent = `${formatPercent(100)}`; // Mantido em 100%
+
+                // 4. Atualiza KPIs Principais e Secundários
+                document.getElementById('kpi-total-patrimonio').textContent = formatCurrency(mockPatrimonioAtual); 
+                document.getElementById('kpi-valor-investido').textContent = formatCurrency(custoTotalInvestido); 
+                
+                // Lucro Total
+                const lucroElement = document.getElementById('kpi-lucro-total');
+                lucroElement.textContent = formatCurrency(lucroTotal);
+                lucroElement.classList.add(lucroClass);
+                document.getElementById('kpi-ganhos-liquidos').textContent = `Ganhos: ${formatCurrency(lucroTotal > 0 ? lucroTotal : 0)}`;
+
+                // Rentabilidade
+                const rentabElement = document.getElementById('kpi-rentabilidade');
+                rentabElement.textContent = formatPercent(rentabilidadeTotal);
+                rentabElement.classList.add(rentabilidadeClass);
+
+                // Outros KPIs Simples (Variação Dia e Proventos)
+                document.getElementById('kpi-proventos').textContent = formatCurrency(80.26); // Simulado
+                document.getElementById('kpi-variacao-dia').textContent = formatPercent(3.07); // Simulado
+                
+            } catch(error) {
+                console.error('Erro ao carregar consolidado:', error);
+                document.getElementById('kpi-total-patrimonio').textContent = 'R$ Erro';
+            }
+        }
+
+        // 5. Carrega a Tabela Detalhada de Ativos
+        async function loadAtivosTable() {
+             try {
+                const response = await fetch(`${API_HOST}ativos`);
+                const ativos = await response.json();
+
+                const tbody = document.querySelector('#table-ativos tbody');
+                tbody.innerHTML = ''; 
+
+                if (ativos.length === 0) {
+                     tbody.innerHTML = '<tr><td colspan="7" class="text-text-dim text-center py-4">Nenhum ativo cadastrado.</td></tr>';
+                    return;
                 }
-            });
-        });
 
+                ativos.forEach(a => {
+                    const priceData = MOCK_PRICES[a.produto] || MOCK_PRICES['DEFAULT'];
+                    const valorAtual = a.quantidade * priceData.precoAtual;
+                    const custoTotal = a.quantidade * a.custo_medio;
+                    const variacaoTotal = valorAtual - custoTotal;
+                    const rentabilidade = (valorAtual / custoTotal - 1) * 100 || 0;
+                    const rentabilidadeDia = priceData.variacaoDia;
+                    
+                    const rentabClass = rentabilidade >= 0 ? 'text-status-success' : 'text-status-error';
+                    const variacaoClass = rentabilidadeDia >= 0 ? 'text-status-success' : 'text-status-error';
 
-        // 2. Lógica de Envio do Formulário (Create)
-        document.getElementById('transaction-form').addEventListener('submit', async function(event) {
+                    tbody.innerHTML += `
+                        <tr class="border-b border-border-default hover:bg-bg-hover transition duration-200">
+                            <td class="py-2 px-2 font-semibold">${a.produto}</td>
+                            <td class="py-2 px-2 text-text-dim">${a.quantidade.toFixed(a.tipo_ativo === 'Renda Fixa' ? 0 : 2)}</td>
+                            <td class="py-2 px-2 text-right text-text-dim">${formatCurrency(a.custo_medio)}</td>
+                            <td class="py-2 px-2 text-right font-bold">${formatCurrency(priceData.precoAtual)}</td>
+                            <td class="py-2 px-2 text-right ${variacaoClass}">${formatPercent(rentabilidadeDia)}</td>
+                            <td class="py-2 px-2 text-right ${rentabClass} font-bold">${formatCurrency(custoTotal)}</td>
+                            <td class="py-2 px-2 text-center">
+                                <span class="text-text-dim cursor-pointer hover:text-status-error transition duration-200" onclick="deleteAtivo(${a.id})">&#x2715;</span>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Erro ao carregar ativos:', error);
+            }
+        }
+        
+        // Função principal de carregamento
+        function loadPortfolio() {
+            loadConsolidatedSummary();
+            loadAtivosTable();
+        }
+
+        // Lógica de Envio do Formulário (Create Ativo)
+        document.getElementById('ativo-form').addEventListener('submit', async function(event) {
             event.preventDefault();
 
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData.entries());
             
-            data.valor = parseFloat(data.valor);
-            data.parcelas_totais = (data.frequencia === 'Parcelada') ? parseInt(data.parcelas_totais) : null;
-            data.parcela_atual = (data.frequencia === 'Parcelada') ? parseInt(data.parcela_atual) : null;
-            data.status = (data.tipo === 'Receita') ? 'A Receber' : 'A Pagar';
+            data.quantidade = parseFloat(data.quantidade);
+            data.custo_medio = parseFloat(data.custo_medio);
 
             try {
-                const response = await fetch(`${API_HOST}transacoes`, { 
+                const response = await fetch(`${API_HOST}ativos`, { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data),
                 });
+                
+                if (!response.ok) throw new Error('Falha ao salvar ativo.');
 
-                if (!response.ok) throw new Error('Falha na conexão ou servidor.');
-
-                alert('Lançamento salvo com sucesso! Atualizando lista...');
+                alert('Ativo salvo com sucesso!');
+                closeAtivoModal();
                 event.target.reset();
-                document.getElementById('unica').checked = true; 
-                document.getElementById('parcela-fields').classList.add('hidden'); 
-                loadTransactionsListings(); 
-                loadBudgetKPI(); 
-            } catch (error) {
-                console.error('Erro ao salvar lançamento:', error);
-                alert(`Erro ao salvar lançamento. Verifique se o servidor (Node.js) está rodando na porta 3000.`);
+                loadPortfolio(); 
+            } catch(error) {
+                console.error('Erro ao salvar ativo:', error);
+                alert(`Erro ao salvar ativo. Verifique o console e a conexão com o servidor.`);
             }
         });
-        
-        
-        // Função para deletar a transação
-        async function deleteTransaction(id) {
-            if (!confirm('Tem certeza que deseja excluir este lançamento?')) return;
 
-            try {
-                const response = await fetch(`${API_HOST}transacoes/${id}`, { method: 'DELETE' });
-                if (!response.ok) throw new Error('Falha na exclusão.');
-                
-                alert('Lançamento excluído com sucesso!');
-                loadTransactionsListings();
-                loadBudgetKPI(); 
-            } catch (error) {
-                console.error('Erro ao excluir:', error);
-                alert('Erro ao excluir o lançamento. Verifique o console.');
-            }
-        }
-        
-        // Função para mudar o status (Pago/Recebido)
-        async function updateTransactionStatus(id, currentStatus) {
-            let newStatus = '';
-            if (currentStatus === 'A Pagar') newStatus = 'Pago';
-            else if (currentStatus === 'A Receber') newStatus = 'Recebido';
-            else return; 
-
-            if (!confirm(`Confirma marcar como "${newStatus}"?`)) return;
-
-            try {
-                const res = await fetch(`${API_HOST}transacoes`);
-                const allTransactions = await res.json();
-                const t = allTransactions.find(item => item.id == id);
-
-                if (!t) throw new Error('Transação não encontrada para atualização.');
-                
-                const payload = {
-                    ...t,
-                    status: newStatus,
-                    valor: parseFloat(t.valor) 
-                };
-
-                const response = await fetch(`${API_HOST}transacoes/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                });
-
-                if (!response.ok) throw new Error('Falha na atualização de status.');
-                
-                loadTransactionsListings(); 
-                loadBudgetKPI(); 
-            } catch (error) {
-                console.error('Erro ao atualizar status:', error);
-                alert('Erro ao atualizar o status da transação. Verifique o console.');
-            }
-        }
-
-
-        // Função principal para carregar as listagens nas 3 tabelas
-        async function loadTransactionsListings() {
-            try {
-                const response = await fetch(`${API_HOST}transacoes`);
-                const transactions = await response.json();
-
-                const tbodyReceitas = document.querySelector('#table-receitas-lancamentos tbody');
-                const tbodyDespesasFixas = document.querySelector('#table-despesas-fixas tbody');
-                const tbodyDespesasParceladas = document.querySelector('#table-despesas-parceladas tbody');
-                
-                tbodyReceitas.innerHTML = '';
-                tbodyDespesasFixas.innerHTML = '';
-                tbodyDespesasParceladas.innerHTML = '';
-
-                let totalReceita = 0;
-                let totalDespesaFixa = 0;
-                let totalDespesaParcelada = 0;
-
-                transactions.forEach(t => {
-                    const valorFormatado = formatCurrency(t.valor);
-                    const isExpense = t.tipo === 'Despesa';
-                    
-                    let tableBody;
-                    if (t.tipo === 'Receita') {
-                        tableBody = tbodyReceitas;
-                        totalReceita += t.valor;
-                    } else if (t.frequencia === 'Parcelada') {
-                        tableBody = tbodyDespesasParceladas;
-                        totalDespesaParcelada += t.valor;
-                    } else { 
-                        tableBody = tbodyDespesasFixas;
-                        totalDespesaFixa += t.valor; 
-                    }
-                    
-                    // Lógica para Botão de Ação (Pagar/Receber)
-                    let actionHTML;
-                    if ((isExpense && t.status === 'A Pagar') || (!isExpense && t.status === 'A Receber')) {
-                        const actionText = isExpense ? 'Marcar Pago' : 'Marcar Recebido';
-                        const actionClass = isExpense ? 'bg-status-error hover:bg-red-700' : 'bg-status-success hover:bg-green-700';
-                        actionHTML = `<button class="py-1 px-2 text-xs text-white rounded ${actionClass}" onclick="updateTransactionStatus(${t.id}, '${t.status}')">${actionText}</button>`;
-                    } else {
-                        // Já está pago ou recebido
-                        const statusColor = t.status.includes('Pago') || t.status.includes('Recebido') ? 'text-status-success' : 'text-status-error';
-                        actionHTML = `<span class="${statusColor} font-bold text-xs">${t.status}</span>`;
-                    }
-                    
-                    const row = `
-                        <tr class="border-b border-border-default hover:bg-bg-hover transition duration-200">
-                            <td class="py-3 px-1">${t.descricao} (${t.categoria})</td>
-                            <td class="py-3 px-1 font-bold ${isExpense ? 'text-status-error' : 'text-status-success'}">${valorFormatado}</td>
-                            <td class="py-3 px-1 text-text-dim">${t.frequencia} ${t.frequencia === 'Parcelada' ? `(${t.parcela_atual}/${t.parcelas_totais})` : ''}</td>
-                            <td class="py-3 px-1 text-text-dim">${t.data}</td>
-                            <td class="py-3 px-1 text-center">${actionHTML}</td>
-                            <td class="py-3 px-1 text-center">
-                                <span class="text-text-dim cursor-pointer hover:text-status-error transition duration-200" onclick="deleteTransaction(${t.id})">&#x2715;</span>
-                            </td>
-                        </tr>
-                    `;
-                    tableBody.insertAdjacentHTML('beforeend', row); 
-                });
-                
-                document.getElementById('total-receita-lancamentos').textContent = formatCurrency(totalReceita);
-                document.getElementById('total-despesa-fixa-lancamentos').textContent = formatCurrency(totalDespesaFixa);
-                document.getElementById('total-despesa-parcelada-lancamentos').textContent = formatCurrency(totalDespesaParcelada);
-
-            } catch (error) {
-                console.error('Erro ao carregar lançamentos:', error);
-            }
-        }
-
-        // Ação Inicial: Carrega listagens e o KPI
-        window.onload = function() {
-            loadTransactionsListings();
-            loadBudgetKPI();
-        };
+        // Ação Inicial
+        window.onload = loadPortfolio;
     </script>
 </body>
 </html>

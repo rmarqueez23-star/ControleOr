@@ -5,10 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Financeiro Pessoal - Visão Geral</title>
 
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.add('light');
+            } else if (!savedTheme && window.matchMedia('(prefers-color-scheme: light)').matches) {
+                document.documentElement.classList.add('light');
+            }
+
+            window.toggleTheme = function() {
+                const isLight = document.documentElement.classList.contains('light');
+                if (isLight) {
+                    document.documentElement.classList.remove('light');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.documentElement.classList.add('light');
+                    localStorage.setItem('theme', 'light');
+                }
+            };
+        })();
+    </script>
+    
     <link rel="stylesheet" href="style.css">
     
     <style>
-        /* Estilo para a célula editável no Dark Mode */
+        /* Estilo para a célula editável no Dark Mode (Mantido) */
         [contenteditable="true"]:focus {
             background-color: var(--bg-hover);
             outline: 1px solid var(--neon-teal);
@@ -27,39 +49,43 @@
         }
     </style>
 </head>
-<body class="bg-bg-main text-text-light font-sans antialiased">
+<body class="text-text-primary font-sans antialiased">
 
-    <header class="sticky top-0 z-10 flex items-center justify-between border-b border-border-default bg-bg-card px-8 py-4 shadow-smooth">
+    <header class="sticky top-0 z-10 flex items-center justify-between border-b border-border-default bg-bg-card px-8 py-4 shadow-smooth 
+                   light:bg-white light:border-neutral-mid">
         <div class="logo">
             omeuplannerfinanceiro
         </div>
         <nav class="main-nav hidden md:flex space-x-8">
             <a href="index.html" class="text-brand-primary font-semibold hover:text-opacity-80 transition duration-200">Dashboard</a> 
-            <a href="lancamentos.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Lançamentos</a> 
-            <a href="metas.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Metas</a>
-            <a href="investimentos.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Investimentos</a> 
+            <a href="lancamentos.html" class="text-text-primary font-semibold hover:text-brand-primary transition duration-200">Lançamentos</a> 
+            <a href="metas.html" class="text-text-primary font-semibold hover:text-brand-primary transition duration-200">Metas</a>
+            <a href="investimentos.html" class="text-text-primary font-semibold hover:text-brand-primary transition duration-200">Investimentos</a> 
         </nav>
         <div class="flex items-center space-x-4">
-            <span class="icon text-text-light cursor-pointer hover:text-brand-primary transition duration-200">&#x2699;</span>
+            <button onclick="window.toggleTheme()" class="text-text-primary hover:text-brand-primary transition duration-200">
+                <span class="text-xl">&#9728;</span> 
+            </button>
+            <span class="icon text-text-primary cursor-pointer hover:text-brand-primary transition duration-200">&#x2699;</span>
             <div class="w-8 h-8 bg-neutral-mid rounded-full cursor-pointer"></div>
         </div>
     </header>
 
-    <main class="dashboard-content p-8">
+    <main class="dashboard-content p-8 bg-bg-main light:bg-neutral-light">
 
-        <h1 class="text-3xl font-bold text-text-light mb-6">Dashboard Financeiro</h1>
+        <h1 class="text-3xl font-bold text-text-primary mb-6">Dashboard Financeiro</h1>
         <div class="flex gap-4 mb-8">
-            <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange" onclick="window.location.href='lancamentos.html';">+ Nova Transação</button>
+            <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange light:shadow-smooth" onclick="window.location.href='lancamentos.html';">+ Nova Transação</button>
         </div>
 
         <div class="flex items-center gap-4 mb-8">
-            <div class="flex items-center space-x-2 text-text-dim text-sm">
+            <div class="flex items-center space-x-2 text-text-secondary text-base">
                 <label for="month-select">Visualizando:</label>
                 
-                <select id="month-select" class="p-2 border border-border-default rounded bg-bg-surface focus:ring-brand-primary focus:border-brand-primary cursor-pointer text-text-light" onchange="refreshUI()">
+                <select id="month-select" class="p-2 border border-border-default light:border-neutral-mid rounded bg-bg-surface light:bg-white focus:ring-brand-primary focus:border-brand-primary cursor-pointer text-text-primary" onchange="refreshUI()">
                     </select>
                 
-                <select id="year-select" class="p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-brand-primary focus:border-brand-primary cursor-pointer" onchange="refreshUI()">
+                <select id="year-select" class="p-2 border border-border-default light:border-neutral-mid rounded bg-bg-surface light:bg-white text-text-primary focus:ring-brand-primary focus:border-brand-primary cursor-pointer" onchange="refreshUI()">
                     </select>
             </div>
         </div>
@@ -68,38 +94,38 @@
             
             <div class="lg:col-span-2 space-y-8">
                 
-                <section id="resumo-mensal" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default hover:border-brand-primary transition duration-200">
-                    <h2 class="text-xl font-semibold text-text-light mb-4" id="resumo-title">Resumo Mensal</h2>
+                <section id="resumo-mensal" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default light:bg-white light:border-neutral-mid hover:border-brand-primary transition duration-200">
+                    <h2 class="text-xl font-semibold text-text-primary mb-4" id="resumo-title">Resumo Mensal</h2>
                     <div class="flex flex-wrap justify-between text-center gap-4">
                         
                         <div class="flex-1 min-w-[120px]">
-                            <p class="text-status-success font-bold text-lg" id="receita-programada">R$ 0,00</p>
-                            <p class="text-text-dim text-sm">Receita Programada</p>
+                            <p class="text-status-success font-bold text-xl" id="receita-programada">R$ 0,00</p>
+                            <p class="text-text-secondary text-sm">Receita Programada</p>
                         </div>
                         
                         <div class="flex-1 min-w-[120px]">
-                            <p class="text-status-error font-bold text-lg" id="despesas-lancadas">R$ 0,00</p>
-                            <p class="text-text-dim text-sm">Despesas Lançadas</p>
+                            <p class="text-status-error font-bold text-xl" id="despesas-lancadas">R$ 0,00</p>
+                            <p class="text-text-secondary text-sm">Despesas Lançadas</p>
                         </div>
                         
-                        <div class="flex-1 min-w-[120px] border-l border-border-default pl-4">
-                            <p class="text-brand-secondary font-extrabold text-xl" id="saldo-projetado">R$ 0,00</p>
-                            <p class="text-text-light text-sm">Saldo Projetado</p>
+                        <div class="flex-1 min-w-[120px] border-l border-border-default light:border-neutral-mid pl-4">
+                            <p class="text-brand-secondary font-extrabold text-2xl" id="saldo-projetado">R$ 0,00</p>
+                            <p class="text-text-primary text-sm">Saldo Projetado</p>
                         </div>
 
                     </div>
                 </section>
                 
-                <section id="receitas-lancamentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default">
-                    <h2 class="text-xl font-semibold text-text-light mb-4">Lançamentos de Receitas</h2>
-                    <div class="flex justify-between items-center bg-bg-surface p-3 rounded mb-4 font-semibold">
-                        <span class="text-text-light">Receita Total Lançada:</span>
-                        <span id="total-receita" class="text-status-success">R$ 0,00</span>
+                <section id="receitas-lancamentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default light:bg-white light:border-neutral-mid">
+                    <h2 class="text-xl font-semibold text-text-primary mb-4">Lançamentos de Receitas</h2>
+                    <div class="flex justify-between items-center bg-bg-surface light:bg-gray-100 p-3 rounded mb-4 font-semibold">
+                        <span class="text-text-secondary">Receita Total Lançada:</span>
+                        <span id="total-receita" class="text-status-success text-lg">R$ 0,00</span>
                     </div>
                     
-                    <table class="w-full text-sm text-text-light">
+                    <table class="w-full text-base text-text-primary">
                         <thead>
-                            <tr class="border-b-2 border-border-default text-text-dim">
+                            <tr class="border-b-2 border-border-default light:border-neutral-mid text-text-secondary">
                                 <th class="w-1/2 py-2">Descrição/Categoria</th>
                                 <th class="w-1/4 py-2">Valor (R$)</th>
                                 <th class="w-1/6 py-2">Data</th>
@@ -111,16 +137,16 @@
                     </table>
                 </section>
 
-                <section id="despesas-lancamentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default">
-                    <h2 class="text-xl font-semibold text-text-light mb-4">Lançamentos de Despesas</h2>
-                    <div class="flex justify-between items-center bg-bg-surface p-3 rounded mb-4 font-semibold">
-                        <span class="text-text-light">Despesa Total Lançada:</span>
-                        <span id="total-despesa" class="text-status-error">R$ 0,00</span>
+                <section id="despesas-lancamentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default light:bg-white light:border-neutral-mid">
+                    <h2 class="text-xl font-semibold text-text-primary mb-4">Lançamentos de Despesas</h2>
+                    <div class="flex justify-between items-center bg-bg-surface light:bg-gray-100 p-3 rounded mb-4 font-semibold">
+                        <span class="text-text-secondary">Despesa Total Lançada:</span>
+                        <span id="total-despesa" class="text-status-error text-lg">R$ 0,00</span>
                     </div>
                     
-                    <table class="w-full text-sm text-text-light">
+                    <table class="w-full text-base text-text-primary">
                         <thead>
-                            <tr class="border-b-2 border-border-default text-text-dim">
+                            <tr class="border-b-2 border-border-default light:border-neutral-mid text-text-secondary">
                                 <th class="w-1/2 py-2">Descrição/Categoria</th>
                                 <th class="w-1/4 py-2">Valor (R$)</th>
                                 <th class="w-1/6 py-2">Data</th>
@@ -128,7 +154,7 @@
                             </tr>
                         </thead>
                         <tbody id="table-despesas-tbody">
-                            <tr class="font-semibold text-status-error border-b border-border-default hover:bg-bg-hover transition duration-200">
+                            <tr class="font-semibold text-status-error border-b border-border-default hover:bg-bg-hover light:hover:bg-gray-100 transition duration-200">
                                 <td class="py-2">Despesas Fixas (Exemplo Estático)</td>
                                 <td class="py-2">R$ 4.000,00</td>
                                 <td class="py-2">-</td>
@@ -138,12 +164,12 @@
                     </table>
                 </section>
                 
-                <section id="grafico-saldo" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default hover:shadow-neon-glow-teal hover:border-neon-teal transition duration-200">
-                    <h2 class="text-xl font-semibold text-text-light mb-4">Comparação Receita x Despesa - Anual</h2>
+                <section id="grafico-saldo" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default light:bg-white light:border-neutral-mid hover:border-brand-primary transition duration-200">
+                    <h2 class="text-xl font-semibold text-text-primary mb-4">Comparação Receita x Despesa - Anual</h2>
                     
-                    <div id="balance-chart-container" class="flex justify-around items-end h-64 p-2 border-b border-border-default">
+                    <div id="balance-chart-container" class="flex justify-around items-end h-64 p-2 border-b border-border-default light:border-neutral-mid">
                         </div>
-                    <div class="flex justify-center gap-8 mt-4 text-sm text-text-dim">
+                    <div class="flex justify-center gap-8 mt-4 text-sm text-text-secondary">
                         <span class="flex items-center text-status-success"><span class="w-3 h-3 bg-status-success rounded-full mr-2"></span> Receita</span>
                         <span class="flex items-center text-status-error"><span class="w-3 h-3 bg-status-error rounded-full mr-2"></span> Despesa</span>
                     </div>
@@ -153,43 +179,43 @@
             
             <div class="lg:col-span-1 space-y-8">
                 
-                <section id="metas-resumo" class="bg-bg-card p-4 rounded-lg shadow-smooth border border-border-default hover:shadow-neon-glow-teal hover:border-neon-teal transition duration-200">
+                <section id="metas-resumo" class="bg-bg-card p-4 rounded-lg shadow-smooth border border-border-default light:bg-white light:border-neutral-mid hover:border-brand-primary transition duration-200">
                     <div class="flex justify-between items-center mb-3">
-                        <h2 class="text-lg font-semibold text-text-light m-0">Minhas Metas Financeiras</h2>
-                        <a href="metas.html" class="text-neon-teal text-sm hover:text-opacity-80 transition duration-200">Gerenciar ></a>
+                        <h2 class="text-lg font-semibold text-text-primary m-0">Minhas Metas Financeiras</h2>
+                        <a href="metas.html" class="text-brand-primary text-sm hover:text-opacity-80 transition duration-200">Gerenciar ></a>
                     </div>
                     <div id="goals-summary-container">
                         </div>
                 </section>
 
-                <section id="investimentos-resumo" class="bg-bg-card p-4 rounded-lg shadow-smooth border border-border-default hover:shadow-neon-glow-teal hover:border-neon-teal transition duration-200">
+                <section id="investimentos-resumo" class="bg-bg-card p-4 rounded-lg shadow-smooth border border-border-default light:bg-white light:border-neutral-mid hover:border-brand-primary transition duration-200">
                     <div class="flex justify-between items-center mb-3">
-                        <h2 class="text-lg font-semibold text-text-light m-0">Resumo da Carteira (Custo)</h2>
-                        <a href="investimentos.html" class="text-neon-teal text-sm hover:text-opacity-80 transition duration-200">Ver Carteira ></a>
+                        <h2 class="text-lg font-semibold text-text-primary m-0">Resumo da Carteira (Custo)</h2>
+                        <a href="investimentos.html" class="text-brand-primary text-sm hover:text-opacity-80 transition duration-200">Ver Carteira ></a>
                     </div>
                     
-                    <p class="text-text-dim text-sm mb-1">Patrimônio Total Investido:</p>
+                    <p class="text-text-secondary text-sm mb-1">Patrimônio Total Investido:</p>
                     <p class="text-status-success font-extrabold text-2xl mb-4" id="total-patrimonio-resumo">R$ 0,00</p>
                     
                     <div id="portfolio-distribution-container" class="space-y-1">
                         </div>
                 </section>
                 
-                <section id="investimento-kpi" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default text-center hover:shadow-neon-glow-teal hover:border-neon-teal transition duration-200">
-                    <h3 class="text-text-dim text-sm mb-1">Gastos Planejados (Investimento) do Mês</h3>
-                    <p class="text-neon-teal font-extrabold text-3xl">R$ 1.500,00</p>
+                <section id="investimento-kpi" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default light:bg-white light:border-neutral-mid text-center hover:border-brand-primary transition duration-200">
+                    <h3 class="text-text-secondary text-sm mb-1">Gastos Planejados (Investimento) do Mês</h3>
+                    <p class="text-brand-primary font-extrabold text-3xl">R$ 1.500,00</p>
                 </section>
                 
             </div>
         </div>
         
-        <section id="investimentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mt-8">
-            <h2 class="text-xl font-semibold text-text-light mb-4">Monitoramento de Investimentos</h2>
-            <p class="text-text-dim text-center py-4">Para gerenciar e visualizar detalhes da carteira, acesse a <a href="investimentos.html" class="text-neon-teal underline hover:text-opacity-80">Aba Investimentos</a>.</p>
+        <section id="investimentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default light:bg-white light:border-neutral-mid mt-8">
+            <h2 class="text-xl font-semibold text-text-primary mb-4">Monitoramento de Investimentos</h2>
+            <p class="text-text-secondary text-center py-4">Para gerenciar e visualizar detalhes da carteira, acesse a <a href="investimentos.html" class="text-brand-primary underline hover:text-opacity-80">Aba Investimentos</a>.</p>
             
-            <table class="w-full text-sm text-text-light">
+            <table class="w-full text-base text-text-primary">
                 <thead>
-                    <tr class="border-b-2 border-border-default text-text-dim">
+                    <tr class="border-b-2 border-border-default light:border-neutral-mid text-text-secondary">
                         <th class="py-2">Checkbox</th>
                         <th class="py-2">Inst. Fin. - Partição</th>
                         <th class="py-2">Emissor</th>
@@ -199,13 +225,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b border-border-default text-text-dim hover:bg-bg-hover transition duration-200">
+                    <tr class="border-b border-border-default light:border-neutral-mid text-text-secondary hover:bg-bg-hover light:hover:bg-gray-100 transition duration-200">
                         <td class="py-2">☐</td>
                         <td class="py-2">Banco XYZ - Renda Fixa</td>
                         <td class="py-2">Tesouro Nacional</td>
                         <td class="py-2">Tesouro IPCA+ 2035</td>
                         <td class="py-2">15/05/2035</td>
-                        <td class="py-2"><span class="text-text-dim cursor-pointer hover:text-neon-teal">&#9998;</span></td>
+                        <td class="py-2"><span class="text-text-secondary cursor-pointer hover:text-brand-primary">&#9998;</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -373,7 +399,7 @@
                 const tbodyDespesas = document.getElementById('table-despesas-tbody');
                 
                 tbodyReceitas.innerHTML = ''; 
-                const staticRowHtml = `<tr class="font-semibold text-status-error border-b border-border-default hover:bg-bg-hover transition duration-200"><td class="py-2">Despesas Fixas (Exemplo Estático)</td><td class="py-2">R$ 4.000,00</td><td class="py-2">-</td><td class="py-2">-</td></tr>`;
+                const staticRowHtml = `<tr class="font-semibold text-status-error border-b border-border-default light:border-neutral-mid hover:bg-bg-hover light:hover:bg-gray-100 transition duration-200"><td class="py-2">Despesas Fixas (Exemplo Estático)</td><td class="py-2">R$ 4.000,00</td><td class="py-2">-</td><td class="py-2">-</td></tr>`;
                 tbodyDespesas.innerHTML = staticRowHtml; 
 
                 transactions.forEach(t => {
@@ -383,12 +409,12 @@
                     const valorFormatado = formatCurrency(t.valor);
                     
                     const newRow = `
-                        <tr class="border-b border-border-default hover:bg-bg-hover transition duration-200" data-id="${t.id}" data-tipo="${t.tipo}" data-data="${t.data}">
+                        <tr class="border-b border-border-default light:border-neutral-mid hover:bg-bg-hover light:hover:bg-gray-100 transition duration-200" data-id="${t.id}" data-tipo="${t.tipo}" data-data="${t.data}">
                             <td class="py-2 ${rowClass}" data-field="descricao" contenteditable="true" onblur="handleEdit(event, ${t.id}, 'descricao')">${t.descricao} (${t.categoria})</td>
                             <td class="py-2 ${rowClass}" data-field="valor" contenteditable="true" onblur="handleEdit(event, ${t.id}, 'valor')">${valorFormatado}</td>
-                            <td class="py-2 text-text-dim">${t.data}</td>
+                            <td class="py-2 text-text-secondary light:text-text-secondary">${t.data}</td>
                             <td class="py-2">
-                                <span class="text-text-dim cursor-pointer hover:text-status-error transition duration-200" onclick="deleteTransaction(${t.id})">&#x2715;</span>
+                                <span class="text-text-secondary cursor-pointer hover:text-status-error transition duration-200" onclick="deleteTransaction(${t.id})">&#x2715;</span>
                             </td>
                         </tr>
                     `;
@@ -408,7 +434,7 @@
                 container.innerHTML = ''; 
 
                 if (goals.length === 0) {
-                    container.innerHTML = '<p class="text-text-dim text-center">Nenhuma meta cadastrada.</p><a href="metas.html" class="bg-brand-primary text-white font-bold py-2 px-4 rounded block text-center mt-3 hover:bg-orange-700 shadow-neon-glow-orange">Criar Nova Meta</a>';
+                    container.innerHTML = '<p class="text-text-secondary light:text-text-secondary text-center">Nenhuma meta cadastrada.</p><a href="metas.html" class="bg-brand-primary text-white font-bold py-2 px-4 rounded block text-center mt-3 hover:bg-orange-700 shadow-smooth">Criar Nova Meta</a>';
                     return;
                 }
 
@@ -419,17 +445,15 @@
                     const percentDisplay = Math.min(100, percent).toFixed(0); 
                     const isComplete = percent >= 100;
                     
-                    const titleColor = isComplete ? 'text-status-success' : 'text-neon-teal';
-                    const progressColor = isComplete ? 'bg-status-success' : 'bg-neon-teal';
-                    const progressBarClass = isComplete 
-                        ? 'neon-progress-bar-static' 
-                        : 'neon-progress-bar-animated'; 
+                    const titleColor = isComplete ? 'text-status-success' : 'text-brand-secondary';
+                    const progressColor = isComplete ? 'bg-status-success' : 'bg-brand-secondary';
+                    const progressBarClass = 'shadow-none'; 
 
                     const cardHtml = `
-                        <div class="py-3 border-b border-border-default last:border-b-0">
+                        <div class="py-3 border-b border-border-default last:border-b-0 light:border-neutral-mid">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="font-semibold ${titleColor} text-sm">${goal.titulo}</span>
-                                <span class="text-text-dim text-sm font-semibold">${percentDisplay}%</span>
+                                <span class="text-text-secondary light:text-text-secondary text-sm font-semibold">${percentDisplay}%</span>
                             </div>
                             <div class="w-full bg-border-default rounded-full h-1.5">
                                 <div class="${progressColor} h-1.5 rounded-full transition-all duration-500 ${progressBarClass}" style="width: ${percentDisplay}%;"></div>
@@ -440,11 +464,11 @@
                 });
                 
                 if (goals.length > 3) {
-                    container.innerHTML += `<p class="text-center mt-3"><a href="metas.html" class="text-text-dim text-sm hover:text-neon-teal">Ver todas (${goals.length})</a></p>`;
+                    container.innerHTML += `<p class="text-center mt-3"><a href="metas.html" class="text-text-secondary light:text-text-secondary text-sm hover:text-brand-primary">Ver todas (${goals.length})</a></p>`;
                 }
             } catch(error) {
                  console.error('Erro ao carregar resumo de metas:', error);
-                 document.getElementById('goals-summary-container').innerHTML = '<p class="text-text-dim text-center">Erro ao carregar metas.</p>';
+                 document.getElementById('goals-summary-container').innerHTML = '<p class="text-text-secondary light:text-text-secondary text-center">Erro ao carregar metas.</p>';
             }
         }
         
@@ -459,7 +483,7 @@
                 container.innerHTML = '';
                 
                 if (data.distribuicao.length === 0) {
-                    container.innerHTML = '<p class="text-text-dim">Nenhum investimento cadastrado.</p>';
+                    container.innerHTML = '<p class="text-text-secondary light:text-text-secondary">Nenhum investimento cadastrado.</p>';
                     return;
                 }
 
@@ -468,7 +492,7 @@
 
                     container.innerHTML += `
                         <div class="flex justify-between text-sm py-1">
-                            <span class="text-text-dim">${item.tipo}</span>
+                            <span class="text-text-secondary light:text-text-secondary">${item.tipo}</span>
                             <span class="font-semibold">${percentualTexto}%</span>
                         </div>
                     `;
@@ -487,55 +511,40 @@
                 const container = document.getElementById('balance-chart-container');
                 container.innerHTML = '';
                 
-                // Verifica se há dados suficientes para plotar
                 if (data.length === 0 || data.every(d => d.receita === 0 && d.despesa === 0)) {
-                    container.innerHTML = '<p class="text-text-dim text-center w-full">Lance Receitas e Despesas para gerar a comparação anual.</p>';
+                    container.innerHTML = '<p class="text-text-secondary light:text-text-secondary text-center w-full">Lance Receitas e Despesas para gerar a comparação anual.</p>';
                     return;
                 }
 
-                // 1. Cálculo do valor MÁXIMO para escalonamento
                 const allValues = data.flatMap(item => [item.receita, item.despesa]).filter(v => v !== 0);
                 const maxVal = Math.max(...allValues);
                 const maxHeight = 230;
+                const MIN_HEIGHT = 2; 
 
                 data.forEach(item => {
-                    // 2. Cálculo das alturas em pixels
-                    const heightReceita = item.receita > 0 ? (item.receita / maxVal) * maxHeight : 0;
-                    const heightDespesa = item.despesa > 0 ? (item.despesa / maxVal) * maxHeight : 0;
-                    
-                    const balanco = item.receita - item.despesa;
-                    const balancoClass = balanco >= 0 ? 'text-status-success' : 'text-status-error';
+                    const heightReceita = item.receita > 0 
+                        ? Math.max(MIN_HEIGHT, (item.receita / maxVal) * maxHeight) 
+                        : 0;
+                    const heightDespesa = item.despesa > 0 
+                        ? Math.max(MIN_HEIGHT, (item.despesa / maxVal) * maxHeight) 
+                        : 0;
                     
                     const column = document.createElement('div');
-                    // Usamos w-1/12 para manter 12 colunas no grid flex
                     column.className = 'w-1/12 text-center flex flex-col items-center relative';
 
-                    // OBTEM O VALOR DE RECEITA (O QUE ESTAVA NO TOPO)
-                    const tooltipValue = formatCurrency(item.receita); // Apenas o valor da Receita
-                    
-                    // Removido: O tooltip de SALDO. Adicionado tooltip de RECEITA para visualização (embora você queira remover)
-                    const tooltip = document.createElement('span');
-                    tooltip.textContent = tooltipValue;
-                    tooltip.className = `absolute -top-5 text-xs font-bold text-status-success`; // Sempre verde
-                    
-                    
-                    // 3. INJEÇÃO CORRIGIDA PARA DUAS BARRAS LADO A LADO
                     column.innerHTML = `
                         <div class="flex h-full items-end gap-0.5 w-11/12 mb-1 justify-center">
-                            <div class="w-1/2 rounded-t-sm bg-status-error shadow-neon-glow-teal" style="height: ${heightDespesa.toFixed(2)}px;"></div>
-                            <div class="w-1/2 rounded-t-sm bg-status-success shadow-neon-glow-teal" style="height: ${heightReceita.toFixed(2)}px;"></div>
+                            <div class="w-1/2 rounded-t-sm bg-status-error shadow-none light:bg-status-error" style="height: ${heightDespesa.toFixed(2)}px;"></div>
+                            <div class="w-1/2 rounded-t-sm bg-status-success shadow-none light:bg-status-success" style="height: ${heightReceita.toFixed(2)}px;"></div>
                         </div>
-                        <span class="text-xs text-text-dim">${item.mes}</span>
+                        <span class="text-xs text-text-secondary light:text-text-secondary">${item.mes}</span>
                     `;
 
-                    // Removemos a injeção do tooltip se você quer o gráfico totalmente limpo
-                    // column.prepend(tooltip); // Linha COMENTADA para remover o valor do topo! 
-                    
                     container.appendChild(column);
                 });
             } catch(error) {
                 console.error('Erro ao carregar o gráfico de balanço:', error);
-                document.getElementById('balance-chart-container').innerHTML = '<p class="text-text-dim text-center w-full">Erro ao carregar o gráfico de projeção.</p>';
+                document.getElementById('balance-chart-container').innerHTML = '<p class="text-text-secondary light:text-text-secondary text-center w-full">Erro ao carregar o gráfico de projeção.</p>';
             }
         }
 
