@@ -6,9 +6,6 @@ module.exports = {
     "./*.html", 
   ],
   
-  // Usamos 'class' para controle manual
-  darkMode: 'class', 
-  
   theme: {
     extend: {
       // 3. Mapeamento das Cores Customizadas
@@ -28,17 +25,17 @@ module.exports = {
         'brand-secondary': '#008080',   // Teal
         'status-success': '#28A745',     // Verde
         'status-error': '#DC3545',       // Vermelho
-        
-        // Cores NEON (Serão usadas APENAS no modo Dark)
-        'neon-teal': '#00E0FF',         
-        'neon-orange': '#FF7000',      
+
+        // Novas cores para o design "Tech Premium"
+        'aqua': '#00E0FF',
+        'gold': '#FFD700',
+        'dark-blue': '#0E1117',
+        'dark-surface': '#161B22',
       },
       
       // 4. Sombra de Brilho Customizada
       boxShadow: {
         'smooth': '0 2px 4px rgba(0, 0, 0, 0.1)',
-        'neon-glow-teal': '0 0 10px #00FFFF', 
-        'neon-glow-orange': '0 0 8px #FF7000',
         'shadow-card-hover': '0 4px 10px rgba(0, 0, 0, 0.1)',
       },
 

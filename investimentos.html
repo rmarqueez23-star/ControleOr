@@ -12,76 +12,71 @@
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            background: conic-gradient(
-                /* As cores são injetadas via JavaScript no atributo style */
-            );
-            border: 30px solid var(--bg-main); 
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); 
+            /* As cores são injetadas via JavaScript no atributo style */
+            border: 30px solid #F5F5F5; /* --bg-main do tema claro */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
         }
         /* Layout Grid para os cards de KPI (similar ao do Investidor 10) */
-        .kpi-row-grid {
-            @apply grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6;
-        }
     </style>
 </head>
-<body class="bg-bg-main text-text-light font-sans antialiased">
+<body class="bg-bg-main text-text-primary font-sans antialiased">
 
     <header class="sticky top-0 z-10 flex items-center justify-between border-b border-border-default bg-bg-card px-8 py-4 shadow-smooth">
         <div class="logo">omeuplannerfinanceiro</div>
         <nav class="main-nav hidden md:flex space-x-8">
-            <a href="index.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Dashboard</a>
-            <a href="lancamentos.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Lançamentos</a> 
-            <a href="metas.html" class="text-text-light font-semibold hover:text-brand-primary transition duration-200">Metas</a>
+            <a href="index.html" class="text-text-primary font-semibold hover:text-brand-primary transition duration-200">Dashboard</a>
+            <a href="lancamentos.html" class="text-text-primary font-semibold hover:text-brand-primary transition duration-200">Lançamentos</a> 
+            <a href="metas.html" class="text-text-primary font-semibold hover:text-brand-primary transition duration-200">Metas</a>
             <a href="investimentos.html" class="text-brand-primary font-semibold hover:text-opacity-80 transition duration-200">Investimentos</a> 
         </nav>
         <div class="flex items-center space-x-4">
-            <span class="icon text-text-light cursor-pointer hover:text-brand-primary transition duration-200">&#x2699;</span>
-            <div class="w-8 h-8 bg-neutral-mid rounded-full cursor-pointer"></div>
+            <span class="icon text-text-primary cursor-pointer hover:text-brand-primary transition duration-200">&#x2699;</span>
+            <div class="w-8 h-8 bg-bg-surface rounded-full cursor-pointer"></div>
         </div>
     </header>
 
     <main class="dashboard-content p-8 bg-bg-main">
-        <h1 class="text-3xl font-bold text-text-light mb-6">Minha Carteira de Investimentos</h1>
+        <h1 class="text-3xl font-bold text-text-primary mb-6">Minha Carteira de Investimentos</h1>
         
-        <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange mb-8" onclick="openAtivoModal('new')">+ Adicionar Novo Ativo</button>
+        <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-smooth mb-8" onclick="openAtivoModal('new')">+ Adicionar Novo Ativo</button>
 
         <section class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
             
             <div class="flex flex-wrap justify-between items-center pb-4 border-b border-border-default mb-4">
-                <div class="text-text-dim text-lg font-semibold">Patrimônio Total</div>
+                <div class="text-text-secondary text-lg font-semibold">Patrimônio Total</div>
                 
                 <div class="flex items-center space-x-6">
                     <p class="text-status-success font-extrabold text-3xl" id="kpi-total-patrimonio">R$ 0,00</p>
                     
-                    <div class="text-xs text-text-dim">
+                    <div class="text-xs text-text-secondary">
                         <span>Valor Investido:</span>
-                        <span class="font-semibold text-text-light" id="kpi-valor-investido">R$ 0,00</span>
+                        <span class="font-semibold text-text-primary" id="kpi-valor-investido">R$ 0,00</span>
                     </div>
                 </div>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            <div class="grid grid-cols-2 gap-6 md:grid-cols-4 lg:grid-cols-5">
                 
                 <div class="col-span-1">
-                    <p class="text-text-dim text-sm">Lucro Total</p>
+                    <p class="text-text-secondary text-sm">Lucro Total</p>
                     <p class="font-bold mt-1" id="kpi-lucro-total">R$ 0,00</p>
-                    <div class="text-xs text-text-dim mt-1">
+                    <div class="text-xs text-text-secondary mt-1">
                         <span id="kpi-ganhos-liquidos">Ganhos: R$ 0,00</span>
                     </div>
                 </div>
 
                 <div class="col-span-1">
-                    <p class="text-text-dim text-sm">Proventos Recebidos (12M)</p>
-                    <p class="text-text-light font-bold mt-1" id="kpi-proventos">R$ 0,00</p>
+                    <p class="text-text-secondary text-sm">Proventos Recebidos (12M)</p>
+                    <p class="text-text-primary font-bold mt-1" id="kpi-proventos">R$ 0,00</p>
                 </div>
 
                 <div class="col-span-1">
-                    <p class="text-text-dim text-sm">Variação (Dia)</p>
+                    <p class="text-text-secondary text-sm">Variação (Dia)</p>
                     <p class="font-bold mt-1" id="kpi-variacao-dia">0.00%</p>
                 </div>
 
                 <div class="col-span-1">
-                    <p class="text-text-dim text-sm">Rentabilidade (Total)</p>
+                    <p class="text-text-secondary text-sm">Rentabilidade (Total)</p>
                     <p class="font-bold mt-1" id="kpi-rentabilidade">0.00%</p>
                 </div>
             </div>
@@ -91,27 +86,27 @@
         <section class="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-8">
 
             <div class="lg:col-span-3 bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default">
-                <h2 class="text-xl font-semibold text-text-light mb-4">Evolução do Patrimônio</h2>
-                <div class="flex items-center justify-between text-text-dim text-sm mb-4">
+                <h2 class="text-xl font-semibold text-text-primary mb-4">Evolução do Patrimônio</h2>
+                <div class="flex items-center justify-between text-text-secondary text-sm mb-4">
                     <span>Valor aplicado | Ganho total</span>
-                    <select class="p-1 border border-border-default rounded bg-bg-surface text-text-dim">
+                    <select class="p-1 border border-border-default rounded bg-bg-surface text-text-secondary">
                          <option>Últimos 12 Meses</option>
                     </select>
                 </div>
                 
-                <div class="bg-bg-surface h-64 rounded-lg flex items-center justify-center text-text-dim border border-border-default">
+                <div class="bg-bg-surface h-64 rounded-lg flex items-center justify-center text-text-secondary border border-border-default">
                     [Placeholder para Gráfico de Linha/Barras (Simulado)]
                 </div>
             </div>
 
             <div class="lg:col-span-2 bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default">
-                <h2 class="text-xl font-semibold text-text-light mb-4">Distribuição de Ativos</h2>
+                <h2 class="text-xl font-semibold text-text-primary mb-4">Distribuição de Ativos</h2>
                 
                 <div class="flex flex-col items-center justify-center py-4">
                     <div id="donut-chart-wrapper" class="relative mb-6">
                         <div class="donut-chart" id="invest-donut-chart"></div>
                         <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="text-xl font-bold text-text-light" id="invest-donut-total">%</span>
+                            <span class="text-xl font-bold text-text-primary" id="invest-donut-total">%</span>
                         </div>
                     </div>
 
@@ -124,16 +119,16 @@
 
 
         <section class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default">
-            <h2 class="text-xl font-semibold text-text-light mb-4">Meus Ativos em Carteira</h2>
+            <h2 class="text-xl font-semibold text-text-primary mb-4">Meus Ativos em Carteira</h2>
             
-            <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange mb-4" onclick="openAtivoModal('new')">
+            <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-smooth mb-4" onclick="openAtivoModal('new')">
                 + Novo Ativo
             </button>
             
             <div class="overflow-x-auto">
-                <table id="table-ativos" class="w-full text-sm text-text-light whitespace-nowrap">
+                <table id="table-ativos" class="w-full text-sm text-text-primary whitespace-nowrap">
                     <thead>
-                        <tr class="border-b-2 border-border-default text-text-dim">
+                        <tr class="border-b-2 border-border-default text-text-secondary">
                             <th class="py-3 px-2 text-left">Ativo</th>
                             <th class="py-3 px-2 text-left">Qtd</th>
                             <th class="py-3 px-2 text-right">Preço Médio</th>
@@ -159,13 +154,13 @@
                 <input type="hidden" id="ativo-id" name="id">
                 
                 <div class="mb-4">
-                    <label class="block text-text-dim mb-1">Produto (Ex: BOVA11, CDB):</label>
-                    <input type="text" id="ativo-produto" name="produto" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" required>
+                    <label class="block text-text-secondary mb-1">Produto (Ex: BOVA11, CDB):</label>
+                    <input type="text" id="ativo-produto" name="produto" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" required>
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-text-dim mb-1">Tipo de Ativo:</label>
-                    <select id="ativo-tipo" name="tipo_ativo" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" required>
+                    <label class="block text-text-secondary mb-1">Tipo de Ativo:</label>
+                    <select id="ativo-tipo" name="tipo_ativo" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" required>
                         <option value="Ações">Ações</option>
                         <option value="FIIs">FIIs (Fundos Imobiliários)</option>
                         <option value="Renda Fixa">Renda Fixa (CDB, Tesouro)</option>
@@ -175,272 +170,34 @@
                 
                 <div class="flex gap-4 mb-4">
                     <div class="w-1/2">
-                        <label class="block text-text-dim mb-1">Quantidade:</label>
-                        <input type="number" id="ativo-quantidade" name="quantidade" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" step="any" required>
+                        <label class="block text-text-secondary mb-1">Quantidade:</label>
+                        <input type="number" id="ativo-quantidade" name="quantidade" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" step="any" required>
                     </div>
                     <div class="w-1/2">
-                        <label class="block text-text-dim mb-1">Custo Médio (R$/unidade):</label>
-                        <input type="number" id="ativo-custo" name="custo_medio" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal" step="0.01" required>
+                        <label class="block text-text-secondary mb-1">Custo Médio (R$/unidade):</label>
+                        <input type="number" id="ativo-custo" name="custo_medio" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" step="0.01" required>
                     </div>
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-text-dim mb-1">Instituição Financeira:</label>
-                    <input type="text" id="ativo-instituicao" name="instituicao" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal">
+                    <label class="block text-text-secondary mb-1">Instituição Financeira:</label>
+                    <input type="text" id="ativo-instituicao" name="instituicao" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary">
                 </div>
                 
                 <div class="mb-6">
-                    <label class="block text-text-dim mb-1">Vencimento (Opcional - para Renda Fixa):</label>
-                    <input type="date" id="ativo-vencimento" name="vencimento" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-light focus:ring-neon-teal focus:border-neon-teal">
+                    <label class="block text-text-secondary mb-1">Vencimento (Opcional - para Renda Fixa):</label>
+                    <input type="date" id="ativo-vencimento" name="vencimento" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary">
                 </div>
 
                 <div class="flex justify-end gap-3">
-                    <button type="button" onclick="closeAtivoModal()" class="py-2 px-4 rounded border border-neutral-mid bg-bg-surface text-text-light hover:bg-bg-hover transition duration-200">Cancelar</button>
-                    <button type="submit" class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange" id="ativo-submit-btn">Salvar Ativo</button>
+                    <button type="button" onclick="closeAtivoModal()" class="py-2 px-4 rounded border border-border-default bg-bg-surface text-text-primary hover:bg-bg-hover transition duration-200">Cancelar</button>
+                    <button type="submit" class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-smooth" id="ativo-submit-btn">Salvar Ativo</button>
                 </div>
             </form>
         </div>
     </div>
 
-
-    <script>
-        const API_HOST = 'http://localhost:3000/api/';
-
-        // --- Variáveis de Simulação (Para Preços Atuais e Variações) ---
-        const MOCK_PRICES = {
-            'BOVA11': { precoAtual: 120.00, variacaoDia: 0.50 },
-            'MXRF11': { precoAtual: 10.50, variacaoDia: -0.20 },
-            'CDB DI': { precoAtual: 1050.00, variacaoDia: 0.05 },
-            'DEFAULT': { precoAtual: 1.00, variacaoDia: 0.00 },
-        };
-        // Cores para o gráfico de rosca
-        const DISTRIBUTION_COLORS = {
-            'Ações': '#FF7000',      // Laranja Neon
-            'FIIs': '#00FFFF',       // Ciano Neon
-            'Renda Fixa': '#28A745', // Verde Sucesso
-            'Fundos': '#DC3545',     // Vermelho
-            'Outros': '#A0A0A0'      // Cinza
-        };
-
-        // --- FUNÇÕES GERAIS ---
-        const formatCurrency = (amount) => {
-            return new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-            }).format(amount);
-        };
-        const formatPercent = (amount) => {
-            return `${amount.toFixed(2)}%`;
-        };
-
-        // ======================================================
-        // FUNÇÕES DE MODAL
-        // ======================================================
-
-        function openAtivoModal(mode, id = null) {
-            const modal = document.getElementById('ativo-modal');
-            const title = document.getElementById('ativo-modal-title');
-            document.getElementById('ativo-form').reset();
-            document.getElementById('ativo-id').value = '';
-
-            if (mode === 'new') {
-                title.textContent = 'Adicionar Novo Ativo';
-                modal.style.display = 'flex';
-            }
-        }
-
-        function closeAtivoModal() {
-            document.getElementById('ativo-modal').style.display = 'none';
-        }
-
-        // ======================================================
-        // FUNÇÕES CRUD E CARREGAMENTO
-        // ======================================================
-
-        // Deleta o ativo
-        async function deleteAtivo(id) {
-            if (!confirm('Tem certeza que deseja excluir este ativo?')) return;
-
-            try {
-                const response = await fetch(`${API_HOST}ativos/${id}`, { method: 'DELETE' });
-                if (!response.ok) throw new Error('Falha na exclusão.');
-                
-                alert('Ativo excluído com sucesso!');
-                loadPortfolio(); 
-            } catch (error) {
-                console.error('Erro ao excluir ativo:', error);
-                alert('Erro ao excluir o ativo. Verifique a conexão com o servidor.');
-            }
-        }
-        
-        // Carrega o Resumo e Distribuição (Donut Chart)
-        async function loadConsolidatedSummary() {
-            try {
-                const response = await fetch(`${API_HOST}carteira/consolidado`);
-                const data = await response.json();
-                
-                const totalGeral = data.totalPatrimonio;
-                let cssGradient = '';
-                let currentDegree = 0;
-                
-                const distribuicaoContainer = document.getElementById('invest-distribuicao-container');
-                distribuicaoContainer.innerHTML = '';
-                
-                // Variáveis para cálculo de KPIs Secundários
-                let custoTotalInvestido = 0;
-                const ativosResponse = await fetch(`${API_HOST}ativos`);
-                const ativos = await ativosResponse.json();
-
-                // 1. Calcular Custo Total (Valor Investido)
-                ativos.forEach(a => {
-                    custoTotalInvestido += a.quantidade * a.custo_medio;
-                });
-                
-                // 2. Calcular o Lucro e Rentabilidade (Baseado em mock prices)
-                // (Simulação de preço atual e custo total para os KPIs)
-                const mockPatrimonioAtual = ativos.reduce((sum, a) => {
-                    const priceData = MOCK_PRICES[a.produto] || MOCK_PRICES['DEFAULT'];
-                    return sum + (a.quantidade * priceData.precoAtual);
-                }, 0);
-
-                const lucroTotal = mockPatrimonioAtual - custoTotalInvestido;
-                const rentabilidadeTotal = (mockPatrimonioAtual / custoTotalInvestido - 1) * 100 || 0;
-                
-                const lucroClass = lucroTotal >= 0 ? 'text-status-success' : 'text-status-error';
-                const rentabilidadeClass = rentabilidadeTotal >= 0 ? 'text-status-success' : 'text-status-error';
-
-                // 3. Gerar o Gráfico de Rosca
-                data.distribuicao.forEach(item => {
-                    const color = DISTRIBUTION_COLORS[item.tipo] || DISTRIBUTION_COLORS['Outros'];
-                    const percentage = totalGeral > 0 ? (item.valor / totalGeral) : 0;
-                    const endDegree = currentDegree + (percentage * 360);
-
-                    // Constrói o gradiente CSS
-                    cssGradient += `${color} ${currentDegree}deg ${endDegree}deg, `;
-                    currentDegree = endDegree;
-
-                    // Constrói a legenda detalhada
-                    distribuicaoContainer.innerHTML += `
-                        <div class="flex justify-between text-sm">
-                            <span class="text-text-light flex items-center">
-                                <span class="w-2 h-2 rounded-full mr-2" style="background-color: ${color};"></span>
-                                ${item.tipo}
-                            </span>
-                            <span class="font-semibold">${formatPercent(item.percentual)}</span>
-                        </div>
-                    `;
-                });
-                
-                // Aplica o gráfico de rosca (removendo a vírgula e espaço finais)
-                document.getElementById('invest-donut-chart').style.background = `conic-gradient(${cssGradient.slice(0, -2)})`;
-                document.getElementById('invest-donut-total').textContent = `${formatPercent(100)}`; // Mantido em 100%
-
-                // 4. Atualiza KPIs Principais e Secundários
-                document.getElementById('kpi-total-patrimonio').textContent = formatCurrency(mockPatrimonioAtual); 
-                document.getElementById('kpi-valor-investido').textContent = formatCurrency(custoTotalInvestido); 
-                
-                // Lucro Total
-                const lucroElement = document.getElementById('kpi-lucro-total');
-                lucroElement.textContent = formatCurrency(lucroTotal);
-                lucroElement.classList.add(lucroClass);
-                document.getElementById('kpi-ganhos-liquidos').textContent = `Ganhos: ${formatCurrency(lucroTotal > 0 ? lucroTotal : 0)}`;
-
-                // Rentabilidade
-                const rentabElement = document.getElementById('kpi-rentabilidade');
-                rentabElement.textContent = formatPercent(rentabilidadeTotal);
-                rentabElement.classList.add(rentabilidadeClass);
-
-                // Outros KPIs Simples (Variação Dia e Proventos)
-                document.getElementById('kpi-proventos').textContent = formatCurrency(80.26); // Simulado
-                document.getElementById('kpi-variacao-dia').textContent = formatPercent(3.07); // Simulado
-                
-            } catch(error) {
-                console.error('Erro ao carregar consolidado:', error);
-                document.getElementById('kpi-total-patrimonio').textContent = 'R$ Erro';
-            }
-        }
-
-        // 5. Carrega a Tabela Detalhada de Ativos
-        async function loadAtivosTable() {
-             try {
-                const response = await fetch(`${API_HOST}ativos`);
-                const ativos = await response.json();
-
-                const tbody = document.querySelector('#table-ativos tbody');
-                tbody.innerHTML = ''; 
-
-                if (ativos.length === 0) {
-                     tbody.innerHTML = '<tr><td colspan="7" class="text-text-dim text-center py-4">Nenhum ativo cadastrado.</td></tr>';
-                    return;
-                }
-
-                ativos.forEach(a => {
-                    const priceData = MOCK_PRICES[a.produto] || MOCK_PRICES['DEFAULT'];
-                    const valorAtual = a.quantidade * priceData.precoAtual;
-                    const custoTotal = a.quantidade * a.custo_medio;
-                    const variacaoTotal = valorAtual - custoTotal;
-                    const rentabilidade = (valorAtual / custoTotal - 1) * 100 || 0;
-                    const rentabilidadeDia = priceData.variacaoDia;
-                    
-                    const rentabClass = rentabilidade >= 0 ? 'text-status-success' : 'text-status-error';
-                    const variacaoClass = rentabilidadeDia >= 0 ? 'text-status-success' : 'text-status-error';
-
-                    tbody.innerHTML += `
-                        <tr class="border-b border-border-default hover:bg-bg-hover transition duration-200">
-                            <td class="py-2 px-2 font-semibold">${a.produto}</td>
-                            <td class="py-2 px-2 text-text-dim">${a.quantidade.toFixed(a.tipo_ativo === 'Renda Fixa' ? 0 : 2)}</td>
-                            <td class="py-2 px-2 text-right text-text-dim">${formatCurrency(a.custo_medio)}</td>
-                            <td class="py-2 px-2 text-right font-bold">${formatCurrency(priceData.precoAtual)}</td>
-                            <td class="py-2 px-2 text-right ${variacaoClass}">${formatPercent(rentabilidadeDia)}</td>
-                            <td class="py-2 px-2 text-right ${rentabClass} font-bold">${formatCurrency(custoTotal)}</td>
-                            <td class="py-2 px-2 text-center">
-                                <span class="text-text-dim cursor-pointer hover:text-status-error transition duration-200" onclick="deleteAtivo(${a.id})">&#x2715;</span>
-                            </td>
-                        </tr>
-                    `;
-                });
-            } catch (error) {
-                console.error('Erro ao carregar ativos:', error);
-            }
-        }
-        
-        // Função principal de carregamento
-        function loadPortfolio() {
-            loadConsolidatedSummary();
-            loadAtivosTable();
-        }
-
-        // Lógica de Envio do Formulário (Create Ativo)
-        document.getElementById('ativo-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const formData = new FormData(event.target);
-            const data = Object.fromEntries(formData.entries());
-            
-            data.quantidade = parseFloat(data.quantidade);
-            data.custo_medio = parseFloat(data.custo_medio);
-
-            try {
-                const response = await fetch(`${API_HOST}ativos`, { 
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data),
-                });
-                
-                if (!response.ok) throw new Error('Falha ao salvar ativo.');
-
-                alert('Ativo salvo com sucesso!');
-                closeAtivoModal();
-                event.target.reset();
-                loadPortfolio(); 
-            } catch(error) {
-                console.error('Erro ao salvar ativo:', error);
-                alert(`Erro ao salvar ativo. Verifique o console e a conexão com o servidor.`);
-            }
-        });
-
-        // Ação Inicial
-        window.onload = loadPortfolio;
-    </script>
+    <script src="js/shared.js"></script>
+    <script src="js/investimentos.js"></script>
 </body>
 </html>

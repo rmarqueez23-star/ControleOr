@@ -7,10 +7,6 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-        /* Estilização específica para o efeito de fundo do card neon */
-        .neon-card-base {
-            background: linear-gradient(145deg, #161B22, #121212);
-        }
         /* Estilo do modal para aparecer centralizado e cobrir a tela */
         .modal-overlay {
             display: none; 
@@ -23,19 +19,49 @@
         }
     </style>
 </head>
-<body class="bg-bg-main text-text-light font-sans antialiased">
+<body class="bg-slate-100 font-sans antialiased">
+
+    <!-- Definições de Ícones SVG -->
+    <svg width="0" height="0" style="display:none;">
+        <!-- Ícones de Ação -->
+        <symbol id="icon-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </symbol>
+        <symbol id="icon-delete" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line>
+        </symbol>
+        <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </symbol>
+        <symbol id="icon-dots" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle>
+        </symbol>
+        <!-- Ícones de Metas -->
+        <symbol id="icon-goal-plane" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+        </symbol>
+        <symbol id="icon-goal-house" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </symbol>
+        <symbol id="icon-goal-wardrobe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2"></path><path d="M6 3v16"></path><path d="M18 3v16"></path><path d="M10 3v4"></path><path d="M14 3v4"></path><path d="M12 7h.01"></path>
+        </symbol>
+        <symbol id="icon-goal-default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
+        </symbol>
+    </svg>
 
     <header class="sticky top-0 z-10 flex items-center justify-between border-b border-border-default bg-bg-card px-8 py-4 shadow-smooth">
         <div class="logo">omeuplannerfinanceiro</div>
         <nav class="main-nav hidden md:flex space-x-8">
-            <a href="index.html" class="text-text-light font-semibold hover:text-accent-main transition duration-200">Dashboard</a>
-            <a href="lancamentos.html" class="text-text-light font-semibold hover:text-accent-main transition duration-200">Lançamentos</a>
+            <a href="index.html" class="text-text-primary font-semibold hover:text-brand-primary transition duration-200">Dashboard</a>
+            <a href="lancamentos.html" class="text-text-primary font-semibold hover:text-brand-primary transition duration-200">Lançamentos</a>
             <a href="metas.html" class="text-brand-primary font-semibold hover:text-opacity-80 transition duration-200">Metas</a> 
-            <a href="investimentos.html" class="text-text-light font-semibold hover:text-accent-main transition duration-200">Investimentos</a>
+            <a href="investimentos.html" class="text-text-primary font-semibold hover:text-brand-primary transition duration-200">Investimentos</a>
         </nav>
         <div class="flex items-center space-x-4">
-            <span class="icon text-text-light cursor-pointer hover:text-accent-main transition duration-200">&#x2699;</span>
-            <div class="w-8 h-8 bg-neutral-mid rounded-full cursor-pointer"></div>
+            <span class="icon text-text-primary cursor-pointer hover:text-brand-primary transition duration-200">&#x2699;</span>
+            <div class="w-8 h-8 bg-bg-surface rounded-full cursor-pointer"></div>
         </div>
     </header>
 
@@ -45,11 +71,11 @@
         <section id="metas-full" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
             <h2 class="text-xl font-semibold text-text-primary mb-4">Controle de Objetivos Financeiros</h2>
             
-            <button class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange mb-6" onclick="openMetaModal('new')">
-                + Nova Meta Holográfica
+            <button class="btn-futuristic mb-8" onclick="openMetaModal('new')">
+                <span class="text-2xl mr-2 font-light">+</span> Nova Meta Holográfica
             </button>
 
-            <div id="goals-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div id="goals-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 </div>
         </section>
 
@@ -57,201 +83,40 @@
     
     <div id="meta-modal" class="modal-overlay">
         <div class="bg-bg-card p-8 rounded-lg shadow-smooth border border-border-default w-full max-w-lg">
-            <h2 class="text-xl font-semibold text-neon-teal mb-4" id="meta-modal-title">Criar Nova Meta</h2>
+            <h2 class="text-xl font-semibold text-brand-primary mb-4" id="meta-modal-title">Criar Nova Meta</h2>
             
             <form id="meta-form">
                 <input type="hidden" id="meta-id" name="id">
                 
                 <div class="mb-4">
                     <label class="block text-text-secondary mb-1">Título da Meta:</label>
-                    <input type="text" id="meta-titulo" name="titulo" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-neon-teal focus:border-neon-teal" required>
+                    <input type="text" id="meta-titulo" name="titulo" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" required>
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-text-secondary mb-1">Valor Total Necessário (R$):</label>
-                    <input type="number" id="meta-valor-total" name="valor_total" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-neon-teal focus:border-neon-teal" step="0.01" required>
+                    <input type="number" id="meta-valor-total" name="valor_total" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" step="0.01" required>
                 </div>
                 
                 <div class="mb-4">
                     <label class="block text-text-secondary mb-1">Valor Já Arrecadado (R$):</label>
-                    <input type="number" id="meta-valor-arrecadado" name="valor_arrecadado" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-neon-teal focus:border-neon-teal" step="0.01" required>
+                    <input type="number" id="meta-valor-arrecadado" name="valor_arrecadado" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" step="0.01" required>
                 </div>
 
                 <div class="mb-6">
                     <label class="block text-text-secondary mb-1">Prazo Restante (Meses):</label>
-                    <input type="number" id="meta-prazo" name="prazo_meses" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-neon-teal focus:border-neon-teal" required>
+                    <input type="number" id="meta-prazo" name="prazo_meses" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" required>
                 </div>
 
                 <div class="flex justify-end gap-3">
-                    <button type="button" onclick="closeMetaModal()" class="py-2 px-4 rounded border border-neutral-mid bg-bg-surface text-text-primary hover:bg-bg-hover transition duration-200">Cancelar</button>
-                    <button type="submit" class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-neon-glow-orange">Salvar Meta</button>
+                    <button type="button" onclick="closeMetaModal()" class="py-2 px-4 rounded border border-border-default bg-bg-surface text-text-primary hover:bg-bg-hover transition duration-200">Cancelar</button>
+                    <button type="submit" class="bg-brand-primary text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition duration-200 shadow-smooth">Salvar Meta</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script>
-        const API_HOST = 'http://localhost:3000/api/';
-
-        const formatCurrency = (amount) => {
-            return new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-            }).format(amount);
-        };
-
-        // ======================================================
-        // FUNÇÕES DE MODAL
-        // ======================================================
-
-        async function openMetaModal(mode, id = null) {
-            const modal = document.getElementById('meta-modal');
-            const title = document.getElementById('meta-modal-title');
-            const form = document.getElementById('meta-form');
-            
-            form.reset();
-            document.getElementById('meta-id').value = '';
-            document.getElementById('meta-valor-arrecadado').value = 0;
-
-            if (mode === 'new') {
-                title.textContent = 'Criar Nova Meta';
-                modal.style.display = 'flex';
-            } else if (mode === 'edit' && id) {
-                title.textContent = 'Editar Meta';
-                
-                try {
-                    const response = await fetch(`${API_HOST}metas/${id}`);
-                    const meta = await response.json();
-                    if (meta.message) throw new Error('Meta não encontrada.');
-
-                    document.getElementById('meta-id').value = meta.id;
-                    document.getElementById('meta-titulo').value = meta.titulo;
-                    document.getElementById('meta-valor-total').value = meta.valor_total;
-                    document.getElementById('meta-valor-arrecadado').value = meta.valor_arrecadado;
-                    document.getElementById('meta-prazo').value = meta.prazo_meses;
-                    
-                    modal.style.display = 'flex';
-                } catch (error) {
-                    console.error('Erro ao buscar meta para edição:', error);
-                    alert('Não foi possível carregar os dados da meta. Verifique se o servidor Node está rodando.');
-                }
-            }
-        }
-
-        function closeMetaModal() {
-            document.getElementById('meta-modal').style.display = 'none';
-        }
-
-        // ======================================================
-        // FUNÇÕES CRUD DE METAS
-        // ======================================================
-
-        function deleteMeta(id) {
-            if (!confirm('Tem certeza que deseja excluir esta meta?')) return;
-
-            fetch(`${API_HOST}metas/${id}`, { method: 'DELETE' })
-            .then(response => {
-                if (!response.ok) throw new Error('Falha na exclusão.');
-                alert('Meta excluída com sucesso!');
-                loadGoals(); 
-            })
-            .catch(error => {
-                console.error('Erro ao excluir meta:', error);
-                alert('Erro ao excluir a meta. Verifique o console.');
-            });
-        }
-
-        async function loadGoals() {
-            try {
-                const response = await fetch(`${API_HOST}metas`);
-                const goals = await response.json();
-
-                const container = document.getElementById('goals-container');
-                container.innerHTML = ''; 
-                
-                if (goals.length === 0) {
-                    container.innerHTML = '<p class="text-text-secondary text-center col-span-full">Nenhuma meta cadastrada.</p>';
-                    return;
-                }
-
-                goals.forEach(goal => {
-                    const percent = (goal.valor_arrecadado / goal.valor_total) * 100;
-                    const percentDisplay = Math.min(100, percent).toFixed(0); 
-                    const isComplete = percent >= 100;
-                    
-                    // Classes Visuais Neon
-                    const titleColor = isComplete ? 'text-status-success' : 'text-neon-teal';
-                    const progressColor = isComplete ? 'bg-status-success' : 'bg-neon-teal';
-                    
-                    // CLASSE DE ANIMAÇÃO/ESTÁTICA
-                    const progressBarClass = isComplete 
-                        ? 'neon-progress-bar-static' 
-                        : 'neon-progress-bar-animated'; 
-
-                    const cardHtml = `
-                        <div class="neon-card-base p-4 rounded-lg shadow-smooth border border-border-default transition duration-300 hover:shadow-neon-glow-teal hover:border-neon-teal cursor-pointer">
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="text-lg font-bold ${titleColor} m-0">${goal.titulo}</h3>
-                                <div class="flex gap-2">
-                                    <span class="neon-icon-action" onclick="openMetaModal('edit', ${goal.id})">&#9998;</span>
-                                    <span class="neon-icon-action hover:text-status-error" onclick="deleteMeta(${goal.id})">&#x2715;</span>
-                                </div>
-                            </div>
-
-                            <p class="text-text-secondary text-sm">Total: <span class="font-semibold text-text-primary">${formatCurrency(goal.valor_total)}</span></p>
-                            <p class="text-text-secondary text-sm">Arrecadado: <span class="font-semibold text-text-primary">${formatCurrency(goal.valor_arrecadado)}</span></p>
-                            
-                            ${!isComplete ? `<p class="text-text-secondary text-sm mt-1">Faltam: <span class="font-semibold text-neon-orange">${goal.prazo_meses} meses</span></p>` : `<p class="font-bold text-status-success mt-1">META CONCLUÍDA!</p>`}
-
-                            <div class="w-full bg-border-default rounded-full h-2 mt-4">
-                                <div class="${progressColor} h-2 rounded-full transition-all duration-500 ${progressBarClass}" style="width: ${percentDisplay}%;"></div>
-                            </div>
-                            <span class="text-right block text-xs mt-1 ${titleColor} font-semibold">${percentDisplay}% Carregado</span>
-                        </div>
-                    `;
-                    container.innerHTML += cardHtml;
-                });
-            } catch (error) {
-                console.error('Erro ao carregar metas:', error);
-                document.getElementById('goals-container').innerHTML = '<p class="text-text-secondary text-center col-span-full">Erro ao carregar metas. Verifique se o servidor Node está rodando.</p>';
-            }
-        }
-
-        // Lógica de Envio do Formulário de Metas (Create/Update)
-        document.getElementById('meta-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const id = document.getElementById('meta-id').value;
-            const method = id ? 'PUT' : 'POST';
-            const url = id ? `${API_HOST}metas/${id}` : `${API_HOST}metas`;
-
-            const formData = new FormData(event.target);
-            const data = Object.fromEntries(formData.entries());
-            
-            data.valor_total = parseFloat(data.valor_total);
-            data.valor_arrecadado = parseFloat(data.valor_arrecadado);
-            data.prazo_meses = parseInt(data.prazo_meses);
-
-            try {
-                const response = await fetch(url, { 
-                    method: method,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data),
-                });
-
-                if (!response.ok) throw new Error(`Falha ao salvar meta.`);
-                
-                alert(`Meta ${id ? 'atualizada' : 'salva'} com sucesso!`);
-                closeMetaModal();
-                loadGoals(); 
-            } catch(error) {
-                console.error('Erro ao salvar meta:', error);
-                alert('Erro ao salvar meta. Verifique o console e a conexão com o servidor.');
-            }
-        });
-
-        // Ação Inicial
-        window.onload = loadGoals;
-    </script>
+    <script src="js/shared.js"></script>
+    <script src="js/metas.js"></script>
 </body>
 </html>
