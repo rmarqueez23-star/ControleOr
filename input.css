@@ -25,10 +25,10 @@ body {
 /* Animação de Pulso para Efeito Neon (Geral) */
 @keyframes neon-pulse {
     0%, 100% {
-        box-shadow: 0 0 5px var(--tw-shadow-color), 0 0 10px var(--tw-shadow-color);
+        box-shadow: 0 0 8px var(--tw-shadow-color), 0 0 16px var(--tw-shadow-color); /* Intensidade Aumentada */
     }
     50% {
-        box-shadow: 0 0 10px var(--tw-shadow-color), 0 0 20px var(--tw-shadow-color);
+        box-shadow: 0 0 16px var(--tw-shadow-color), 0 0 32px var(--tw-shadow-color); /* Intensidade Aumentada */
     }
 }
 
@@ -41,8 +41,8 @@ body {
 
 /* Animação de Pulso Específica para o botão "Nova Meta" (Teal/Aqua) */
 @keyframes button-pulse-pro {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(theme('colors.brand-secondary'), 0.3); } 
-    50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(theme('colors.brand-secondary'), 0.5); }
+    0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(theme('colors.brand-secondary'), 0.5); } 
+    50% { transform: scale(1.02); box-shadow: 0 0 25px rgba(theme('colors.brand-secondary'), 0.8); } 
 }
 
 /* Animação de carregamento dos cards */
@@ -65,10 +65,9 @@ body {
     /* Botão principal para Nova Meta (Gradiente Verde-Água/Azul-Claro) */
     .btn-futuristic-pro {
         @apply relative inline-flex items-center justify-center px-8 py-3 text-lg font-bold text-white rounded-xl overflow-hidden transition-all duration-300;
-        /* Gradiente de Verde-Água para Azul-Claro, conforme solicitado */
         background-image: linear-gradient(90deg, theme('colors.aqua'), theme('colors.brand-secondary'));
         background-size: 200% 200%;
-        box-shadow: 0 4px 15px rgba(theme('colors.brand-secondary'), 0.4);
+        box-shadow: 0 6px 20px rgba(theme('colors.brand-secondary'), 0.6); 
         animation: button-pulse-pro 3s infinite ease-in-out; 
     }
     .btn-futuristic-pro:hover {
@@ -78,22 +77,20 @@ body {
 
     /* Card de Meta Profissional (Border-Radius 16px -> rounded-3xl) */
     .goal-card-modern-pro {
-        /* Sombra Profissional: sutil, mas presente */
         @apply bg-bg-card p-6 rounded-3xl shadow-lg border border-border-default transition duration-300;
     }
     .goal-card-modern-pro:hover {
-        /* Leve elevação e sombra difusa/realce na borda */
-        @apply transform translate-y-[-4px] shadow-xl border-brand-secondary;
-        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 0 0 1px theme('colors.brand-secondary');
+        @apply transform translate-y-[-4px] shadow-2xl border-brand-secondary;
+        box-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.15), 0 0 0 1px theme('colors.brand-secondary'); 
     }
     
     /* Barra de Progresso Dinâmica (Teal/Aqua - Gradiente animado) */
     .progress-bar-gradient {
         @apply flex flex-col justify-center text-center whitespace-nowrap text-white rounded-full;
-        /* Gradiente moderno para a barra de progresso */
         background-image: linear-gradient(90deg, theme('colors.aqua') 0%, theme('colors.brand-secondary') 100%);
         background-size: 200% 100%;
         animation: animated-gradient 5s ease-in-out infinite;
+        box-shadow: 0 0 10px rgba(theme('colors.aqua'), 0.7); /* Mais brilho neon */
     }
 
     /* Barra de Progresso Concluída (Efeito Dourado/Brilho) */
@@ -103,19 +100,41 @@ body {
         animation: animated-gradient 3s ease-in-out infinite, neon-pulse 1.5s ease-in-out infinite;
         --tw-shadow-color: theme('colors.gold');
         @apply flex flex-col justify-center text-center whitespace-nowrap text-white rounded-full;
+        box-shadow: 0 0 20px theme('colors.gold'); /* Brilho Dourado Forte */
     }
 
-    /* Estilo do Botão de Depósito (Verde-Água/Teal) */
+    /* Estilo do Botão de Depósito (Verde-Água/Teal) - COM EFEITO NEON INTENSO */
     .btn-deposit-pro {
         background-color: theme('colors.brand-secondary'); 
+        @apply hover:bg-aqua; 
+        box-shadow: 0 0 15px rgba(theme('colors.brand-secondary'), 0.9); /* NEON Intenso */
     }
     .btn-deposit-pro:hover {
         background-color: theme('colors.aqua'); 
-        box-shadow: 0 4px 15px rgba(0, 224, 255, 0.6);
-        transform: scale(1.02); /* Micro-animação de clique */
+        box-shadow: 0 0 25px rgba(0, 224, 255, 1); /* Brilho máximo no hover */
+        transform: scale(1.02); 
     }
     .btn-deposit-disabled {
-        @apply bg-slate-400 text-slate-600 opacity-70;
+        @apply bg-slate-400 text-slate-600 opacity-70 shadow-none cursor-not-allowed;
+    }
+
+    /* Grupo de Ações do Card (EDITAR/EXCLUIR) - Estilo Segmentado Discreto */
+    .card-actions-group {
+        /* Fundo um pouco mais escuro para destaque, como na imagem de referência do segmented control */
+        @apply flex w-full justify-between mt-4 p-1 bg-neutral-mid/50 rounded-xl border border-border-default shadow-inner;
+    }
+    .card-actions-group button {
+        @apply flex-1 py-2 text-sm font-bold rounded-lg transition duration-200;
+    }
+    .card-actions-group .btn-edit {
+        /* Estilo sutil de "neon" no texto para EDITAR (Cor principal) */
+        @apply text-brand-primary hover:text-brand-primary hover:bg-brand-primary/20;
+        text-shadow: 0 0 3px rgba(theme('colors.brand-primary'), 0.5); 
+    }
+    .card-actions-group .btn-delete {
+        /* Estilo sutil de "neon" no texto para EXCLUIR (Cor de erro) */
+        @apply text-status-error hover:text-status-error hover:bg-status-error/20;
+        text-shadow: 0 0 3px rgba(theme('colors.status-error'), 0.5); 
     }
 
     /* Ícone de Ação */
@@ -131,21 +150,14 @@ body {
 
 
 /* ====================================================== */
-/* 4. ESTILOS GERAIS E TABELAS */
+/* 4. ESTILOS GERAIS E TABELAS (e Segmented Control)    */
 /* ====================================================== */
 
 @layer base {
     
-    /* ------------------------------------------------------ */
-    /* SEGMENTED CONTROL BASE */
-    /* ------------------------------------------------------ */
-    
-    .segmented-control input {
-        display: none;
-    }
-
+    /* Aumentando o arredondamento do Segmented Control para o estilo profissional */
     .segmented-control {
-        @apply flex rounded-md overflow-hidden w-full border border-border-default;
+        @apply flex rounded-xl overflow-hidden w-full border border-border-default;
     }
 
     /* Estilo padrão para o rótulo/segmento */
