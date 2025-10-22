@@ -22,7 +22,7 @@ body {
     background-image: linear-gradient(135deg, #F5F7FA 0%, #E0E5EC 100%);
 }
 
-/* Animação de Pulso para Efeito Neon */
+/* Animação de Pulso para Efeito Neon (Geral) */
 @keyframes neon-pulse {
     0%, 100% {
         box-shadow: 0 0 5px var(--tw-shadow-color), 0 0 10px var(--tw-shadow-color);
@@ -39,11 +39,10 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* Animação de confirmação (check) */
-@keyframes check-pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.2); opacity: 0.7; }
-    100% { transform: scale(1); opacity: 1; }
+/* Animação de Pulso Específica para o botão "Nova Meta" (Teal/Aqua) */
+@keyframes button-pulse-pro {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(theme('colors.brand-secondary'), 0.3); } 
+    50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(theme('colors.brand-secondary'), 0.5); }
 }
 
 /* Animação de carregamento dos cards */
@@ -52,21 +51,9 @@ body {
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Animação de pulso para o botão de nova meta */
-@keyframes button-pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(0, 224, 255, 0.3); }
-    50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(0, 224, 255, 0.5); }
-}
-
-/* Animação para feedback de depósito */
-@keyframes deposit-feedback-fade {
-    0% { opacity: 1; transform: translateY(0); }
-    90% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-10px); }
-}
 
 /* ====================================================== */
-/* 3. COMPONENTES PERSONALIZADOS                        */
+/* 3. COMPONENTES PERSONALIZADOS (ALTO PADRÃO)          */
 /* ====================================================== */
 
 @layer components {
@@ -75,23 +62,60 @@ body {
         @apply text-brand-primary text-2xl font-black;
     }
 
-    /* Botão futurista para Nova Meta */
-    .btn-futuristic {
-        @apply relative inline-flex items-center justify-center px-6 py-3 text-lg font-bold text-white rounded-lg overflow-hidden transition-all duration-300;
-        background-image: linear-gradient(45deg, theme('colors.brand-secondary'), theme('colors.aqua'));
+    /* Botão principal para Nova Meta (Gradiente Verde-Água/Azul-Claro) */
+    .btn-futuristic-pro {
+        @apply relative inline-flex items-center justify-center px-8 py-3 text-lg font-bold text-white rounded-xl overflow-hidden transition-all duration-300;
+        /* Gradiente de Verde-Água para Azul-Claro, conforme solicitado */
+        background-image: linear-gradient(90deg, theme('colors.aqua'), theme('colors.brand-secondary'));
         background-size: 200% 200%;
+        box-shadow: 0 4px 15px rgba(theme('colors.brand-secondary'), 0.4);
+        animation: button-pulse-pro 3s infinite ease-in-out; 
     }
-    .btn-futuristic:hover {
+    .btn-futuristic-pro:hover {
         background-size: 200% 100%;
-        animation: animated-gradient 3s ease-in-out infinite;
+        animation: animated-gradient 3s ease-in-out infinite, button-pulse-pro 3s infinite ease-in-out;
     }
 
-    /* Barra de Progresso Dourada para Metas Concluídas */
+    /* Card de Meta Profissional (Border-Radius 16px -> rounded-3xl) */
+    .goal-card-modern-pro {
+        /* Sombra Profissional: sutil, mas presente */
+        @apply bg-bg-card p-6 rounded-3xl shadow-lg border border-border-default transition duration-300;
+    }
+    .goal-card-modern-pro:hover {
+        /* Leve elevação e sombra difusa/realce na borda */
+        @apply transform translate-y-[-4px] shadow-xl border-brand-secondary;
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 0 0 1px theme('colors.brand-secondary');
+    }
+    
+    /* Barra de Progresso Dinâmica (Teal/Aqua - Gradiente animado) */
+    .progress-bar-gradient {
+        @apply flex flex-col justify-center text-center whitespace-nowrap text-white rounded-full;
+        /* Gradiente moderno para a barra de progresso */
+        background-image: linear-gradient(90deg, theme('colors.aqua') 0%, theme('colors.brand-secondary') 100%);
+        background-size: 200% 100%;
+        animation: animated-gradient 5s ease-in-out infinite;
+    }
+
+    /* Barra de Progresso Concluída (Efeito Dourado/Brilho) */
     .progress-bar-gold {
         background-image: linear-gradient(90deg, theme('colors.yellow.400'), theme('colors.gold'), theme('colors.yellow.400'));
         background-size: 200% 100%;
-        animation: animated-gradient 3s ease-in-out infinite, neon-pulse 2s ease-in-out infinite;
+        animation: animated-gradient 3s ease-in-out infinite, neon-pulse 1.5s ease-in-out infinite;
         --tw-shadow-color: theme('colors.gold');
+        @apply flex flex-col justify-center text-center whitespace-nowrap text-white rounded-full;
+    }
+
+    /* Estilo do Botão de Depósito (Verde-Água/Teal) */
+    .btn-deposit-pro {
+        background-color: theme('colors.brand-secondary'); 
+    }
+    .btn-deposit-pro:hover {
+        background-color: theme('colors.aqua'); 
+        box-shadow: 0 4px 15px rgba(0, 224, 255, 0.6);
+        transform: scale(1.02); /* Micro-animação de clique */
+    }
+    .btn-deposit-disabled {
+        @apply bg-slate-400 text-slate-600 opacity-70;
     }
 
     /* Ícone de Ação */
