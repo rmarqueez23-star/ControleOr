@@ -1,168 +1,242 @@
-/* input.css - FINAL CONSOLIDADO E CORRIGIDO PARA COMPILAÇÃO */
+/* input.css - DESIGN ORIGINAL COM BOTÕES PREMIUM CORRIGIDO */
 
 /* ====================================================== */
-/* 1. DIRETIVAS DO TAILWIND (CRUCIAL)                     */
+/* 1. DIRETIVAS DO TAILWIND                              */
 /* ====================================================== */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 /* ====================================================== */
-/* 2. VARIÁVEIS E BASE GERAL (DESIGN SYSTEM)            */
+/* 2. ANIMAÇÕES PARA BOTÕES                              */
 /* ====================================================== */
 
-/* Base global */
-body {
-    @apply font-sans bg-slate-100 text-slate-800;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-image: linear-gradient(135deg, #F5F7FA 0%, #E0E5EC 100%);
-}
-
-/* Animação de Pulso para Efeito Neon (Geral) */
-@keyframes neon-pulse {
-    0%, 100% {
-        box-shadow: 0 0 8px var(--tw-shadow-color), 0 0 16px var(--tw-shadow-color); /* Intensidade Aumentada */
+@keyframes button-pulse {
+    0%, 100% { 
+        transform: scale(1); 
+        box-shadow: 0 4px 15px rgba(0, 128, 128, 0.4);
     }
-    50% {
-        box-shadow: 0 0 16px var(--tw-shadow-color), 0 0 32px var(--tw-shadow-color); /* Intensidade Aumentada */
+    50% { 
+        transform: scale(1.02); 
+        box-shadow: 0 6px 20px rgba(0, 224, 255, 0.6);
     }
 }
 
-/* Animação de gradiente para a barra de progresso */
-@keyframes animated-gradient {
+@keyframes gradient-shift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
-/* Animação de Pulso Específica para o botão "Nova Meta" (Teal/Aqua) */
-@keyframes button-pulse-pro {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(theme('colors.brand-secondary'), 0.5); } 
-    50% { transform: scale(1.02); box-shadow: 0 0 25px rgba(theme('colors.brand-secondary'), 0.8); } 
+@keyframes bounce-gentle {
+    0%, 20%, 53%, 80%, 100% {
+        transform: translate3d(0,0,0);
+    }
+    40%, 43% {
+        transform: translate3d(0, -6px, 0);
+    }
+    70% {
+        transform: translate3d(0, -3px, 0);
+    }
 }
-
-/* Animação de carregamento dos cards */
-@keyframes card-load {
-    from { opacity: 0; transform: translateY(20px) scale(0.98); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
 
 /* ====================================================== */
-/* 3. COMPONENTES PERSONALIZADOS (ALTO PADRÃO)          */
+/* 3. COMPONENTES - CARDS ORIGINAIS COM BOTÕES PREMIUM  */
+/* ====================================================== */
+
+@layer components {
+    /* === CARD ORIGINAL (MANTIDO) === */
+    .goal-card-modern-pro {
+        @apply bg-white p-6 rounded-3xl shadow-lg border border-gray-300 transition-all duration-300;
+    }
+
+    .goal-card-modern-pro:hover {
+        @apply transform -translate-y-1 shadow-2xl border-teal-600;
+        box-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.15), 0 0 0 1px #008080; 
+    }
+
+    /* === BARRA DE PROGRESSO ORIGINAL (MANTIDA) === */
+    .progress-bar-gradient {
+        @apply flex flex-col justify-center text-center whitespace-nowrap text-white rounded-full;
+        background-image: linear-gradient(90deg, #00E0FF 0%, #008080 100%);
+        background-size: 200% 100%;
+        animation: gradient-shift 5s ease-in-out infinite;
+        box-shadow: 0 0 10px rgba(0, 224, 255, 0.7);
+    }
+
+    .progress-bar-gold {
+        background-image: linear-gradient(90deg, #fbbf24, #FFD700, #fbbf24);
+        background-size: 200% 100%;
+        animation: gradient-shift 3s ease-in-out infinite;
+        @apply flex flex-col justify-center text-center whitespace-nowrap text-white rounded-full;
+        box-shadow: 0 0 20px #FFD700;
+    }
+
+    /* === BOTÕES PREMIUM (ATUALIZADOS) === */
+
+    /* Botão de Depósito Premium */
+    .btn-deposit-pro {
+        @apply text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2;
+        background: linear-gradient(135deg, #008080 0%, #00E0FF 50%, #008080 100%);
+        background-size: 200% 100%;
+        box-shadow: 
+            0 4px 15px rgba(0, 128, 128, 0.4),
+            0 2px 4px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        font-weight: 600;
+        animation: gradient-shift 3s ease-in-out infinite;
+    }
+
+    .btn-deposit-pro:hover:not(:disabled) {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 
+            0 8px 25px rgba(0, 224, 255, 0.5),
+            0 4px 8px rgba(0, 0, 0, 0.15);
+        background: linear-gradient(135deg, #00E0FF 0%, #008080 50%, #00E0FF 100%);
+        animation: gradient-shift 1.5s ease-in-out infinite;
+    }
+
+    .btn-deposit-pro:active {
+        transform: translateY(0) scale(1);
+    }
+
+    .btn-deposit-disabled {
+        @apply bg-gray-400 text-gray-600 cursor-not-allowed opacity-70;
+        box-shadow: none;
+        animation: none;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    /* Botões de Ação Premium (EDITAR/EXCLUIR) */
+    .card-actions-group {
+        @apply flex w-full justify-between mt-4 p-1 bg-gray-100 rounded-xl border border-gray-300 shadow-inner;
+    }
+
+    .card-actions-group button {
+        @apply flex-1 py-3 text-sm font-bold rounded-lg transition-all duration-300 flex items-center justify-center gap-2;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-edit {
+        color: #FF8C00;
+        background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%);
+        border: 1px solid rgba(255, 140, 0, 0.2);
+    }
+
+    .btn-edit:hover {
+        background: linear-gradient(135deg, #FF8C00 0%, #FF6B00 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+        transform: translateY(-1px);
+        border-color: rgba(255, 140, 0, 0.3);
+    }
+
+    .btn-delete {
+        color: #DC3545;
+        background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .btn-delete:hover {
+        background: linear-gradient(135deg, #DC3545 0%, #C82333 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        transform: translateY(-1px);
+        border-color: rgba(220, 53, 69, 0.3);
+    }
+
+    /* Botão Nova Meta Premium */
+    .btn-futuristic-pro {
+        @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white rounded-2xl overflow-hidden transition-all duration-500;
+        background: linear-gradient(135deg, #00E0FF 0%, #008080 50%, #00E0FF 100%);
+        background-size: 200% 100%;
+        box-shadow: 
+            0 6px 20px rgba(0, 224, 255, 0.5),
+            0 2px 8px rgba(0, 0, 0, 0.15);
+        animation: gradient-shift 3s ease-in-out infinite;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-futuristic-pro:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 
+            0 12px 30px rgba(0, 224, 255, 0.6),
+            0 4px 12px rgba(0, 0, 0, 0.2);
+        animation: gradient-shift 1.5s ease-in-out infinite;
+    }
+
+    .btn-futuristic-pro:active {
+        transform: translateY(-1px);
+    }
+
+    /* Input de Depósito Premium - CORRIGIDO */
+    .deposit-input-premium {
+        @apply w-full p-3 border border-gray-300 rounded-xl bg-gray-100 text-gray-900 focus:ring-2 focus:ring-teal-600 focus:border-transparent transition-all duration-200;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+    }
+
+    .deposit-input-premium:focus {
+        @apply ring-2 ring-teal-600;
+        box-shadow: 
+            inset 0 2px 4px rgba(0, 0, 0, 0.03),
+            0 0 0 3px rgba(0, 128, 128, 0.1);
+        transform: translateY(-1px);
+    }
+
+    /* Badge de Status Premium */
+    .status-badge-premium {
+        @apply px-3 py-1 rounded-full text-xs font-semibold transition-all duration-300;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-badge-active {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        animation: bounce-gentle 2s ease-in-out infinite;
+    }
+
+    .status-badge-completed {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        color: white;
+        animation: pulse-gentle 2s ease-in-out infinite;
+    }
+
+    /* Feedback de Depósito Premium */
+    .deposit-feedback-premium {
+        @apply text-center text-sm font-semibold transition-all duration-500 h-6 flex items-center justify-center;
+    }
+
+    .feedback-success {
+        color: #28A745;
+        text-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+    }
+
+    .feedback-error {
+        color: #DC3545;
+        text-shadow: 0 0 10px rgba(220, 53, 69, 0.3);
+    }
+}
+
+/* ====================================================== */
+/* 4. COMPONENTES EXISTENTES (MANTIDOS)                  */
 /* ====================================================== */
 
 @layer components {
     /* Logo */
     .logo { 
-        @apply text-brand-primary text-2xl font-black;
+        @apply text-orange-500 text-2xl font-black;
     }
 
-    /* Botão principal para Nova Meta (Gradiente Verde-Água/Azul-Claro) */
-    .btn-futuristic-pro {
-        @apply relative inline-flex items-center justify-center px-8 py-3 text-lg font-bold text-white rounded-xl overflow-hidden transition-all duration-300;
-        background-image: linear-gradient(90deg, theme('colors.aqua'), theme('colors.brand-secondary'));
-        background-size: 200% 200%;
-        box-shadow: 0 6px 20px rgba(theme('colors.brand-secondary'), 0.6); 
-        animation: button-pulse-pro 3s infinite ease-in-out; 
-    }
-    .btn-futuristic-pro:hover {
-        background-size: 200% 100%;
-        animation: animated-gradient 3s ease-in-out infinite, button-pulse-pro 3s infinite ease-in-out;
-    }
-
-    /* Card de Meta Profissional (Border-Radius 16px -> rounded-3xl) */
-    .goal-card-modern-pro {
-        @apply bg-bg-card p-6 rounded-3xl shadow-lg border border-border-default transition duration-300;
-    }
-    .goal-card-modern-pro:hover {
-        @apply transform translate-y-[-4px] shadow-2xl border-brand-secondary;
-        box-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.15), 0 0 0 1px theme('colors.brand-secondary'); 
-    }
-    
-    /* Barra de Progresso Dinâmica (Teal/Aqua - Gradiente animado) */
-    .progress-bar-gradient {
-        @apply flex flex-col justify-center text-center whitespace-nowrap text-white rounded-full;
-        background-image: linear-gradient(90deg, theme('colors.aqua') 0%, theme('colors.brand-secondary') 100%);
-        background-size: 200% 100%;
-        animation: animated-gradient 5s ease-in-out infinite;
-        box-shadow: 0 0 10px rgba(theme('colors.aqua'), 0.7); /* Mais brilho neon */
-    }
-
-    /* Barra de Progresso Concluída (Efeito Dourado/Brilho) */
-    .progress-bar-gold {
-        background-image: linear-gradient(90deg, theme('colors.yellow.400'), theme('colors.gold'), theme('colors.yellow.400'));
-        background-size: 200% 100%;
-        animation: animated-gradient 3s ease-in-out infinite, neon-pulse 1.5s ease-in-out infinite;
-        --tw-shadow-color: theme('colors.gold');
-        @apply flex flex-col justify-center text-center whitespace-nowrap text-white rounded-full;
-        box-shadow: 0 0 20px theme('colors.gold'); /* Brilho Dourado Forte */
-    }
-
-    /* Estilo do Botão de Depósito (Verde-Água/Teal) - COM EFEITO NEON INTENSO */
-    .btn-deposit-pro {
-        background-color: theme('colors.brand-secondary'); 
-        @apply hover:bg-aqua; 
-        box-shadow: 0 0 15px rgba(theme('colors.brand-secondary'), 0.9); /* NEON Intenso */
-    }
-    .btn-deposit-pro:hover {
-        background-color: theme('colors.aqua'); 
-        box-shadow: 0 0 25px rgba(0, 224, 255, 1); /* Brilho máximo no hover */
-        transform: scale(1.02); 
-    }
-    .btn-deposit-disabled {
-        @apply bg-slate-400 text-slate-600 opacity-70 shadow-none cursor-not-allowed;
-    }
-
-    /* Grupo de Ações do Card (EDITAR/EXCLUIR) - Estilo Segmentado Discreto */
-    .card-actions-group {
-        /* Fundo um pouco mais escuro para destaque, como na imagem de referência do segmented control */
-        @apply flex w-full justify-between mt-4 p-1 bg-neutral-mid/50 rounded-xl border border-border-default shadow-inner;
-    }
-    .card-actions-group button {
-        @apply flex-1 py-2 text-sm font-bold rounded-lg transition duration-200;
-    }
-    .card-actions-group .btn-edit {
-        /* Estilo sutil de "neon" no texto para EDITAR (Cor principal) */
-        @apply text-brand-primary hover:text-brand-primary hover:bg-brand-primary/20;
-        text-shadow: 0 0 3px rgba(theme('colors.brand-primary'), 0.5); 
-    }
-    .card-actions-group .btn-delete {
-        /* Estilo sutil de "neon" no texto para EXCLUIR (Cor de erro) */
-        @apply text-status-error hover:text-status-error hover:bg-status-error/20;
-        text-shadow: 0 0 3px rgba(theme('colors.status-error'), 0.5); 
-    }
-
-    /* Ícone de Ação */
-    .icon-action {
-        @apply text-text-secondary transition duration-200 cursor-pointer;
-    }
-
-    /* Layout Grid para os cards de KPI (investimentos.html) */
-    .kpi-row-grid {
-        @apply grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6;
-    }
-}
-
-
-/* ====================================================== */
-/* 4. ESTILOS GERAIS E TABELAS (e Segmented Control)    */
-/* ====================================================== */
-
-@layer base {
-    
-    /* Aumentando o arredondamento do Segmented Control para o estilo profissional */
+    /* Segmented Control */
     .segmented-control {
-        @apply flex rounded-xl overflow-hidden w-full border border-border-default;
+        @apply flex rounded-xl overflow-hidden w-full border border-gray-300;
     }
 
-    /* Estilo padrão para o rótulo/segmento */
     .segment-label {
-        @apply flex-1 py-3 px-3 cursor-pointer font-semibold transition duration-200 bg-bg-surface hover:bg-bg-hover border-l border-border-default;
+        @apply flex-1 py-3 px-3 cursor-pointer font-semibold transition duration-200 bg-gray-100 hover:bg-gray-200 border-l border-gray-300;
         display: flex; 
         align-items: center; 
         justify-content: center;
@@ -175,26 +249,184 @@ body {
     }
     
     /* Estilos Ativos para Segmented Control */
-    .type-selector input#receita:checked + .segment-label { @apply bg-status-success text-white; }
-    .type-selector input#despesa:checked + .segment-label { @apply bg-status-error text-white; }
-    .frequency-selector input:checked + .segment-label { @apply bg-brand-secondary text-white; }
+    .type-selector input#receita:checked + .segment-label { 
+        @apply bg-green-600 text-white; 
+    }
+    .type-selector input#despesa:checked + .segment-label { 
+        @apply bg-red-600 text-white; 
+    }
+    .frequency-selector input:checked + .segment-label { 
+        @apply bg-teal-600 text-white; 
+    }
 
-    /* Regras de Tabela */
+    /* Tabelas */
     table {
         @apply border-collapse w-full text-left text-sm;
     }
     thead {
-        border-bottom: 2px solid var(--border-color);
-        @apply border-border-default;
+        border-bottom: 2px solid #CCCCCC;
     }
     th { 
-        @apply py-2 px-1 text-text-secondary;
+        @apply py-2 px-1 text-gray-600;
     }
     td { 
-        @apply py-3 px-1 border-b border-border-default;
+        @apply py-3 px-1 border-b border-gray-300;
     }
     tbody tr:last-child td {
         border-bottom: none;
     }
+}
+
+/* ====================================================== */
+/* 5. ANIMAÇÕES AUXILIARES                               */
+/* ====================================================== */
+
+@keyframes pulse-gentle {
+    0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+/* ====================================================== */
+/* 6. UTILITÁRIOS GLOBAIS                                */
+/* ====================================================== */
+
+.focus-ring:focus {
+    outline: 2px solid #FF8C00;
+    outline-offset: 2px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ====================================================== */
+/* 7. ESTILOS BASE PARA O CORPO                          */
+/* ====================================================== */
+
+@layer base {
+    body {
+        @apply bg-gray-100 text-gray-900 font-sans antialiased;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        min-height: 100vh;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+}
+
+/* ====================================================== */
+/* 8. RESPONSIVIDADE                                     */
+/* ====================================================== */
+
+@media (max-width: 768px) {
+    .goal-card-modern-pro {
+        margin: 0 0.5rem;
+    }
     
+    .card-actions-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .card-actions-group button {
+        width: 100%;
+    }
+
+    .btn-deposit-pro,
+    .btn-futuristic-pro {
+        @apply py-3 px-4 text-base;
+    }
+}
+
+/* ====================================================== */
+/* 9. UTILITÁRIOS ADICIONAIS                             */
+/* ====================================================== */
+
+@layer utilities {
+    .text-gradient-primary {
+        background: linear-gradient(135deg, #FF8C00 0%, #FF6B00 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .text-gradient-teal {
+        background: linear-gradient(135deg, #008080 0%, #00E0FF 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .backdrop-glass {
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* ====================================================== */
+/* 10. ANIMAÇÕES ESPECIAIS                               */
+/* ====================================================== */
+
+@keyframes slideInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.92);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.goal-card-entrance {
+    animation: slideInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Efeito de brilho para metas concluídas */
+.goal-completed-glow {
+    position: relative;
+}
+
+.goal-completed-glow::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+    border-radius: 1.75rem;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.goal-completed-glow:hover::before {
+    opacity: 0.6;
 }
