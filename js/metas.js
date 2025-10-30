@@ -137,13 +137,13 @@ class MetasManager {
                 <div class="mb-4">
                     <div class="flex justify-between text-sm text-gray-600 mb-2">
                         <span>Progresso da Meta</span>
-                        <span class="font-bold ${isComplete ? 'text-green-600' : 'text-teal-600'}">
+                        <span id="progress-percentage-${goal.id}" class="font-bold ${isComplete ? 'text-green-600' : 'text-teal-600'}">
                             ${progressPercent}%
                         </span>
                     </div>
 
                     <div class="flex justify-between text-sm mt-2 mb-3">
-                        <span class="font-bold text-gray-900">${window.formatCurrency(goal.valor_arrecadado)}</span>
+                        <span id="arrecadado-value-${goal.id}" class="font-bold text-gray-900">${window.formatCurrency(goal.valor_arrecadado)}</span>
                         <span class="text-gray-600">${window.formatCurrency(goal.valor_total)}</span>
                     </div>
 
@@ -156,7 +156,7 @@ class MetasManager {
                 </div>
                 
                 <!-- Seção de Depósito (APENAS UMA) -->
-                <div class="mb-4">
+                <div id="deposit-section-wrapper-${goal.id}" class="mb-4">
                     ${isComplete ? this.createCompletedDepositSection() : this.createActiveDepositSection(goal, remaining)}
                 </div>
                 
@@ -367,8 +367,8 @@ class MetasManager {
         const progressDecimal = progress / 100;
 
         // Atualizar elementos de texto
-        const arrecadadoElement = goalElement.querySelector('.text-gray-900.font-bold');
-        const percentageElement = goalElement.querySelector('.text-teal-600, .text-green-600');
+        const arrecadadoElement = document.getElementById(`arrecadado-value-${goalId}`);
+        const percentageElement = document.getElementById(`progress-percentage-${goalId}`);
         
         if (arrecadadoElement) {
             arrecadadoElement.textContent = window.formatCurrency(goal.valor_arrecadado);
@@ -415,7 +415,7 @@ class MetasManager {
     }
 
     updateToCompletedState(goalId) {
-        const depositSection = document.querySelector(`#goal-${goalId} .mb-4 > div`);
+        const depositSection = document.getElementById(`deposit-section-wrapper-${goalId}`);
         if (depositSection) {
             depositSection.innerHTML = this.createCompletedDepositSection();
         }
@@ -423,8 +423,8 @@ class MetasManager {
 
     updateActiveState(goalId, goal) {
         const remaining = goal.valor_total - goal.valor_arrecadado;
-        const depositSection = document.querySelector(`#goal-${goalId} .mb-4 > div`);
-        
+        const depositSection = document.getElementById(`deposit-section-wrapper-${goalId}`);
+
         if (depositSection) {
             depositSection.innerHTML = this.createActiveDepositSection(goal, remaining);
         }

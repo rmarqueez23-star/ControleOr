@@ -1183,6 +1183,10 @@ tbody tr:last-child td {
   margin-top: 2rem;
 }
 
+.mt-auto {
+  margin-top: auto;
+}
+
 .block {
   display: block;
 }
@@ -1233,6 +1237,14 @@ tbody tr:last-child td {
 
 .h-full {
   height: 100%;
+}
+
+.h-4 {
+  height: 1rem;
+}
+
+.h-5 {
+  height: 1.25rem;
 }
 
 .max-h-\[90vh\] {
@@ -1552,6 +1564,10 @@ tbody tr:last-child td {
   border-top-width: 1px;
 }
 
+.border-dashed {
+  border-style: dashed;
+}
+
 .border-border-default {
   --tw-border-opacity: 1;
   border-color: rgb(204 204 204 / var(--tw-border-opacity, 1));
@@ -1585,6 +1601,11 @@ tbody tr:last-child td {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
+}
+
+.border-status-success {
+  --tw-border-opacity: 1;
+  border-color: rgb(40 167 69 / var(--tw-border-opacity, 1));
 }
 
 .bg-bg-card {
@@ -1858,6 +1879,14 @@ tbody tr:last-child td {
   font-weight: 600;
 }
 
+.font-light {
+  font-weight: 300;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
 .text-brand-primary {
   --tw-text-opacity: 1;
   color: rgb(255 140 0 / var(--tw-text-opacity, 1));
@@ -1963,6 +1992,12 @@ tbody tr:last-child td {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.shadow-inner {
+  --tw-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: inset 0 2px 4px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
 .outline {
   outline-style: solid;
 }
@@ -2012,6 +2047,10 @@ tbody tr:last-child td {
 
 .duration-500 {
   transition-duration: 500ms;
+}
+
+.duration-700 {
+  transition-duration: 700ms;
 }
 
 .ease-in-out {
@@ -2289,9 +2328,19 @@ tbody tr:last-child td {
   border-color: rgb(255 140 0 / var(--tw-border-opacity, 1));
 }
 
+.focus\:border-brand-secondary:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 128 128 / var(--tw-border-opacity, 1));
+}
+
 .focus\:ring-brand-primary:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(255 140 0 / var(--tw-ring-opacity, 1));
+}
+
+.focus\:ring-brand-secondary:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(0 128 128 / var(--tw-ring-opacity, 1));
 }
 
 @media (min-width: 768px) {

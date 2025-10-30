@@ -179,6 +179,7 @@
                 <p class="text-text-secondary">Gerencie e acompanhe seus objetivos financeiros</p>
             </div>
             
+
             <div class="mt-4 md:mt-0 flex items-center gap-4">
                 <div class="relative" id="search-container" style="display: none;">
                     <input type="text" placeholder="Buscar metas..." 
@@ -277,22 +278,20 @@
                     </div>
 
                     <!-- Seção de Depósito -->
-                    <div class="mb-4 p-4 bg-bg-surface/30 rounded-xl border border-border-default">
-                        <div class="text-center mb-3">
-                            <p class="text-status-success font-semibold text-sm">🎉 Meta Concluída com Sucesso!</p>
-                        </div>
-                        <div class="text-center">
-                            <p class="text-text-secondary text-sm">Objetivo alcançado com sucesso</p>
-                        </div>
+                    <div id="deposit-section-wrapper-1" class="mb-4">
+                        <!-- Esta div será preenchida pelo JS com a seção de depósito ativa ou concluída -->
+                        <!-- Exemplo de estado concluído para o card de exemplo -->
+                        <p class="text-center text-status-success font-semibold text-sm p-4 bg-green-50 rounded-xl border border-green-200">
+                            🎉 Meta Concluída com Sucesso!</p>
                     </div>
 
                     <!-- Ações do Card -->
                     <div class="card-actions-group">
-                        <button class="btn-edit focus-ring" onclick="metasManager.openModal('edit', 1)">
+                        <button class="btn-edit focus-ring" onclick="metasManager.openModal('edit', 1)" type="button">
                             <span>✏️</span>
                             Editar
                         </button>
-                        <button class="btn-delete focus-ring" onclick="metasManager.deleteGoal(1)">
+                        <button class="btn-delete focus-ring" onclick="metasManager.deleteMeta(1)" type="button">
                             <span>🗑️</span>
                             Excluir
                         </button>
@@ -313,6 +312,7 @@
                     </span>
                 </button>
             </div>
+
         </section>
 
     </main>
@@ -411,6 +411,7 @@
         </div>
     </div>
 
+
     <!-- Toast/Notificação -->
     <div id="toast" class="fixed top-4 right-4 bg-bg-card border border-border-default rounded-lg shadow-lg p-4 max-w-sm transform translate-x-full transition-transform duration-300 z-50">
         <div class="flex items-start">
@@ -423,6 +424,7 @@
             </button>
         </div>
     </div>
+
 
     <script src="js/shared.js"></script>
     <script src="js/metas.js"></script>

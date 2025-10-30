@@ -249,6 +249,27 @@ app.delete('/api/metas/:id', (req, res) => {
     });
 });
 
+// ROTA PATCH para depositar em uma meta
+app.patch('/api/metas/:id/deposito', (req, res) => {
+    const id = req.params.id;
+    // Aceita tanto 'valor' quanto 'valor_arrecadado' para flexibilidade
+    const valorDeposito = req.body.valor || req.body.valor_arrecadado;
+
+    if (typeof valorDeposito !== 'number' || valorDeposito <= 0) {
+        return res.status(400).json({ error: 'Valor de depósito inválido.' });
+    }
+
+    // Atomically update the value
+    const sql = `UPDATE metas SET valor_arrecadado = valor_arrecadado + ? WHERE id = ?`;
+
+    db.run(sql, [valorDeposito, id], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        if (this.changes === 0) return res.status(404).json({ message: 'Meta não encontrada.' });
+        
+        res.json({ message: 'Depósito realizado com sucesso' });
+    });
+});
+
 
 // ======================================================
 // 5. ROTAS CRUD - ATIVOS (/api/ativos)
