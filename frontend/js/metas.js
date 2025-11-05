@@ -5,12 +5,14 @@ class MetasManager {
         this.API_HOST = window.API_HOST || 'http://localhost:3000/api/';
         this.container = document.getElementById('goals-container');
         this.modal = document.getElementById('meta-modal');
+        this.deleteModal = document.getElementById('delete-confirm-modal');
         this.form = document.getElementById('meta-form');
         this.loadingState = document.getElementById('loading-state');
         this.emptyState = document.getElementById('empty-state');
         this.goals = [];
         this.currentFilter = 'all';
         this.currentSort = 'recent';
+        this.goalToDeleteId = null;
         this.init();
     }
 
@@ -29,52 +31,11 @@ class MetasManager {
         this.showLoadingState();
         
         try {
-            // Simulação de carregamento com delay
-            await new Promise(resolve => setTimeout(resolve, 1200));
-            
-            // Dados mock premium - metas realistas
-            this.goals = [
-                { 
-                    id: 1, 
-                    titulo: "Reforma do Apartamento", 
-                    valor_total: 75000, 
-                    valor_arrecadado: 45250, 
-                    prazo_meses: 12,
-                    data_criacao: '2024-01-15'
-                },
-                { 
-                    id: 2, 
-                    titulo: "Viagem para Europa", 
-                    valor_total: 25000, 
-                    valor_arrecadado: 25000, 
-                    prazo_meses: 0,
-                    data_criacao: '2024-02-01'
-                },
-                { 
-                    id: 3, 
-                    titulo: "Setup Home Office Premium", 
-                    valor_total: 15000, 
-                    valor_arrecadado: 11250, 
-                    prazo_meses: 6,
-                    data_criacao: '2024-03-10'
-                },
-                { 
-                    id: 4, 
-                    titulo: "Reserva de Emergência", 
-                    valor_total: 50000, 
-                    valor_arrecadado: 27500, 
-                    prazo_meses: 24,
-                    data_criacao: '2024-01-20'
-                },
-                { 
-                    id: 5, 
-                    titulo: "Curso de Especialização", 
-                    valor_total: 12000, 
-                    valor_arrecadado: 4800, 
-                    prazo_meses: 8,
-                    data_criacao: '2024-03-01'
-                }
-            ];
+            const response = await fetch(this.API_HOST + 'metas');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            this.goals = await response.json();
             
             this.applyFiltersAndSort();
             this.updateStats();
@@ -162,11 +123,11 @@ class MetasManager {
                 
                 <!-- Ações do Card -->
                 <div class="card-actions-group">
-                    <button type="button" onclick="metasManager.openModal('edit', ${goal.id})" class="btn-edit focus-ring">
+                    <button type="button" onclick="metasManager.openModal('edit', ${goal.id})" class="btn-edit focus-ring" aria-label="Editar meta ${this.escapeHtml(goal.titulo)}">
                         <span>✏️</span>
                         Editar
                     </button>
-                    <button type="button" onclick="metasManager.deleteMeta(${goal.id})" class="btn-delete focus-ring">
+                    <button type="button" onclick="metasManager.openDeleteModal(${goal.id})" class="btn-delete focus-ring" aria-label="Excluir meta ${this.escapeHtml(goal.titulo)}">
                         <span>🗑️</span>
                         Excluir
                     </button>
@@ -288,10 +249,18 @@ class MetasManager {
             const goal = this.goals[goalIndex];
             const novoValorArrecadado = parseFloat((goal.valor_arrecadado + value).toFixed(2));
 
-            // Simular API call
-            await new Promise(resolve => setTimeout(resolve, 800));
+            // Chamar a API para registrar o depósito
+            const response = await fetch(`${this.API_HOST}metas/${goalId}/deposito`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ valor: value })
+            });
 
-            // Atualizar localmente
+            if (!response.ok) {
+                throw new Error('Falha ao registrar depósito no servidor.');
+            }
+
+            // Atualizar estado local após sucesso da API
             this.goals[goalIndex].valor_arrecadado = novoValorArrecadado;
 
             // Atualizar interface com animação
@@ -621,26 +590,35 @@ class MetasManager {
 
     async saveGoal(data, id = null) {
         try {
-            // Simular delay da API
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            let response;
+            let savedGoal;
 
             if (id) {
                 // Editar meta existente
-                const goalIndex = this.goals.findIndex(g => g.id === parseInt(id));
-                if (goalIndex !== -1) {
-                    this.goals[goalIndex] = { 
-                        ...this.goals[goalIndex], 
-                        ...data 
-                    };
+                response = await fetch(`${this.API_HOST}metas/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) throw new Error('Falha ao atualizar a meta.');
+                
+                // Atualiza o objeto no array local
+                const goalIndex = this.goals.findIndex(g => g.id === parseInt(id, 10));
+                if (goalIndex > -1) {
+                    this.goals[goalIndex] = { ...this.goals[goalIndex], ...data };
                 }
             } else {
                 // Criar nova meta
-                const newGoal = {
-                    id: Date.now(),
-                    ...data,
-                    data_criacao: new Date().toISOString().split('T')[0]
-                };
-                this.goals.push(newGoal);
+                response = await fetch(`${this.API_HOST}metas`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) throw new Error('Falha ao criar a meta.');
+                
+                // Adiciona o novo objeto retornado pela API ao array local
+                savedGoal = await response.json();
+                this.goals.push(savedGoal);
             }
 
             this.closeModal();
@@ -657,35 +635,67 @@ class MetasManager {
         }
     }
 
-    async deleteMeta(id) {
+    openDeleteModal(id) {
         const goal = this.goals.find(g => g.id === id);
         if (!goal) return;
 
-        if (!confirm(`🗑️ Tem certeza que deseja excluir a meta "${goal.titulo}"?\n\nEsta ação não pode ser desfeita.`)) {
-            return;
+        this.goalToDeleteId = id;
+        const messageElement = this.deleteModal.querySelector('#delete-modal-message');
+        if (messageElement) {
+            messageElement.innerHTML = `Você tem certeza que deseja excluir a meta "<strong>${this.escapeHtml(goal.titulo)}</strong>"?<br><br>Esta ação não pode ser desfeita.`;
         }
 
+        this.deleteModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeDeleteModal() {
+        this.deleteModal.style.display = 'none';
+        document.body.style.overflow = '';
+        this.goalToDeleteId = null;
+    }
+
+    async confirmDelete() {
+        const id = this.goalToDeleteId;
+        if (!id) return;
+
+        const goal = this.goals.find(g => g.id === id);
+        if (!goal) return;
+
+        const confirmBtn = document.getElementById('confirm-delete-btn');
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<span class="animate-spin">⏳</span> Excluindo...';
+        
         try {
+            const response = await fetch(`${this.API_HOST}metas/${id}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) throw new Error('Falha ao excluir no servidor.');
+
             // Animação de exclusão
             const goalElement = document.getElementById(`goal-${id}`);
             if (goalElement) {
                 goalElement.style.opacity = '0';
                 goalElement.style.transform = 'scale(0.8) translateY(20px)';
-                
-                await new Promise(resolve => setTimeout(resolve, 400));
+                await new Promise(resolve => setTimeout(resolve, 300));
             }
 
             // Remover da lista
             this.goals = this.goals.filter(goal => goal.id !== id);
             this.applyFiltersAndSort();
-            
+            this.closeDeleteModal();
             this.showTemporaryMessage(`✅ Meta "${goal.titulo}" excluída com sucesso!`, 'success');
             
         } catch (error) {
             console.error('Erro ao excluir meta:', error);
             this.showTemporaryMessage('❌ Erro ao excluir meta.', 'error');
+        } finally {
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = 'Sim, Excluir';
         }
     }
+
+
 
     // ======================================================
     // ESTATÍSTICAS E DASHBOARD
@@ -876,10 +886,26 @@ class MetasManager {
             }
         });
 
+        // Fechar modal de exclusão
+        this.deleteModal.addEventListener('click', (e) => {
+            if (e.target === this.deleteModal) {
+                this.closeDeleteModal();
+            }
+        });
+
+        // Botão de confirmar exclusão
+        document.getElementById('confirm-delete-btn')?.addEventListener('click', () => this.confirmDelete());
+
         // ESC para fechar
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modal.style.display === 'flex') {
+            if (e.key === 'Escape' && this.modal && this.modal.style.display === 'flex') {
                 this.closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.deleteModal.style.display === 'flex') {
+                this.closeDeleteModal();
             }
         });
     }
@@ -907,9 +933,15 @@ window.handleDeposit = (goalId) => {
     }
 };
 
-window.deleteMeta = (goalId) => {
+window.openDeleteModal = (goalId) => {
     if (window.metasManager) {
-        window.metasManager.deleteMeta(goalId);
+        window.metasManager.openDeleteModal(goalId);
+    }
+};
+
+window.closeDeleteModal = () => {
+    if (window.metasManager) {
+        window.metasManager.closeDeleteModal();
     }
 };
 

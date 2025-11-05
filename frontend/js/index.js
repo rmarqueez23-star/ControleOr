@@ -54,9 +54,9 @@ async function deleteTransaction(id) {
     if (!confirm('Tem certeza que deseja excluir esta transação?')) return;
 
     try {
-        const response = await fetch(`${API_HOST}transacoes/${id}`, { method: 'DELETE' });
+        const response = await fetch(`${window.API_HOST}transacoes/${id}`, { method: 'DELETE' });
         if (!response.ok) throw new Error('Falha na exclusão.');
-        
+
         alert('Transação excluída com sucesso!');
         refreshUI();
     } catch (error) {
@@ -97,7 +97,7 @@ async function handleEdit(event, id, field) {
     payload[field] = finalValue;
 
     try {
-        const response = await fetch(`${API_HOST}transacoes/${id}`, {
+        const response = await fetch(`${window.API_HOST}transacoes/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
@@ -125,7 +125,7 @@ async function loadSummary() {
     const params = getFilterParams();
     
     try {
-        const response = await fetch(`${API_HOST}resumo?${params}`);
+        const response = await fetch(`${window.API_HOST}resumo?${params}`);
         const data = await response.json();
 
         document.getElementById('receita-programada').textContent = formatCurrency(data.receitaProgramada);
@@ -143,7 +143,7 @@ async function loadTransactionsTable() {
     const params = getFilterParams();
     
     try {
-        const response = await fetch(`${API_HOST}transacoes?${params}`);
+        const response = await fetch(`${window.API_HOST}transacoes?${params}`);
         const transactions = await response.json();
         
         const tbodyReceitas = document.getElementById('table-receitas-tbody');
@@ -178,7 +178,7 @@ async function loadTransactionsTable() {
 
 async function loadGoalsSummary() {
     try {
-        const response = await fetch(`${API_HOST}metas`);
+        const response = await fetch(`${window.API_HOST}metas`);
         const goals = await response.json();
         
         const container = document.getElementById('goals-summary-container');
@@ -224,7 +224,7 @@ async function loadGoalsSummary() {
 
 async function loadInvestmentSummary() {
     try {
-        const response = await fetch(`${API_HOST}carteira/consolidado`);
+        const response = await fetch(`${window.API_HOST}carteira/consolidado`);
         const data = await response.json();
         
         document.getElementById('total-patrimonio-resumo').textContent = formatCurrency(data.totalPatrimonio);
@@ -255,7 +255,7 @@ async function loadInvestmentSummary() {
 
 async function loadBalanceChart() {
     try {
-        const response = await fetch(`${API_HOST}balanco-mensal`);
+        const response = await fetch(`${window.API_HOST}balanco-mensal`);
         const data = await response.json();
         
         const container = document.getElementById('balance-chart-container');

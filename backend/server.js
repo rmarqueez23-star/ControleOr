@@ -2,15 +2,19 @@
 
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
-const cors = require('cors'); 
+const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const PORT = 3000;
-const DB_PATH = './financeiro.db'; 
+const DB_PATH = path.join(__dirname, 'db', 'financeiro.db');
 
 // Middleware (para processar JSON e habilitar CORS)
 app.use(cors());
 app.use(express.json());
+
+// Servir arquivos estáticos do frontend
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // ======================================================
 // 1. INICIALIZAÇÃO DO BANCO DE DADOS E CRIAÇÃO DE TABELAS
@@ -203,8 +207,14 @@ app.post('/api/metas', (req, res) => {
     
     db.run(sql, [titulo, valor_total, valor_arrecadado || 0, prazo_meses], function(err) {
         if (err) return res.status(500).json({ error: err.message });
-        res.status(201).json({ message: 'Meta salva com sucesso', id: this.lastID });
+        // Retorna o objeto recém-criado
+        db.get('SELECT * FROM metas WHERE id = ?', [this.lastID], (err, row) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.status(201).json(row);
+        });
     });
+
+
 });
 
 app.get('/api/metas', (req, res) => {

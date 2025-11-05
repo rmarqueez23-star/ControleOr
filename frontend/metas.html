@@ -4,22 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Metas Financeiras - omeuplannerfinanceiro</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 
-    <style>
-        /* Estilo do modal para aparecer centralizado e cobrir a tela */
-        .modal-overlay {
-            display: none; 
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.75);
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-            backdrop-filter: blur(4px);
-        }
-        
-        /* Para garantir que o texto de destaque tenha o "neon" */
+    <style>        /* Para garantir que o texto de destaque tenha o "neon" */
         .neon-text {
             color: #008080;
             text-shadow: 0 0 5px rgba(0, 224, 255, 0.7);
@@ -251,53 +238,6 @@
             <!-- Grid de Metas -->
             <div id="goals-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 <!-- As metas serão carregadas dinamicamente aqui pelo JavaScript -->
-                
-                <!-- EXEMPLO DE CARD PREMIUM (será removido pelo JavaScript) -->
-                <div class="goal-card-modern-pro goal-card-entrance goal-completed-glow" data-goal-id="1" data-status="completed">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="flex-1">
-                            <h3 class="text-lg font-bold text-text-primary mb-1">Viagem para Europa</h3>
-                            <p class="text-text-secondary text-sm">Criada em 31/01/2024</p>
-                        </div>
-                        <span class="status-badge-premium status-badge-completed">Concluída</span>
-                    </div>
-                    
-                    <!-- Barra de Progresso Premium -->
-                    <div class="mb-4">
-                        <div class="flex justify-between text-sm text-text-secondary mb-2">
-                            <span>Progresso da Meta</span>
-                            <span class="font-bold text-status-success">100%</span>
-                        </div>
-                        <div class="h-3 bg-bg-surface rounded-full overflow-hidden">
-                            <div class="progress-bar-gold h-full" style="width: 100%"></div>
-                        </div>
-                        <div class="flex justify-between text-sm mt-2">
-                            <span class="font-bold text-text-primary">R$ 25.000,00</span>
-                            <span class="text-text-secondary">R$ 25.000,00</span>
-                        </div>
-                    </div>
-
-                    <!-- Seção de Depósito -->
-                    <div id="deposit-section-wrapper-1" class="mb-4">
-                        <!-- Esta div será preenchida pelo JS com a seção de depósito ativa ou concluída -->
-                        <!-- Exemplo de estado concluído para o card de exemplo -->
-                        <p class="text-center text-status-success font-semibold text-sm p-4 bg-green-50 rounded-xl border border-green-200">
-                            🎉 Meta Concluída com Sucesso!</p>
-                    </div>
-
-                    <!-- Ações do Card -->
-                    <div class="card-actions-group">
-                        <button class="btn-edit focus-ring" onclick="metasManager.openModal('edit', 1)" type="button">
-                            <span>✏️</span>
-                            Editar
-                        </button>
-                        <button class="btn-delete focus-ring" onclick="metasManager.deleteMeta(1)" type="button">
-                            <span>🗑️</span>
-                            Excluir
-                        </button>
-                    </div>
-                </div>
-
             </div>
 
             <!-- Estado Vazio -->
@@ -411,6 +351,29 @@
         </div>
     </div>
 
+    <!-- Modal de Confirmação de Exclusão -->
+    <div id="delete-confirm-modal" class="modal-overlay">
+        <div class="bg-bg-card p-8 rounded-3xl shadow-lg border border-border-default w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-status-error" id="delete-modal-title">🗑️ Confirmar Exclusão</h2>
+                <button type="button" onclick="metasManager.closeDeleteModal()" class="text-text-secondary hover:text-text-primary transition duration-200 focus-ring rounded-full p-1">
+                    ✕
+                    <span class="sr-only">Fechar modal</span>
+                </button>
+            </div>
+            <p id="delete-modal-message" class="text-text-secondary mb-6">Você tem certeza que deseja excluir esta meta? Esta ação não pode ser desfeita.</p>
+            <div class="flex justify-end gap-3 pt-4 border-t border-border-default">
+                <button type="button" onclick="metasManager.closeDeleteModal()" 
+                        class="py-3 px-6 rounded-lg border border-border-default bg-bg-surface text-text-primary hover:bg-bg-hover transition duration-200 focus-ring">
+                    Cancelar
+                </button>
+                <button type="button" id="confirm-delete-btn"
+                        class="bg-status-error text-white font-bold py-3 px-6 rounded-lg hover:bg-red-700 transition duration-200 shadow-smooth focus-ring">
+                    Sim, Excluir
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Toast/Notificação -->
     <div id="toast" class="fixed top-4 right-4 bg-bg-card border border-border-default rounded-lg shadow-lg p-4 max-w-sm transform translate-x-full transition-transform duration-300 z-50">
@@ -469,13 +432,6 @@
                 }
             });
 
-            // Inicializar exemplo (será removido quando o JavaScript carregar metas reais)
-            setTimeout(() => {
-                const exampleCard = document.querySelector('[data-goal-id="1"]');
-                if (exampleCard && window.metasManager && window.metasManager.goals.length > 0) {
-                    exampleCard.remove();
-                }
-            }, 1000);
         });
 
         // Funções de toast/notificação

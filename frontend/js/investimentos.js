@@ -45,11 +45,11 @@ window.deleteAtivo = async function(id) {
     if (!confirm('Tem certeza que deseja excluir este ativo?')) return;
 
     try {
-        const response = await fetch(`${API_HOST}ativos/${id}`, { method: 'DELETE' });
+        const response = await fetch(`${window.API_HOST}ativos/${id}`, { method: 'DELETE' });
         if (!response.ok) throw new Error('Falha na exclusão.');
-        
+
         alert('Ativo excluído com sucesso!');
-        loadPortfolio(); 
+        loadPortfolio();
     } catch (error) {
         console.error('Erro ao excluir ativo:', error);
         alert('Erro ao excluir o ativo. Verifique a conexão com o servidor.');
@@ -59,19 +59,19 @@ window.deleteAtivo = async function(id) {
 // Carrega o Resumo e Distribuição (Donut Chart)
 async function loadConsolidatedSummary() {
     try {
-        const response = await fetch(`${API_HOST}carteira/consolidado`);
+        const response = await fetch(`${window.API_HOST}carteira/consolidado`);
         const data = await response.json();
-        
+
         const totalGeral = data.totalPatrimonio;
         let cssGradient = '';
         let currentDegree = 0;
-        
+
         const distribuicaoContainer = document.getElementById('invest-distribuicao-container');
         distribuicaoContainer.innerHTML = '';
-        
+
         // Variáveis para cálculo de KPIs Secundários
         let custoTotalInvestido = 0;
-        const ativosResponse = await fetch(`${API_HOST}ativos`);
+        const ativosResponse = await fetch(`${window.API_HOST}ativos`);
         const ativos = await ativosResponse.json();
 
         // 1. Calcular Custo Total (Valor Investido)
@@ -139,7 +139,7 @@ async function loadConsolidatedSummary() {
 // 5. Carrega a Tabela Detalhada de Ativos
 async function loadAtivosTable() {
      try {
-        const response = await fetch(`${API_HOST}ativos`);
+        const response = await fetch(`${window.API_HOST}ativos`);
         const ativos = await response.json();
 
         const tbody = document.querySelector('#table-ativos tbody');
@@ -197,7 +197,7 @@ document.getElementById('ativo-form').addEventListener('submit', async function(
     data.custo_medio = parseFloat(data.custo_medio);
 
     try {
-        const response = await fetch(`${API_HOST}ativos`, { 
+        const response = await fetch(`${window.API_HOST}ativos`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),

@@ -1,4 +1,4 @@
-/* input.css - DESIGN ORIGINAL COM BOTÕES PREMIUM CORRIGIDO */
+/* input.css - DESIGN PREMIUM CORRIGIDO E CONSOLIDADO */
 
 /* ====================================================== */
 /* 1. DIRETIVAS DO TAILWIND                              */
@@ -9,7 +9,7 @@
 @tailwind utilities;
 
 /* ====================================================== */
-/* 2. ANIMAÇÕES PARA BOTÕES                              */
+/* 2. ANIMAÇÕES GLOBAIS                                  */
 /* ====================================================== */
 
 @keyframes button-pulse {
@@ -41,12 +41,23 @@
     }
 }
 
+@keyframes pulse-gentle {
+    0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
 /* ====================================================== */
-/* 3. COMPONENTES - CARDS ORIGINAIS COM BOTÕES PREMIUM  */
+/* 3. COMPONENTES PERSONALIZADOS                         */
 /* ====================================================== */
 
 @layer components {
-    /* === CARD ORIGINAL (MANTIDO) === */
+    /* === CARD PREMIUM === */
     .goal-card-modern-pro {
         @apply bg-white p-6 rounded-3xl shadow-lg border border-gray-300 transition-all duration-300;
     }
@@ -56,7 +67,7 @@
         box-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.15), 0 0 0 1px #008080; 
     }
 
-    /* === BARRA DE PROGRESSO ORIGINAL (MANTIDA) === */
+    /* === BARRA DE PROGRESSO PREMIUM === */
     .progress-bar-gradient {
         @apply flex flex-col justify-center text-center whitespace-nowrap text-white rounded-full;
         background-image: linear-gradient(90deg, #00E0FF 0%, #008080 100%);
@@ -73,16 +84,14 @@
         box-shadow: 0 0 20px #FFD700;
     }
 
-    /* === BOTÕES PREMIUM (ATUALIZADOS) === */
+    /* === BOTÕES PREMIUM === */
 
-    /* Botão de Depósito Premium */
+    /* Botão de Depósito */
     .btn-deposit-pro {
         @apply text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2;
         background: linear-gradient(135deg, #008080 0%, #00E0FF 50%, #008080 100%);
         background-size: 200% 100%;
-        box-shadow: 
-            0 4px 15px rgba(0, 128, 128, 0.4),
-            0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 128, 128, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.3);
         font-weight: 600;
         animation: gradient-shift 3s ease-in-out infinite;
@@ -90,9 +99,7 @@
 
     .btn-deposit-pro:hover:not(:disabled) {
         transform: translateY(-2px) scale(1.02);
-        box-shadow: 
-            0 8px 25px rgba(0, 224, 255, 0.5),
-            0 4px 8px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 8px 25px rgba(0, 224, 255, 0.5), 0 4px 8px rgba(0, 0, 0, 0.15);
         background: linear-gradient(135deg, #00E0FF 0%, #008080 50%, #00E0FF 100%);
         animation: gradient-shift 1.5s ease-in-out infinite;
     }
@@ -108,7 +115,7 @@
         border: 1px solid rgba(0, 0, 0, 0.1);
     }
 
-    /* Botões de Ação Premium (EDITAR/EXCLUIR) */
+    /* Grupo de Ações (Editar/Excluir) */
     .card-actions-group {
         @apply flex w-full justify-between mt-4 p-1 bg-gray-100 rounded-xl border border-gray-300 shadow-inner;
     }
@@ -121,21 +128,21 @@
     }
 
     .btn-edit {
-        color: #FF8C00;
-        background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%);
-        border: 1px solid rgba(255, 140, 0, 0.2);
+        color: #28A745; /* Cor de sucesso para "Marcar Recebido" */
+        background: linear-gradient(135deg, #ffffff 0%, #f0fff4 100%);
+        border: 1px solid rgba(40, 167, 69, 0.2);
     }
 
     .btn-edit:hover {
-        background: linear-gradient(135deg, #FF8C00 0%, #FF6B00 100%);
+        background: linear-gradient(135deg, #28A745 0%, #20C997 100%);
         color: white;
-        box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
         transform: translateY(-1px);
-        border-color: rgba(255, 140, 0, 0.3);
+        border-color: rgba(40, 167, 69, 0.3);
     }
 
     .btn-delete {
-        color: #DC3545;
+        color: #DC3545; /* Cor de erro para "Excluir" e "Marcar Pago" */
         background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
         border: 1px solid rgba(220, 53, 69, 0.2);
     }
@@ -148,23 +155,19 @@
         border-color: rgba(220, 53, 69, 0.3);
     }
 
-    /* Botão Nova Meta Premium */
+    /* Botão Principal de Ação (Nova Meta) */
     .btn-futuristic-pro {
         @apply relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white rounded-2xl overflow-hidden transition-all duration-500;
         background: linear-gradient(135deg, #00E0FF 0%, #008080 50%, #00E0FF 100%);
         background-size: 200% 100%;
-        box-shadow: 
-            0 6px 20px rgba(0, 224, 255, 0.5),
-            0 2px 8px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 6px 20px rgba(0, 224, 255, 0.5), 0 2px 8px rgba(0, 0, 0, 0.15);
         animation: gradient-shift 3s ease-in-out infinite;
         border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .btn-futuristic-pro:hover {
         transform: translateY(-3px) scale(1.05);
-        box-shadow: 
-            0 12px 30px rgba(0, 224, 255, 0.6),
-            0 4px 12px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 12px 30px rgba(0, 224, 255, 0.6), 0 4px 12px rgba(0, 0, 0, 0.2);
         animation: gradient-shift 1.5s ease-in-out infinite;
     }
 
@@ -172,7 +175,8 @@
         transform: translateY(-1px);
     }
 
-    /* Input de Depósito Premium - CORRIGIDO */
+    /* === INPUTS E BADGES PREMIUM === */
+
     .deposit-input-premium {
         @apply w-full p-3 border border-gray-300 rounded-xl bg-gray-100 text-gray-900 focus:ring-2 focus:ring-teal-600 focus:border-transparent transition-all duration-200;
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
@@ -180,13 +184,10 @@
 
     .deposit-input-premium:focus {
         @apply ring-2 ring-teal-600;
-        box-shadow: 
-            inset 0 2px 4px rgba(0, 0, 0, 0.03),
-            0 0 0 3px rgba(0, 128, 128, 0.1);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03), 0 0 0 3px rgba(0, 128, 128, 0.1);
         transform: translateY(-1px);
     }
 
-    /* Badge de Status Premium */
     .status-badge-premium {
         @apply px-3 py-1 rounded-full text-xs font-semibold transition-all duration-300;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -204,7 +205,6 @@
         animation: pulse-gentle 2s ease-in-out infinite;
     }
 
-    /* Feedback de Depósito Premium */
     .deposit-feedback-premium {
         @apply text-center text-sm font-semibold transition-all duration-500 h-6 flex items-center justify-center;
     }
@@ -218,89 +218,60 @@
         color: #DC3545;
         text-shadow: 0 0 10px rgba(220, 53, 69, 0.3);
     }
-}
 
-/* ====================================================== */
-/* 4. COMPONENTES EXISTENTES (MANTIDOS)                  */
-/* ====================================================== */
-
-@layer components {
-    /* Logo */
-    .logo { 
-        @apply text-orange-500 text-2xl font-black;
+    /* === BOTÕES DE SEGMENTO (Lançamentos) === */
+    .segment-btn-group {
+        @apply flex w-full gap-2;
     }
 
-    /* Segmented Control */
-    .segmented-control {
-        @apply flex rounded-xl overflow-hidden w-full border border-gray-300;
+    .segment-btn {
+        @apply flex-1 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer;
+        background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%); /* Cinza para estado inativo */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        opacity: 0.7;
     }
 
-    .segment-label {
-        @apply flex-1 py-3 px-3 cursor-pointer font-semibold transition duration-200 bg-gray-100 hover:bg-gray-200 border-l border-gray-300;
-        display: flex; 
-        align-items: center; 
-        justify-content: center;
-        text-align: center;
-        white-space: nowrap; 
-    }
-
-    .segmented-control .segment-label:first-of-type {
-        border-left: none;
-    }
-    
-    /* Estilos Ativos para Segmented Control */
-    .type-selector input#receita:checked + .segment-label { 
-        @apply bg-green-600 text-white; 
-    }
-    .type-selector input#despesa:checked + .segment-label { 
-        @apply bg-red-600 text-white; 
-    }
-    .frequency-selector input:checked + .segment-label { 
-        @apply bg-teal-600 text-white; 
-    }
-
-    /* Tabelas */
-    table {
-        @apply border-collapse w-full text-left text-sm;
-    }
-    thead {
-        border-bottom: 2px solid #CCCCCC;
-    }
-    th { 
-        @apply py-2 px-1 text-gray-600;
-    }
-    td { 
-        @apply py-3 px-1 border-b border-gray-300;
-    }
-    tbody tr:last-child td {
-        border-bottom: none;
-    }
-}
-
-/* ====================================================== */
-/* 5. ANIMAÇÕES AUXILIARES                               */
-/* ====================================================== */
-
-@keyframes pulse-gentle {
-    0%, 100% { 
+    .segment-btn:hover {
         opacity: 1;
-        transform: scale(1);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.1);
     }
-    50% { 
-        opacity: 0.8;
-        transform: scale(1.05);
+
+    /* Estilo quando o radio button está CHECADO */
+    .segment-btn.segment-btn-active {
+        opacity: 1;
+        transform: translateY(-1px) scale(1.02);
+        animation: gradient-shift 3s ease-in-out infinite;
+        background-size: 200% 100%;
+    }
+
+    .segment-btn-receita.segment-btn-active {
+        background-image: linear-gradient(135deg, #28A745 0%, #20C997 100%);
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+    }
+
+    .segment-btn-despesa.segment-btn-active {
+        background-image: linear-gradient(135deg, #DC3545 0%, #C82333 100%);
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+    }
+
+    .segment-btn-frequencia.segment-btn-active {
+        background-image: linear-gradient(135deg, #008080 0%, #00E0FF 100%);
+        box-shadow: 0 4px 15px rgba(0, 128, 128, 0.4);
+    }
+
+    /* === MODAL OVERLAY GLOBAL === */
+    .modal-overlay {
+        @apply hidden fixed inset-0 items-center justify-center z-50;
+        background-color: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(4px);
     }
 }
 
 /* ====================================================== */
-/* 6. UTILITÁRIOS GLOBAIS                                */
+/* 4. UTILITÁRIOS GLOBAIS                                */
 /* ====================================================== */
-
-.focus-ring:focus {
-    outline: 2px solid #FF8C00;
-    outline-offset: 2px;
-}
-
 .sr-only {
     position: absolute;
     width: 1px;
@@ -310,123 +281,5 @@
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
-    border: 0;
-}
-
-/* ====================================================== */
-/* 7. ESTILOS BASE PARA O CORPO                          */
-/* ====================================================== */
-
-@layer base {
-    body {
-        @apply bg-gray-100 text-gray-900 font-sans antialiased;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        min-height: 100vh;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-}
-
-/* ====================================================== */
-/* 8. RESPONSIVIDADE                                     */
-/* ====================================================== */
-
-@media (max-width: 768px) {
-    .goal-card-modern-pro {
-        margin: 0 0.5rem;
-    }
-    
-    .card-actions-group {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .card-actions-group button {
-        width: 100%;
-    }
-
-    .btn-deposit-pro,
-    .btn-futuristic-pro {
-        @apply py-3 px-4 text-base;
-    }
-}
-
-/* ====================================================== */
-/* 9. UTILITÁRIOS ADICIONAIS                             */
-/* ====================================================== */
-
-@layer utilities {
-    .text-gradient-primary {
-        background: linear-gradient(135deg, #FF8C00 0%, #FF6B00 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    .text-gradient-teal {
-        background: linear-gradient(135deg, #008080 0%, #00E0FF 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    .backdrop-glass {
-        backdrop-filter: blur(20px);
-        background: rgba(255, 255, 255, 0.1);
-    }
-}
-
-/* ====================================================== */
-/* 10. ANIMAÇÕES ESPECIAIS                               */
-/* ====================================================== */
-
-@keyframes slideInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(40px) scale(0.92);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@keyframes shimmer {
-    0% {
-        background-position: -1000px 0;
-    }
-    100% {
-        background-position: 1000px 0;
-    }
-}
-
-.goal-card-entrance {
-    animation: slideInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-/* Efeito de brilho para metas concluídas */
-.goal-completed-glow {
-    position: relative;
-}
-
-.goal-completed-glow::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
-    border-radius: 1.75rem;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.goal-completed-glow:hover::before {
-    opacity: 0.6;
+    border-width: 0;
 }

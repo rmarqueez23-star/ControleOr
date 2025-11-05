@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lançamentos - o meu planner financeiro</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-bg-main text-text-primary font-sans antialiased">
+
+    <header class="sticky top-0 z-10 flex items-center justify-between border-b border-border-default bg-bg-card px-8 py-4 shadow-smooth">
+        <div class="logo">omeuplannerfinanceiro</div>
+        <nav class="main-nav hidden md:flex space-x-8">
+            <a href="index.html" class="text-text-primary font-semibold hover:text-brand-primary transition duration-200">Dashboard</a>
+            <a href="lancamentos.html" class="text-brand-primary font-semibold hover:text-opacity-80 transition duration-200">Lançamentos</a> 
+            <a href="metas.html" class="text-text-primary font-semibold hover:text-brand-primary transition duration-200">Metas</a>
+            <a href="investimentos.html" class="text-text-primary font-semibold hover:text-brand-primary transition duration-200">Investimentos</a>
+        </nav>
+        <div class="flex items-center space-x-4">
+            <span class="icon text-text-primary cursor-pointer hover:text-brand-primary transition duration-200">&#x2699;</span>
+            <div class="w-8 h-8 bg-bg-surface rounded-full cursor-pointer"></div>
+        </div>
+    </header>
+
+    <main class="dashboard-content p-8 bg-bg-main">
+        <h1 class="text-3xl font-bold text-text-primary mb-6">Gestão de Lançamentos</h1>
+        <p class="text-text-secondary mb-8">Use esta página para registrar e gerenciar todas as suas transações.</p>
+
+        <section id="resumo-orcamento" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
+            <h2 class="text-xl font-semibold text-text-primary mb-4">Visão Orçamentária do Mês</h2>
+            <div class="flex flex-wrap justify-between text-center gap-6">
+                
+                <div class="flex-1 min-w-[150px]">
+                    <p class="text-text-primary font-bold text-lg" id="lanc_gasto_planejado">R$ 0,00</p>
+                    <p class="text-text-secondary text-sm">Gasto Planejado (Invest. Lançado)</p>
+                </div>
+                
+                <div class="flex-1 min-w-[150px]">
+                    <p class="text-status-success font-bold text-lg" id="lanc_receita_total">R$ 0,00</p>
+                    <p class="text-text-secondary text-sm">Receita Total Lançada</p>
+                </div>
+
+                <div class="flex-1 min-w-[150px] border-l border-border-default pl-4">
+                    <p class="font-extrabold text-xl" id="lanc_valor_sobra">R$ 0,00</p>
+                    <p class="text-text-primary text-sm">Valor que Sobra (Líquido)</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="form-lancamento" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
+            <h2 class="text-xl font-semibold text-text-primary mb-4">+ Novo Lançamento Rápido</h2>
+            
+            <form id="transaction-form" class="flex flex-wrap gap-8">
+                
+                <div style="flex: 1 1 300px;">
+                    <div class="mb-4">
+                        <label class="block text-text-secondary font-bold mb-2">Tipo:</label>
+                        <div class="segment-btn-group">
+                            
+                            <input type="radio" id="receita" name="tipo" value="Receita" required class="sr-only"> 
+                            <label for="receita" class="segment-btn segment-btn-receita">
+                                <span class="text-xl">💰</span> 
+                                <span>Receita</span>
+                            </label>
+                            
+                            <input type="radio" id="despesa" name="tipo" value="Despesa" required class="sr-only"> 
+                            <label for="despesa" class="segment-btn segment-btn-despesa">
+                                <span class="text-xl">💸</span> 
+                                <span>Despesa</span>
+                            </label>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-text-secondary font-bold mb-2">Frequência:</label>
+                        <div class="segment-btn-group">
+                            
+                            <input type="radio" id="fixa" name="frequencia" value="Fixa" required class="sr-only"> 
+                            <label for="fixa" class="segment-btn segment-btn-frequencia">
+                                <span class="text-xl">🔄</span> 
+                                <span>Fixa</span>
+                            </label>
+                            
+                            <input type="radio" id="parcelada" name="frequencia" value="Parcelada" class="sr-only"> 
+                            <label for="parcelada" class="segment-btn segment-btn-frequencia">
+                                <span class="text-xl">🔢</span> 
+                                <span>Parcelada</span>
+                            </label>
+                            
+                            <input type="radio" id="unica" name="frequencia" value="Unica" checked class="sr-only"> 
+                            <label for="unica" class="segment-btn segment-btn-frequencia">
+                                <span class="text-xl">✨</span> 
+                                <span>Única</span>
+                            </label>
+                            
+                        </div>
+                    </div>
+                    
+                    <div id="parcela-fields" class="hidden mt-4 flex gap-4">
+                        <div class="flex-1 mb-4">
+                            <label class="block text-text-secondary mb-1">Nº Parcelas:</label>
+                            <input type="number" name="parcelas_totais" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" value="1">
+                        </div>
+                        <div class="flex-1 mb-4">
+                            <label class="block text-text-secondary mb-1">Parcela Atual:</label>
+                            <input type="number" name="parcela_atual" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" value="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="flex: 1 1 300px;">
+                    <div class="flex gap-4 mb-4">
+                        <div class="flex-1">
+                            <label class="block text-text-secondary mb-1">Valor (R$):</label>
+                            <input type="number" name="valor" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" step="0.01" required>
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-text-secondary mb-1">Data:</label>
+                            <input type="date" name="data" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" value="2025-01-01" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-text-secondary mb-1">Descrição:</label>
+                        <input type="text" name="descricao" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-text-secondary mb-1">Categoria:</label>
+                        <select name="categoria" class="w-full p-2 border border-border-default rounded bg-bg-surface text-text-primary focus:ring-brand-primary focus:border-brand-primary">
+                            <option value="Salario">Salário (Receita)</option>
+                            <option value="Servicos">Serviços/Freelance</option>
+                            <option value="Aluguel">Moradia/Aluguel</option>
+                            <option value="Alimentacao">Alimentação</option>
+                            <option value="Lazer">Lazer</option>
+                            <option value="Investimentos">Investimentos</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="w-full text-right border-t border-border-default pt-4">
+                    <button type="button" id="btn-limpar-form"
+                            class="py-3 px-6 rounded-lg border border-border-default bg-bg-surface text-text-primary hover:bg-bg-hover transition duration-200 focus-ring">
+                        Limpar
+                    </button>
+                    <button type="submit" 
+                            class="bg-brand-primary text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-700 transition duration-200 shadow-smooth focus-ring">Salvar Lançamento</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="receitas-lancamentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-text-primary">Receitas Programadas</h2>
+                <span id="total-receita-lancamentos" class="text-status-success font-bold text-lg">R$ 0,00</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table id="table-receitas-lancamentos" class="w-full text-sm text-text-primary whitespace-nowrap">
+                    <thead>
+                        <tr class="border-b-2 border-border-default text-text-secondary">
+                            <th class="py-2 px-1 text-left w-3/12">Descrição/Categoria</th>
+                            <th class="py-2 px-1 text-left w-2/12">Valor</th>
+                            <th class="py-2 px-1 text-left w-2/12">Frequência</th>
+                            <th class="py-2 px-1 text-left w-2/12">Data</th>
+                            <th class="py-2 px-1 text-center w-2/12">Status</th>
+                            <th class="py-2 px-1 text-center w-1/12">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section id="despesas-fixas-lancamentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-text-primary">Despesas Fixas e Recorrentes (e Únicas)</h2>
+                <span id="total-despesa-fixa-lancamentos" class="text-status-error font-bold text-lg">R$ 0,00</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table id="table-despesas-fixas" class="w-full text-sm text-text-primary whitespace-nowrap">
+                    <thead>
+                        <tr class="border-b-2 border-border-default text-text-secondary">
+                            <th class="py-2 px-1 text-left w-3/12">Descrição/Categoria</th>
+                            <th class="py-2 px-1 text-left w-2/12">Valor</th>
+                            <th class="py-2 px-1 text-left w-2/12">Frequência</th>
+                            <th class="py-2 px-1 text-left w-2/12">Data de Vencimento</th>
+                            <th class="py-2 px-1 text-center w-2/12">Status</th>
+                            <th class="py-2 px-1 text-center w-1/12">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="despesas-parceladas-lancamentos" class="bg-bg-card p-6 rounded-lg shadow-smooth border border-border-default mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-text-primary">Despesas Parceladas (A Prazo)</h2>
+                <span id="total-despesa-parcelada-lancamentos" class="text-status-error font-bold text-lg">R$ 0,00</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table id="table-despesas-parceladas" class="w-full text-sm text-text-primary whitespace-nowrap">
+                    <thead>
+                        <tr class="border-b-2 border-border-default text-text-secondary">
+                            <th class="py-2 px-1 text-left w-3/12">Descrição/Categoria</th>
+                            <th class="py-2 px-1 text-left w-2/12">Valor (Parcela)</th>
+                            <th class="py-2 px-1 text-left w-2/12">Parcelas</th>
+                            <th class="py-2 px-1 text-left w-2/12">Vencimento</th>
+                            <th class="py-2 px-1 text-center w-2/12">Status</th>
+                            <th class="py-2 px-1 text-center w-1/12">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal de Sucesso de Lançamento -->
+    <div id="success-lancamento-modal" class="modal-overlay">
+        <div class="bg-bg-card p-8 rounded-3xl shadow-lg border border-border-default w-full max-w-md text-center">
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
+                <span class="text-4xl">✅</span>
+            </div>
+            <h2 class="text-2xl font-bold text-text-primary mb-2" id="success-modal-title">Sucesso!</h2>
+            <p id="success-modal-message" class="text-text-secondary mb-6">Seu lançamento foi salvo com sucesso.</p>
+            <button type="button" id="success-modal-ok-btn"
+                    class="bg-status-success text-white font-bold py-3 px-8 rounded-lg hover:bg-green-700 transition duration-200 shadow-smooth focus-ring">
+                OK
+            </button>
+        </div>
+    </div>
+
+
+    <script src="js/shared.js"></script>
+    <script src="js/lancamentos.js"></script>
+</body>
+</html>
